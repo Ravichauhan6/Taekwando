@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import heroBg from './assets/hero-bg.png';
 import tcImg from './assets/tc.jpg';
 import sfImg from './assets/sf.jpg';
-import ticImg from './assets/tic.jpg';
+import ticImg from './assets/tic.jpeg';
 
 import { AdminLayout } from './admin/AdminLayout';
 import { Login } from './admin/Login';
