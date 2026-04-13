@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import heroBg from './assets/hero-bg.png';
 import tcImg from './assets/tc.jpg';
 import sfImg from './assets/sf.jpg';
-import ticImg from './assets/tic.jpeg';
+import ticImg from './assets/tic.jpg';
 
 import { AdminLayout } from './admin/AdminLayout';
 import { Login } from './admin/Login';
@@ -318,14 +318,7 @@ const Navbar = () => {
       dropdown: [
         { name: 'Latest News', href: '/#news' },
         { name: 'Gallery', href: '/gallery' },
-        { 
-          name: 'Events >', 
-          href: '/events',
-          sublinks: [
-            { name: 'Upcoming Events', href: '/events/upcoming', icon: <Calendar className="w-4 h-4" /> },
-            { name: 'Past Events', href: '/events/past', icon: <Trophy className="w-4 h-4" /> }
-          ]
-        },
+        { name: 'Events', href: '/events' },
         { name: 'Documents & Download', href: '#' },
         { name: 'Upcoming Training Camps', href: '#' },
       ]
@@ -407,7 +400,7 @@ const Navbar = () => {
                           </button>
                         );
                       }
-                      
+
                       const hasSublinks = (dropLink as any).sublinks;
                       const LinkComponent = dropLink.href.startsWith('/') ? Link : 'a';
 
@@ -428,20 +421,20 @@ const Navbar = () => {
                           </LinkComponent>
                           {hasSublinks && (
                             <div className="absolute right-full top-0 mr-1 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-300 min-w-[240px] bg-[#0a0a0a]/98 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,1)] rounded-[18px] py-4 border border-white/10 z-[60] overflow-hidden">
-                               <div className="px-4 mb-2 pb-2 border-b border-white/5">
-                                 <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest px-2">Navigate Category</span>
-                               </div>
-                               {(dropLink as any).sublinks.map((sub: any, sIdx: number) => (
-                                 <a
-                                   key={sIdx}
-                                   href={sub.href}
-                                   className="flex items-center px-6 py-3 text-[11px] font-bold tracking-widest uppercase text-gray-400 hover:text-white hover:bg-red-600/10 transition-all group/subitem"
-                                 >
-                                   <div className="w-1.5 h-1.5 rounded-full bg-red-500/30 mr-4 group-hover/subitem:bg-red-500 transition-colors"></div>
-                                   {(sub as any).icon && <span className="mr-3 text-red-500/80 group-hover/subitem:text-red-500 transition-colors">{(sub as any).icon}</span>}
-                                   {sub.name}
-                                 </a>
-                               ))}
+                              <div className="px-4 mb-2 pb-2 border-b border-white/5">
+                                <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest px-2">Navigate Category</span>
+                              </div>
+                              {(dropLink as any).sublinks.map((sub: any, sIdx: number) => (
+                                <a
+                                  key={sIdx}
+                                  href={sub.href}
+                                  className="flex items-center px-6 py-3 text-[11px] font-bold tracking-widest uppercase text-gray-400 hover:text-white hover:bg-red-600/10 transition-all group/subitem"
+                                >
+                                  <div className="w-1.5 h-1.5 rounded-full bg-red-500/30 mr-4 group-hover/subitem:bg-red-500 transition-colors"></div>
+                                  {(sub as any).icon && <span className="mr-3 text-red-500/80 group-hover/subitem:text-red-500 transition-colors">{(sub as any).icon}</span>}
+                                  {sub.name}
+                                </a>
+                              ))}
                             </div>
                           )}
                         </div>
@@ -533,30 +526,14 @@ const Navbar = () => {
                             <LinkComponent
                               to={dropLink.href.startsWith('/') ? dropLink.href : undefined}
                               href={!dropLink.href.startsWith('/') ? dropLink.href : undefined}
-                              onClick={() => !hasSublinks && setIsOpen(false)}
+                              onClick={() => setIsOpen(false)}
                               className="flex items-center justify-between px-5 py-3 text-[12px] font-bold tracking-widest uppercase text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-white/5 hover:to-transparent rounded-r-lg transition-all border-l border-transparent hover:border-red-500"
                             >
                               <span className="flex items-center">
                                 {(dropLink as any).icon && <span className="mr-3 text-red-500">{(dropLink as any).icon}</span>}
-                                {dropLink.name}
+                                {dropLink.name.replace(' >', '')}
                               </span>
-                              {hasSublinks && <ChevronRight className="w-4 h-4" />}
                             </LinkComponent>
-                            {hasSublinks && (
-                              <div className="pl-6 space-y-2 mt-2 mb-4">
-                                {(dropLink as any).sublinks.map((sub: any, sIdx: number) => (
-                                  <a
-                                    key={sIdx}
-                                    href={sub.href}
-                                    onClick={() => setIsOpen(false)}
-                                    className="block py-2 text-[11px] font-bold tracking-widest uppercase text-gray-500 hover:text-red-500 transition-colors"
-                                  >
-                                    <span className="mr-3">•</span>
-                                    {sub.name}
-                                  </a>
-                                ))}
-                              </div>
-                            )}
                           </div>
                         );
                       })}
@@ -702,7 +679,7 @@ const WhyChooseUs = () => {
             WHY <span className="text-white">CHOOSE US</span>
           </h2>
         </div>
-        
+
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
           <motion.div
             whileHover={{ scale: 1.02 }}
@@ -795,29 +772,29 @@ const TrainingCentersSection = () => (
         <div className="absolute top-0 right-0 w-96 h-96 bg-red-600/5 blur-[100px] rounded-full pointer-events-none" />
         <div className="grid lg:grid-cols-2 gap-0 relative z-10">
           <div className="p-12 md:p-16 flex flex-col justify-center">
-             <div className="mb-10">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="w-8 h-px bg-red-600" />
-                  <span className="text-red-500 font-bold tracking-[0.3em] uppercase text-[10px]">Strategic Locations</span>
-                </div>
-                <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight uppercase leading-[0.9]">District <br/><span className="text-red-600">Centers</span></h2>
-             </div>
-             <p className="text-gray-400 text-lg mb-10 leading-relaxed font-medium">Find our official training centers equipped with international standard mats and world-class equipment across Maharajganj district.</p>
-             <div className="flex flex-wrap gap-4">
-                <Link 
-                  to="/affiliated-training-centers" 
-                  className="inline-flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-[0_10px_25px_rgba(255,0,0,0.3)] transition-all hover:scale-105"
-                >
-                  View Directory <ArrowRight className="w-4 h-4" />
-                </Link>
-             </div>
+            <div className="mb-10">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="w-8 h-px bg-red-600" />
+                <span className="text-red-500 font-bold tracking-[0.3em] uppercase text-[10px]">Strategic Locations</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight uppercase leading-[0.9]">District <br /><span className="text-red-600">Centers</span></h2>
+            </div>
+            <p className="text-gray-400 text-lg mb-10 leading-relaxed font-medium">Find our official training centers equipped with international standard mats and world-class equipment across Maharajganj district.</p>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/affiliated-training-centers"
+                className="inline-flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-[0_10px_25px_rgba(255,0,0,0.3)] transition-all hover:scale-105"
+              >
+                View Directory <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
           <div className="relative h-[400px] lg:h-auto overflow-hidden group">
             <div className="absolute inset-0 bg-red-600/5 mix-blend-multiply z-10" />
-            <img 
-              src={tcImg} 
-              alt="Training Center" 
-              className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-110" 
+            <img
+              src={tcImg}
+              alt="Training Center"
+              className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-110"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 lg:from-black/60 via-transparent to-transparent" />
           </div>
@@ -853,7 +830,7 @@ const BenefitsSection = () => {
               />
             </AnimatePresence>
             <div className="absolute inset-0 flex items-center justify-center z-10">
-              <motion.button 
+              <motion.button
                 onClick={() => setIsVideoOpen(true)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -870,7 +847,7 @@ const BenefitsSection = () => {
           </div>
           <div className="w-full lg:w-[58%] flex flex-col p-8 sm:p-10 lg:p-14 relative z-20 bg-gradient-to-l from-transparent to-[#0a0a0a] xl:from-[#0a0a0a] xl:to-[#0a0a0a]">
             <div className="flex space-x-2 mb-10 w-fit p-1.5 bg-white/[0.02] rounded-full border border-white/5 backdrop-blur-md shadow-inner">
-              <button 
+              <button
                 onClick={() => setActiveTab('benefits')}
                 className={`py-3 px-6 sm:px-8 rounded-full text-[12px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all relative z-10 ${activeTab === 'benefits' ? 'text-white' : 'text-gray-500 hover:text-white'}`}
               >
@@ -879,7 +856,7 @@ const BenefitsSection = () => {
                   <motion.div layoutId="pillActiveTab" className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-900 rounded-full -z-10 shadow-[0_0_20px_rgba(255,0,0,0.3)] border border-red-500/50" />
                 )}
               </button>
-              <button 
+              <button
                 onClick={() => setActiveTab('self-development')}
                 className={`py-3 px-6 sm:px-8 rounded-full text-[12px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all relative z-10 ${activeTab === 'self-development' ? 'text-white' : 'text-gray-500 hover:text-white'}`}
               >
@@ -892,7 +869,7 @@ const BenefitsSection = () => {
             <div className="flex-1 min-h-[280px]">
               <AnimatePresence mode="wait">
                 {activeTab === 'benefits' && (
-                  <motion.div 
+                  <motion.div
                     key="benefits"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -914,7 +891,7 @@ const BenefitsSection = () => {
                         'Greater self-discipline',
                         'Reduced stress'
                       ].map((benefit, i) => (
-                        <motion.div 
+                        <motion.div
                           key={i}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -931,7 +908,7 @@ const BenefitsSection = () => {
                   </motion.div>
                 )}
                 {activeTab === 'self-development' && (
-                  <motion.div 
+                  <motion.div
                     key="self-development"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -943,8 +920,8 @@ const BenefitsSection = () => {
                       Self <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700">Development</span>
                     </h3>
                     <p className="text-gray-400 text-[16px] sm:text-[17px] leading-[1.8] font-medium my-4 max-w-xl">
-                      Personal development is defined as activities that develops a person's capabilities and, build human capital and potential, facilitate employability, and enhances quality of life and the realization of dreams and aspirations. 
-                      <br/><br/>
+                      Personal development is defined as activities that develops a person's capabilities and, build human capital and potential, facilitate employability, and enhances quality of life and the realization of dreams and aspirations.
+                      <br /><br />
                       Personal development takes place over the course of an individual's entire lifespan.
                     </p>
                     <div className="mt-8 group w-fit">
@@ -1216,7 +1193,7 @@ const Footer = () => {
 };
 
 const toTitleCase = (str: string) => {
-  return str.replace(/\b\w+/g, function(txt) {
+  return str.replace(/\b\w+/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
   });
 };
@@ -1287,10 +1264,10 @@ const WhatWeSay = () => {
               <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
                 <div className="relative flex-shrink-0">
                   <div className="w-32 h-32 md:w-40 md:h-40 rounded-[32px] overflow-hidden border-2 border-red-500/30 shadow-[0_0_30px_rgba(255,0,0,0.2)]">
-                    <img 
-                      src={data.president_image || "https://images.unsplash.com/photo-1620912189865-1e8a33da4c59?auto=format&fit=crop&q=80&w=400"} 
-                      alt="President" 
-                      className="w-full h-full object-cover transition-all duration-700 hover:scale-110" 
+                    <img
+                      src={data.president_image || "https://images.unsplash.com/photo-1620912189865-1e8a33da4c59?auto=format&fit=crop&q=80&w=400"}
+                      alt="President"
+                      className="w-full h-full object-cover transition-all duration-700 hover:scale-110"
                     />
                   </div>
                   <div className="absolute -bottom-2 -right-2 bg-red-600 text-white p-2 rounded-xl shadow-lg">
@@ -1323,10 +1300,10 @@ const WhatWeSay = () => {
               <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
                 <div className="relative flex-shrink-0">
                   <div className="w-32 h-32 md:w-40 md:h-40 rounded-[32px] overflow-hidden border-2 border-red-500/30 shadow-[0_0_30px_rgba(255,0,0,0.2)]">
-                    <img 
-                      src={data.secretary_image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"} 
-                      alt="Secretary" 
-                      className="w-full h-full object-cover transition-all duration-700 hover:scale-110" 
+                    <img
+                      src={data.secretary_image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400"}
+                      alt="Secretary"
+                      className="w-full h-full object-cover transition-all duration-700 hover:scale-110"
                     />
                   </div>
                   <div className="absolute -bottom-2 -right-2 bg-red-600 text-white p-2 rounded-xl shadow-lg">
@@ -1404,27 +1381,27 @@ const EventsDisplay = () => {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60"></div>
         <div className="absolute bottom-4 left-6">
-           <div className="flex items-center gap-2 text-red-500 font-bold text-[10px] tracking-[0.2em] uppercase bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/5">
-              <MapPin className="w-3 h-3" /> {e.location}
-           </div>
+          <div className="flex items-center gap-2 text-red-500 font-bold text-[10px] tracking-[0.2em] uppercase bg-black/40 backdrop-blur-md px-3 py-1 rounded-full border border-white/5">
+            <MapPin className="w-3 h-3" /> {e.location}
+          </div>
         </div>
       </div>
       <div className="p-8 flex-1 flex flex-col">
         <div className="flex items-center gap-3 mb-4">
-           <div className="w-12 h-12 rounded-2xl bg-red-600/10 border border-red-500/20 flex flex-col items-center justify-center">
-              <span className="text-red-500 font-black text-lg leading-none">{e.date.split(' ')[1]?.replace(',', '') || '??'}</span>
-              <span className="text-[8px] font-bold text-gray-500 uppercase tracking-tighter">{e.date.split(' ')[0] || 'MO'}</span>
-           </div>
-           <div>
-              <h3 className="text-xl font-black text-white tracking-tight group-hover:text-red-500 transition-colors uppercase">{e.title}</h3>
-              <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mt-0.5">{e.date}</p>
-           </div>
+          <div className="w-12 h-12 rounded-2xl bg-red-600/10 border border-red-500/20 flex flex-col items-center justify-center">
+            <span className="text-red-500 font-black text-lg leading-none">{e.date.split(' ')[1]?.replace(',', '') || '??'}</span>
+            <span className="text-[8px] font-bold text-gray-500 uppercase tracking-tighter">{e.date.split(' ')[0] || 'MO'}</span>
+          </div>
+          <div>
+            <h3 className="text-xl font-black text-white tracking-tight group-hover:text-red-500 transition-colors uppercase">{e.title}</h3>
+            <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest mt-0.5">{e.date}</p>
+          </div>
         </div>
         <div className="mt-auto pt-6 border-t border-white/5 flex justify-between items-center">
-           <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Official MDTA Event</span>
-           <button className="text-red-500 hover:text-red-400 font-black text-[10px] uppercase tracking-widest transition-colors flex items-center gap-2">
-             Learn More <ChevronRight className="w-3 h-3" />
-           </button>
+          <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Official MDTA Event</span>
+          <button className="text-red-500 hover:text-red-400 font-black text-[10px] uppercase tracking-widest transition-colors flex items-center gap-2">
+            Learn More <ChevronRight className="w-3 h-3" />
+          </button>
         </div>
       </div>
     </motion.div>
@@ -1433,13 +1410,13 @@ const EventsDisplay = () => {
   return (
     <section id="events-display" className="py-24 bg-[#050505] relative overflow-hidden min-h-screen">
       <div className="absolute top-0 left-1/4 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-red-500/50 to-transparent"></div>
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-20">
         {showUpcoming && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            id="upcoming" 
+            id="upcoming"
             className="scroll-mt-32"
           >
             <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
@@ -1451,10 +1428,10 @@ const EventsDisplay = () => {
                 <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight uppercase">Upcoming <span className="text-red-600">Events</span></h2>
               </div>
             </div>
-            
+
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[1,2,3].map(i => <div key={i} className="h-[400px] bg-white/5 animate-pulse rounded-3xl"></div>)}
+                {[1, 2, 3].map(i => <div key={i} className="h-[400px] bg-white/5 animate-pulse rounded-3xl"></div>)}
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -1471,10 +1448,10 @@ const EventsDisplay = () => {
         )}
 
         {showPast && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            id="past" 
+            id="past"
             className={`scroll-mt-32 ${showUpcoming ? 'mt-32 border-t border-white/5 pt-32' : ''}`}
           >
             <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
