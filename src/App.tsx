@@ -289,6 +289,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
+  const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -494,18 +495,22 @@ const Navbar = () => {
                       to={link.href}
                       className="flex justify-between items-center text-[14px] font-bold tracking-widest uppercase text-gray-200 hover:text-white transition-all group"
                       onClick={(e) => {
-                        if (link.dropdown) e.preventDefault();
-                        else setIsOpen(false);
+                        if (link.dropdown) {
+                          e.preventDefault();
+                          setOpenMobileDropdown(prev => prev === link.name ? null : link.name);
+                        } else {
+                          setIsOpen(false);
+                        }
                       }}
                     >
                       <span className="flex items-center gap-4">
                         <span className="w-1.5 h-1.5 rounded-full bg-red-600/50 group-hover:bg-red-500 group-hover:shadow-[0_0_12px_rgba(255,0,0,0.9)] transition-all"></span>
                         {link.name}
                       </span>
-                      {link.dropdown && <ChevronRight className="w-5 h-5 text-red-500/50 group-hover:text-red-500 transition-colors" />}
+                      {link.dropdown && <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${openMobileDropdown === link.name ? 'rotate-90 text-red-500' : 'text-red-500/50 group-hover:text-red-500'}`} />}
                     </Link>
                   )}
-                  {link.dropdown && (
+                  {link.dropdown && openMobileDropdown === link.name && (
                     <div className="pl-5 space-y-2 mt-4 mb-2 border-l-2 border-red-500/20 ml-1.5">
                       {link.dropdown.map((dropLink, idx) => {
                         if ((dropLink as any).action === 'about-modal') {
