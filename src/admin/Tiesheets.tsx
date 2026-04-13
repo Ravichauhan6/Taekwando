@@ -77,79 +77,84 @@ export const Tiesheets = () => {
   const rounds = Array.from(new Set(matches.map(m => Number(m.round_number)))).sort((a: number, b: number) => b - a);
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-full overflow-hidden">
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-full overflow-hidden print:overflow-visible">
       
       {/* Header - Hidden during print */}
       <div className="print:hidden">
-        <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-          <Target className="w-8 h-8 text-red-600" />
+        <h2 className="text-[32px] font-black text-white tracking-widest uppercase mb-2 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)] flex items-center gap-4">
+          <div className="bg-gradient-to-br from-red-600 to-red-900 p-2.5 rounded-xl border border-red-500/50 shadow-[0_0_15px_rgba(255,0,0,0.3)]">
+            <Target className="w-8 h-8 text-white" />
+          </div>
           Tournament Tiesheets
         </h2>
-        <p className="text-gray-500 mt-1">Generate and view match brackets for all weight categories.</p>
+        <p className="text-gray-400 font-medium">Generate and view match brackets for all weight categories.</p>
       </div>
 
       {/* Controls - Hidden during print */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 print:hidden">
-        <div className="flex-1 max-w-sm">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">View Category</label>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 bg-[#111] p-8 rounded-3xl shadow-[0_0_50px_rgba(255,0,0,0.1)] border border-red-500/20 print:hidden h-fit">
+        <div className="flex-1 max-w-md w-full">
+          <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">View Category Brackets</label>
           <select 
             value={selectedCategory} 
             onChange={e => setSelectedCategory(e.target.value)}
-            className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-red-500 outline-none select-md"
+            className="w-full bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-xl px-5 py-4 outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-white text-[13px] font-bold tracking-wide transition-all select-md appearance-none cursor-pointer"
           >
-            <option value="">Select Category...</option>
+            <option value="" className="bg-[#111] text-white">Select Category...</option>
             {categories.map(cat => (
-              <option key={cat.id} value={cat.id}>
+              <option key={cat.id} value={cat.id} className="bg-[#111] text-white">
                 {cat.age_group} {cat.gender === 'Male' ? 'Boys/Men' : 'Girls/Women'} - {cat.name}
               </option>
             ))}
           </select>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-4 w-full sm:w-auto mt-4 sm:mt-0">
           <button 
             onClick={handlePrint}
-            className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold px-6 py-3 rounded-xl transition-all"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-[#0a0a0a] border border-white/5 hover:bg-white/5 hover:border-white/10 text-white font-black px-8 py-4 rounded-xl transition-all shadow-inner uppercase tracking-widest text-[11px]"
           >
-            <Printer className="w-5 h-5" /> Print Bracket
+            <Printer className="w-5 h-5" /> Print
           </button>
           <button 
             onClick={handleGenerate}
             disabled={generating}
-            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-lg shadow-red-500/30"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white font-black px-8 py-4 rounded-xl transition-all shadow-[0_4px_20px_rgba(255,0,0,0.4)] disabled:opacity-50 uppercase tracking-widest text-[11px]"
           >
             <RefreshCw className={`w-5 h-5 ${generating ? 'animate-spin' : ''}`} /> 
-            {generating ? 'Generating...' : 'Generate All Tiesheets'}
+            {generating ? 'Processing...' : 'Generate New Tiesheets'}
           </button>
         </div>
       </div>
 
-      {error && <div className="bg-red-50 text-red-600 p-4 rounded-xl flex items-center gap-2 print:hidden"><AlertTriangle/> {error}</div>}
-      {msg && <div className="bg-green-50 text-green-700 p-4 rounded-xl flex items-center gap-2 print:hidden">✅ {msg}</div>}
+      {error && <div className="bg-red-500/10 border border-red-500/20 text-red-500 p-5 rounded-xl flex items-center gap-3 print:hidden text-sm font-bold uppercase tracking-wide"><AlertTriangle className="w-5 h-5"/> {error}</div>}
+      {msg && <div className="bg-green-500/10 border border-green-500/20 text-green-500 p-5 rounded-xl flex items-center gap-3 print:hidden text-sm font-bold uppercase tracking-wide">✅ {msg}</div>}
 
       {/* Bracket Visualization Area */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-x-auto print:border-none print:shadow-none p-8 min-h-[500px]">
+      <div className="allow-print print:absolute print:left-0 print:top-0 print:w-full bg-[#111] rounded-3xl shadow-[0_0_50px_rgba(255,0,0,0.05)] border border-white/5 overflow-x-auto print:overflow-visible print:border-none print:shadow-none p-10 min-h-[600px] custom-scrollbar relative">
         
+        {/* Background Accent */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-red-600/5 blur-[120px] pointer-events-none rounded-full print:hidden"></div>
+
         {/* Print Header */}
-        <div className="hidden print:block text-center mb-10">
-          <h1 className="text-3xl font-bold uppercase mb-2">Tournament Official Tiesheet</h1>
-          <h2 className="text-xl text-gray-700">
-            {categories.find(c => c.id.toString() === selectedCategory)?.age_group} - 
-            {categories.find(c => c.id.toString() === selectedCategory)?.gender} - 
+        <div className="hidden print:block text-center mb-12 border-b-2 border-black pb-4">
+          <h1 className="text-4xl font-black uppercase mb-3 tracking-widest">Tournament Official Tiesheet</h1>
+          <h2 className="text-2xl font-bold text-gray-800 uppercase">
+            {categories.find(c => c.id.toString() === selectedCategory)?.age_group} <span className="mx-2">•</span> 
+            {categories.find(c => c.id.toString() === selectedCategory)?.gender} <span className="mx-2">•</span> 
             {categories.find(c => c.id.toString() === selectedCategory)?.name}
           </h2>
         </div>
 
         {loading ? (
-          <div className="flex items-center justify-center h-64 text-gray-400">Loading bracket...</div>
+          <div className="flex items-center justify-center h-64 text-gray-500 font-bold uppercase tracking-widest animate-pulse relative z-10">Loading bracket topology...</div>
         ) : matches.length === 0 ? (
-           <div className="flex flex-col items-center justify-center h-64 text-gray-400">
-             <Target className="w-12 h-12 mb-4 opacity-20" />
-             <p>No matches generated for this category yet.</p>
-             <p className="text-sm mt-2">Click "Generate All Tiesheets" to create the brackets.</p>
+           <div className="flex flex-col items-center justify-center h-64 text-gray-600 relative z-10">
+             <Target className="w-16 h-16 mb-6 opacity-20" />
+             <p className="font-bold text-lg uppercase tracking-widest mb-2 text-gray-400">No Bracket Generated</p>
+             <p className="text-[11px] uppercase tracking-widest bg-black/50 px-4 py-2 rounded-lg">Select 'Generate New Tiesheets' to begin.</p>
            </div>
         ) : (
-          <div className="flex items-stretch min-w-max gap-12">
+          <div className="flex items-stretch min-w-max gap-16 relative z-10">
             {rounds.map((roundNum, index) => {
               const roundMatches = matches.filter(m => m.round_number === roundNum);
               
@@ -160,36 +165,42 @@ export const Tiesheets = () => {
 
               return (
                 <div key={roundNum} className="flex flex-col justify-around flex-1 text-sm relative">
-                  <div className="text-center font-bold text-gray-500 mb-8 uppercase tracking-wider print:text-black">
+                  <div className="text-center font-black text-white bg-white/5 border border-white/10 rounded-xl py-3 mb-12 uppercase tracking-[0.2em] shadow-inner print:text-black print:border-none print:shadow-none print:bg-transparent">
                     {roundName}
                   </div>
                   
                   {roundMatches.map((m) => (
-                    <div key={m.id} className="relative mb-8 z-10">
+                    <div key={m.id} className="relative mb-12 z-10">
                         {/* Match Box */}
-                        <div className="bg-white border-2 border-slate-200 rounded-lg shadow-sm w-48 flex flex-col overflow-hidden relative z-20 print:border-black print:shadow-none">
-                            <div className="border-b border-slate-100 flex items-center justify-between print:border-black">
-                                <span className={`p-2 flex-1 truncate font-medium ${!m.player1_name ? 'text-gray-400 italic' : 'text-gray-800 print:text-black'}`}>
+                        <div className="bg-[#0a0a0a] border border-white/10 rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.5)] w-56 flex flex-col overflow-hidden relative z-20 print:border-2 print:border-black print:shadow-none print:bg-transparent hover:border-red-500/50 transition-colors group">
+                            <div className="border-b border-white/5 flex flex-col justify-center py-3 px-4 print:border-black h-1/2 group-hover:bg-white/[0.02]">
+                                <span className={`truncate font-bold text-[13px] uppercase tracking-wide leading-tight ${!m.player1_name ? 'text-gray-600 italic' : 'text-white print:text-black'}`}>
                                     {m.player1_name || 'BYE / TBD'}
                                 </span>
+                                {m.player1_name && m.player1_address && (
+                                  <span className="text-[10px] text-gray-500 truncate leading-tight mt-1 print:text-gray-700 font-medium">{m.player1_address}</span>
+                                )}
                             </div>
-                            <div className="flex items-center justify-between">
-                                <span className={`p-2 flex-1 truncate font-medium ${!m.player2_name ? 'text-gray-400 italic' : 'text-gray-800 print:text-black'}`}>
+                            <div className="flex flex-col justify-center py-3 px-4 h-1/2 group-hover:bg-white/[0.02]">
+                                <span className={`truncate font-bold text-[13px] uppercase tracking-wide leading-tight ${!m.player2_name ? 'text-gray-600 italic' : 'text-white print:text-black'}`}>
                                     {m.player2_name || 'BYE / TBD'}
                                 </span>
+                                {m.player2_name && m.player2_address && (
+                                  <span className="text-[10px] text-gray-500 truncate leading-tight mt-1 print:text-gray-700 font-medium">{m.player2_address}</span>
+                                )}
                             </div>
-                            <div className="absolute right-0 top-0 bottom-0 w-8 bg-slate-50 flex flex-col justify-around items-center border-l border-slate-100 text-xs font-mono text-slate-400 print:border-black print:bg-white print:text-black">
+                            <div className="absolute right-0 top-0 bottom-0 w-10 bg-[#111] flex flex-col justify-around items-center border-l border-white/5 text-xs font-black text-gray-600 print:border-black print:bg-white print:text-black group-hover:bg-red-500/10 group-hover:text-red-500 transition-colors">
                                 <span>{m.player1_id ? '' : '-'}</span>
                                 <span>{m.player2_id ? '' : '-'}</span>
                             </div>
-                            <div className="bg-slate-800 text-white text-[10px] uppercase font-bold text-center py-0.5 print:bg-gray-200 print:text-black print:border-t print:border-black">
+                            <div className="bg-gradient-to-r from-red-600 to-red-900 border-t border-red-500/30 text-white text-[9px] uppercase font-black tracking-widest text-center py-1 print:bg-gray-200 print:text-black print:border-black">
                               Match #{m.match_number}
                             </div>
                         </div>
 
-                        {/* Connector logic (Draws connecting lines to the next match) */}
+                        {/* Connector logic */}
                         {index < rounds.length - 1 && (
-                            <div className="absolute top-1/2 -right-6 w-6 h-px bg-slate-400 print:bg-black -z-10"></div>
+                            <div className="absolute top-1/2 -right-8 w-8 h-px bg-white/20 print:bg-black -z-10 group-hover:bg-red-500/50 transition-colors"></div>
                         )}
                     </div>
                   ))}
@@ -199,14 +210,15 @@ export const Tiesheets = () => {
             
             {/* The Champion Slot */}
             <div className="flex flex-col justify-around flex-1 text-sm relative">
-              <div className="text-center font-bold text-yellow-600 mb-8 uppercase tracking-wider print:text-black">
+              <div className="text-center font-black text-yellow-500 bg-yellow-500/10 border border-yellow-500/20 rounded-xl py-3 mb-12 uppercase tracking-[0.2em] shadow-[0_0_15px_rgba(234,179,8,0.1)] print:text-black print:border-none print:shadow-none print:bg-transparent">
                 Champion
               </div>
-              <div className="relative mb-8 z-10 flex items-center">
-                  <div className="absolute top-1/2 -left-6 w-6 h-px bg-slate-400 print:bg-black -z-10"></div>
-                  <div className="bg-gradient-to-r from-yellow-50 to-white border-2 border-yellow-400 rounded-lg shadow-md w-48 p-4 text-center print:border-black print:shadow-none print:bg-none">
-                      <Target className="w-8 h-8 mx-auto text-yellow-500 mb-2 print:text-black" />
-                      <span className="font-bold text-yellow-800 truncate block print:text-black">To Be Decided</span>
+              <div className="relative mb-12 z-10 flex items-center">
+                  <div className="absolute top-1/2 -left-8 w-8 h-px bg-white/20 print:bg-black -z-10"></div>
+                  <div className="bg-[#0a0a0a] border border-yellow-500/50 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.2)] w-56 p-6 text-center print:border-2 print:border-black print:shadow-none print:bg-transparent relative overflow-hidden">
+                      <div className="absolute top-0 left-0 w-full h-full bg-yellow-500/5 pointer-events-none print:hidden"></div>
+                      <Target className="w-12 h-12 mx-auto text-yellow-500 mb-4 drop-shadow-[0_0_10px_rgba(234,179,8,0.5)] print:text-black print:drop-shadow-none" />
+                      <span className="font-black text-yellow-500 uppercase tracking-widest truncate block text-[15px] print:text-black">TBD</span>
                   </div>
               </div>
             </div>

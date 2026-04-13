@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-page, .print-page *, .allow-print, .allow-print * {
+    visibility: visible;
+  }
+  .print-page {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    page-break-after: always;
+  }
+  .print-page:last-of-type {
+    page-break-after: auto;
+  }
+}

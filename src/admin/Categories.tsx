@@ -85,61 +85,61 @@ export const Categories = () => {
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Weight Categories</h2>
-          <p className="text-gray-500 mt-1">Manage tournament weight divisions.</p>
+          <h2 className="text-[32px] font-black text-white tracking-widest uppercase mb-2 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">Weight Categories</h2>
+          <p className="text-gray-400 font-medium">Manage tournament weight divisions.</p>
         </div>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-8">
         
         {/* Form Panel */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-fit">
-          <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-            <Plus className="w-5 h-5 text-red-600" />
+        <div className="bg-[#111] p-8 rounded-3xl shadow-[0_0_50px_rgba(255,0,0,0.1)] border border-red-500/20 h-fit">
+          <h3 className="text-xl font-black text-white tracking-widest uppercase mb-6 flex items-center gap-3">
+            <Plus className="w-5 h-5 text-red-500" />
             Add New Category
           </h3>
 
           {error && (
-            <div className="mb-4 bg-red-50 text-red-600 p-3 rounded-lg text-sm flex items-start gap-2">
+            <div className="mb-6 bg-red-500/10 text-red-500 border border-red-500/20 p-4 rounded-xl text-xs font-bold uppercase tracking-wide flex items-start gap-2">
               <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
               {error}
             </div>
           )}
 
-          <form onSubmit={handleAddCategory} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <form onSubmit={handleAddCategory} className="space-y-5">
+            <div className="grid grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Age Group</label>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Age Group</label>
                 <select 
                   value={ageGroup} 
                   onChange={e => setAgeGroup(e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-red-500 outline-none transition-all"
+                  className="w-full bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-xl px-4 py-3.5 outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-white text-sm transition-all appearance-none cursor-pointer"
                 >
-                  <option value="Cadet (Sub-Junior)">Cadet (Sub-Junior)</option>
-                  <option value="Cadet">Cadet</option>
-                  <option value="Junior">Junior</option>
-                  <option value="Senior">Senior</option>
+                  <option value="Cadet (Sub-Junior)" className="bg-[#111] text-white">Cadet (Sub-Junior)</option>
+                  <option value="Cadet" className="bg-[#111] text-white">Cadet</option>
+                  <option value="Junior" className="bg-[#111] text-white">Junior</option>
+                  <option value="Senior" className="bg-[#111] text-white">Senior</option>
                 </select>
-                <p className="text-xs text-gray-400 mt-1">
-                  Sub-Junior: 5-11 | Cadet: 12-14 | Junior: 15-17 | Senior: 18+
+                <p className="text-[10px] font-bold text-gray-600 mt-2 uppercase tracking-wide">
+                  5-11 | 12-14 | 15-17 | 18+
                 </p>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Gender</label>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Gender</label>
                 <select 
                   value={gender} 
                   onChange={e => setGender(e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-red-500 outline-none transition-all"
+                  className="w-full bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-xl px-4 py-3.5 outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-white text-sm transition-all appearance-none cursor-pointer"
                 >
-                  <option>Male</option>
-                  <option>Female</option>
+                  <option className="bg-[#111] text-white">Male</option>
+                  <option className="bg-[#111] text-white">Female</option>
                 </select>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-5">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Min. Weight (kg)</label>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Min. Weight (kg)</label>
                 <input 
                   type="number" 
                   step="0.01"
@@ -147,11 +147,11 @@ export const Categories = () => {
                   value={minWeight}
                   onChange={e => setMinWeight(e.target.value)}
                   placeholder="e.g. 48.0"
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-red-500 outline-none transition-all"
+                  className="w-full bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-xl px-4 py-3.5 outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-white text-sm transition-all placeholder-gray-700"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Max. Weight (kg)</label>
+                <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Max. Weight (kg)</label>
                 <input 
                   type="number" 
                   step="0.01"
@@ -159,26 +159,26 @@ export const Categories = () => {
                   value={maxWeight}
                   onChange={e => setMaxWeight(e.target.value)}
                   placeholder="e.g. 54.0"
-                  className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-red-500 outline-none transition-all"
+                  className="w-full bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-xl px-4 py-3.5 outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-white text-sm transition-all placeholder-gray-700"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-1">Category Label</label>
+              <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Category Label (Optional)</label>
               <input 
                 type="text" 
                 value={name}
                 onChange={e => setName(e.target.value)}
                 placeholder="Leave blank to auto-generate"
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-red-500 outline-none transition-all"
+                className="w-full bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-xl px-4 py-3.5 outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-white text-sm transition-all placeholder-gray-700"
               />
             </div>
 
             <button 
               type="submit" 
               disabled={isSubmitting}
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 mt-4"
+              className="w-full bg-gradient-to-r from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white px-8 py-4 rounded-xl text-sm font-black uppercase tracking-[0.2em] transition-all shadow-[0_4px_20px_rgba(255,0,0,0.4)] flex items-center justify-center gap-2 mt-4 disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
               {isSubmitting ? 'Saving...' : 'Save Category'}
@@ -187,43 +187,45 @@ export const Categories = () => {
         </div>
 
         {/* List Panel */}
-        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="overflow-x-auto">
+        <div className="lg:col-span-2 bg-[#111] rounded-3xl shadow-[0_0_50px_rgba(255,0,0,0.05)] border border-white/5 overflow-hidden">
+          <div className="overflow-x-auto custom-scrollbar">
             <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-gray-50 border-b border-gray-100">
-                  <th className="p-4 font-semibold text-gray-600 text-sm uppercase tracking-wider">Group & Gender</th>
-                  <th className="p-4 font-semibold text-gray-600 text-sm uppercase tracking-wider">Label</th>
-                  <th className="p-4 font-semibold text-gray-600 text-sm uppercase tracking-wider">Weight Range</th>
-                  <th className="p-4 font-semibold text-gray-600 text-sm uppercase tracking-wider text-right">Actions</th>
+              <thead className="bg-[#0a0a0a] border-b border-red-500/20">
+                <tr>
+                  <th className="p-5 text-[10px] font-black uppercase tracking-widest text-gray-500">Group & Gender</th>
+                  <th className="p-5 text-[10px] font-black uppercase tracking-widest text-gray-500">Label</th>
+                  <th className="p-5 text-[10px] font-black uppercase tracking-widest text-gray-500">Weight Range</th>
+                  <th className="p-5 text-[10px] font-black uppercase tracking-widest text-gray-500 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-white/5">
                 {loading ? (
-                   <tr><td colSpan={4} className="p-8 text-center text-gray-400">Loading categories...</td></tr>
+                   <tr><td colSpan={4} className="p-16 text-center text-gray-600 font-medium animate-pulse">Loading categories...</td></tr>
                 ) : categories.length === 0 ? (
-                   <tr><td colSpan={4} className="p-8 text-center text-gray-400">No categories found. Start adding some!</td></tr>
+                   <tr><td colSpan={4} className="p-16 text-center text-gray-600 font-medium">No categories found. Start adding some!</td></tr>
                 ) : (
                   categories.map(cat => (
-                    <tr key={cat.id} className="hover:bg-gray-50/50 transition-colors">
-                      <td className="p-4">
-                         <div className="font-semibold text-gray-800">{cat.age_group}</div>
-                         <div className="text-xs text-gray-500">{cat.gender === 'Male' ? 'Boys' : 'Girls'}</div>
+                    <tr key={cat.id} className="hover:bg-white/[0.02] transition-colors group">
+                      <td className="px-5 py-4">
+                         <div className="font-bold text-white text-[15px] group-hover:text-red-400 transition-colors">{cat.age_group}</div>
+                         <div className="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">{cat.gender === 'Male' ? 'Boys' : 'Girls'}</div>
                       </td>
-                      <td className="p-4">
-                        <span className="inline-block px-3 py-1 bg-red-50 text-red-600 rounded-full text-sm font-medium border border-red-100">
+                      <td className="px-5 py-4">
+                        <span className="inline-flex items-center justify-center px-3 py-1.5 bg-red-500/10 text-red-500 rounded-md text-[10px] font-black uppercase tracking-widest border border-red-500/20">
                           {cat.name}
                         </span>
                       </td>
-                      <td className="p-4 font-medium text-gray-700">
-                        {cat.min_weight}kg - {cat.max_weight}kg
+                      <td className="px-5 py-4 font-mono font-bold text-white text-xs">
+                        <span className="bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg">
+                          {cat.min_weight}kg - {cat.max_weight}kg
+                        </span>
                       </td>
-                      <td className="p-4 text-right">
+                      <td className="px-5 py-4 text-right">
                         <button 
                           onClick={() => handleDelete(cat.id)}
-                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-2.5 text-gray-500 hover:text-red-500 bg-white/5 hover:bg-red-500/10 border border-transparent hover:border-red-500/30 rounded-xl transition-all shadow-inner opacity-0 group-hover:opacity-100"
                         >
-                          <Trash2 className="w-5 h-5" />
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </td>
                     </tr>
