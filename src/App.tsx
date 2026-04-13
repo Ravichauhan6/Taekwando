@@ -677,8 +677,19 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section id="about" className="pt-20 pb-12 bg-[#050505] relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="about" className="pt-16 pb-12 bg-[#050505] relative overflow-hidden">
+      {/* Marquee Banner */}
+      <div className="w-full bg-red-600/10 border-y border-red-500/20 py-2.5 overflow-hidden shadow-[0_0_15px_rgba(255,0,0,0.1)] absolute top-0 left-0 right-0 z-20 flex whitespace-nowrap">
+        <div className="animate-marquee">
+          <Link to="/events" className="text-red-500 font-bold tracking-[0.2em] uppercase text-sm hover:text-white transition-colors cursor-pointer inline-flex items-center gap-3">
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+            Click here to check events
+            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+          </Link>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-10">
         <div className="text-center mb-16">
           <h2 className="text-2xl md:text-[28px] font-bold text-white tracking-widest uppercase drop-shadow-[0_0_20px_rgba(255,26,26,0.4)] font-sans">
             WHY <span className="text-white">CHOOSE US</span>

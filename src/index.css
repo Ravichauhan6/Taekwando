@@ -20,3 +20,13 @@
     page-break-after: auto;
   }
 }
+
+@keyframes marquee-scroll {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-100%); }
+}
+.animate-marquee {
+  animation: marquee-scroll 12s linear infinite;
+  display: inline-block;
+  white-space: nowrap;
+}
