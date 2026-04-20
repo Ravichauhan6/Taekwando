@@ -594,13 +594,13 @@ const Hero = () => {
           <div className="flex flex-row gap-4">
             <Link
               to="/register"
-              className="bg-[#ff1a1a] hover:bg-red-500 text-white px-8 py-3 rounded-full text-[15px] font-medium tracking-wide flex items-center justify-center transition-all shadow-[0_0_20px_rgba(255,26,26,0.4)]"
+              className="bg-[#ff1a1a] md:hover:bg-red-500 active:bg-red-600 text-white px-8 py-3 rounded-full text-[15px] font-medium tracking-wide flex items-center justify-center transition-all shadow-[0_0_25px_rgba(255,26,26,0.5)] md:shadow-[0_0_20px_rgba(255,26,26,0.4)] md:hover:shadow-[0_0_40px_rgba(255,26,26,0.7)] active:scale-95"
             >
               Apply Now
             </Link>
             <button
               onClick={() => setIsVideoOpen(true)}
-              className="bg-transparent hover:bg-white/5 text-gray-300 hover:text-white border border-gray-500 px-8 py-3 rounded-full text-[15px] font-medium tracking-wide flex items-center justify-center transition-all"
+              className="bg-transparent md:hover:bg-white/5 active:bg-white/10 text-gray-300 active:text-white md:hover:text-white border border-gray-500 active:border-white px-8 py-3 rounded-full text-[15px] font-medium tracking-wide flex items-center justify-center transition-all active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.05)] md:shadow-none"
             >
               Watch Demo
             </button>
@@ -718,8 +718,8 @@ const WhyChooseUs = () => {
                 whileHover={{ x: 10 }}
                 className="flex items-center gap-4 md:gap-8 p-1 transition-all"
               >
-                <div className="w-[48px] h-[48px] md:w-[52px] md:h-[52px] rounded-full border border-white/5 shadow-[inset_0_0_15px_rgba(255,26,26,0.2)] flex items-center justify-center flex-shrink-0 relative bg-black/40 hover:bg-red-600/10 transition-colors">
-                  <div className="text-[#ff1a1a]">
+                <div className="w-[48px] h-[48px] md:w-[52px] md:h-[52px] rounded-full border border-red-500/30 md:border-white/5 shadow-[inset_0_0_20px_rgba(255,0,0,0.3)] md:shadow-[inset_0_0_15px_rgba(255,26,26,0.2)] flex items-center justify-center flex-shrink-0 relative bg-red-600/10 md:bg-black/40 hover:bg-red-600/10 active:scale-90 active:bg-red-600/20 transition-all">
+                  <div className="text-[#ff1a1a] drop-shadow-[0_0_8px_rgba(255,26,26,0.8)] md:drop-shadow-none">
                     {f.icon}
                   </div>
                 </div>
@@ -758,7 +758,8 @@ const TrainingPrograms = () => {
             <motion.div
               key={i}
               whileHover={{ scale: 1.02, y: -5 }}
-              className="group cursor-pointer bg-gradient-to-br from-[#4a4a4a] via-[#1a1a1a] to-[#050505] p-3 rounded-[24px] border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 hover:border-[#ff0000] hover:shadow-[0_0_40px_rgba(255,0,0,0.6)] flex flex-col"
+              whileTap={{ scale: 0.96 }}
+              className="group cursor-pointer bg-gradient-to-br from-[#4a4a4a] via-[#1a1a1a] to-[#050505] p-3 rounded-[24px] border border-red-500/30 md:border-white/10 shadow-[0_0_25px_rgba(255,0,0,0.25)] md:shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 hover:border-[#ff0000] hover:shadow-[0_0_40px_rgba(255,0,0,0.6)] active:border-[#ff0000] active:shadow-[0_0_40px_rgba(255,0,0,0.8)] flex flex-col"
             >
               <div className="h-[220px] rounded-[18px] overflow-hidden relative bg-[#111]">
                 <img
@@ -770,7 +771,7 @@ const TrainingPrograms = () => {
                 <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] z-10 pointer-events-none"></div>
               </div>
               <div className="px-3 pt-5 pb-3">
-                <h3 className="text-[19px] font-bold text-white mb-2 tracking-wide group-hover:text-[#ff1a1a] transition-colors">{p.title}</h3>
+                <h3 className="text-[19px] font-bold text-[#ff1a1a] md:text-white mb-2 tracking-wide md:group-hover:text-[#ff1a1a] transition-colors">{p.title}</h3>
                 <p className="text-gray-300 text-[14px] leading-relaxed font-normal">{p.desc}</p>
               </div>
             </motion.div>
@@ -799,9 +800,9 @@ const TrainingCentersSection = () => (
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/affiliated-training-centers"
-                className="inline-flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-[0_10px_25px_rgba(255,0,0,0.3)] transition-all hover:scale-105"
+                className="inline-flex items-center gap-3 bg-red-600 md:hover:bg-red-700 active:bg-red-800 text-white px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-[0_0_25px_rgba(255,0,0,0.45)] md:shadow-[0_10px_25px_rgba(255,0,0,0.3)] md:hover:shadow-[0_0_40px_rgba(255,0,0,0.6)] transition-all md:hover:scale-105 active:scale-95"
               >
-                View Directory <ArrowRight className="w-4 h-4" />
+                View Directory <ArrowRight className="w-4 h-4 text-white" />
               </Link>
             </div>
           </div>
