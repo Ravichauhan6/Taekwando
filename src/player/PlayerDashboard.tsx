@@ -28,22 +28,8 @@ export const PlayerDashboard = () => {
   const [notifications, setNotifications] = useState([]);
   const [loadingNotifs, setLoadingNotifs] = useState(false);
 
-  if (!player) {
-    return <Navigate to="/player/login" replace />;
-  }
-
-  const handleLogout = () => {
-    localStorage.removeItem('current_player');
-    navigate('/');
-  };
-
-  useEffect(() => {
-    if (activeTab === 'News For Me') {
-      fetchNotifications();
-    }
-  }, [activeTab]);
-
   const fetchNotifications = async () => {
+    if (!player) return;
     setLoadingNotifs(true);
     try {
       const [notifsRes, coachMsgsRes] = await Promise.all([
@@ -73,6 +59,23 @@ export const PlayerDashboard = () => {
     } finally {
       setLoadingNotifs(false);
     }
+  };
+
+  // ✅ useEffect MUST be before any conditional return (Rules of Hooks)
+  useEffect(() => {
+    if (activeTab === 'News For Me') {
+      fetchNotifications();
+    }
+  }, [activeTab]);
+
+  // ✅ Guard check AFTER all hooks
+  if (!player) {
+    return <Navigate to="/player/login" replace />;
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('current_player');
+    navigate('/');
   };
 
   const isVerified = player.status === 'Verified';

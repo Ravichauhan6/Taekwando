@@ -55,9 +55,9 @@ export const PrintableView = ({ reg, onClose }: { reg: any; onClose: () => void 
               
               <div className="text-[14px] font-black tracking-widest mb-1.5 mt-0 text-[#000]">*RECOGNIZED BY*</div>
               <div className="text-[11.5px] font-bold uppercase tracking-wider underline underline-offset-2 decoration-[1.5px] mb-2 text-[#000]">*U.P. OLYMPIC ASSO. *INDIAN OLYMPIC ASSO. *ASIAN TAEKWONDO UNION. *WORLD TAEKWONDO</div>
-              <div className="text-[12px] font-black uppercase tracking-wide mb-2 mt-2 text-[#000]">* THE MINISTRY OF YOUTH AFFAIRS & SPORTS, GOVERNMENT OF INDIA *</div>
+              <div className="text-[12px] font-black uppercase tracking-wide mb-2 mt-2 text-[#000]">* THE MINISTRY OF YOUTH AFFAIRS &amp; SPORTS, GOVERNMENT OF INDIA *</div>
               <div className="w-full h-[2.5px] bg-black mb-1.5 mt-1"></div>
-              <div className="bg-black text-white inline-block px-10 py-1.5 font-black text-[16px] uppercase tracking-widest rounded-md mt-1 mb-2 shadow-sm" style={{WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact'}}>Application Form of Registration & Admission</div>
+              <div className="bg-black text-white inline-block px-10 py-1.5 font-black text-[16px] uppercase tracking-widest rounded-md mt-1 mb-2 shadow-sm" style={{WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact'}}>Application Form of Registration &amp; Admission</div>
            </div>
            
            <div className="text-xs font-medium mb-2 pl-1">Registration Number <span className="text-[14px] font-black ml-1 uppercase">{reg.id}</span></div>
@@ -70,10 +70,22 @@ export const PrintableView = ({ reg, onClose }: { reg: any; onClose: () => void 
                <tr className="border-[1px] border-gray-400 h-10">
                  <td className="p-2 border-[1px] border-gray-400 align-top w-[25%]" colSpan={2}><span className="text-gray-700 text-[12px] mr-1">Father's Occ:</span><span className="font-bold uppercase">{reg.fatherOccupation && reg.fatherOccupation !== 'Not Provided' ? reg.fatherOccupation : '______________________'}</span></td>
                  <td className="p-2 border-[1px] border-gray-400 align-top w-[25%]" colSpan={1}><span className="text-gray-700 text-[12px] mr-1">DOB :</span><span className="font-bold">{reg.dob && reg.dob !== 'Not Provided' ? reg.dob : '_________'}</span></td>
-                 <td className="p-0 border-[1px] border-gray-400 w-[150px] text-center align-top relative bg-gray-100" rowSpan={6} style={{WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact'}}>
-                   <div className="absolute inset-x-2 inset-y-2 flex flex-col items-center">
-                     <div className="w-full h-[145px] border border-gray-300 bg-[#00aaff] flex items-center justify-center overflow-hidden">{reg.photoFile ? <img src={reg.photoFile} className="w-full h-full object-cover"/> : ''}</div>
-                     <div className="w-full h-[35px] bg-gray-200 flex items-center justify-center overflow-hidden border-x border-b border-gray-300">{reg.signatureFile ? <img src={reg.signatureFile} className="w-full h-full object-contain mix-blend-multiply"/> : ''}</div>
+                 {/* ===== PHOTO + SIGNATURE COLUMN ===== */}
+                 <td className="p-0 border-[1px] border-gray-400 w-[175px] text-center align-top relative bg-white" rowSpan={6} style={{WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact'}}>
+                   <div className="absolute inset-x-1 inset-y-1 flex flex-col items-center gap-1">
+                     {/* Photo — object-contain so full face visible, no crop */}
+                     <div className="w-full h-[170px] border border-gray-300 bg-white flex items-center justify-center overflow-hidden">
+                       {reg.photoFile
+                         ? <img src={reg.photoFile} className="w-full h-full object-contain" style={{objectPosition:'center top'}}/>
+                         : <span className="text-gray-400 text-[10px] font-bold">No Photo</span>}
+                     </div>
+                     {/* Signature — wider & taller */}
+                     <div className="w-full h-[55px] bg-white flex items-center justify-center overflow-hidden border border-gray-300">
+                       {reg.signatureFile
+                         ? <img src={reg.signatureFile} className="w-full h-full object-contain" style={{mixBlendMode:'multiply'}}/>
+                         : <span className="text-gray-400 text-[9px]">Signature</span>}
+                     </div>
+                     <div className="text-[8px] text-gray-500 font-bold tracking-wide w-full text-center">— Candidate Signature —</div>
                    </div>
                  </td>
                </tr>
@@ -112,7 +124,7 @@ export const PrintableView = ({ reg, onClose }: { reg: any; onClose: () => void 
              </div>
              
              <div className="grid grid-cols-2 border border-black border-t-0 text-[14px] font-bold text-black h-[140px] bg-transparent">
-               <div className="border-r border-black p-4 flex flex-col justify-between"><div className="text-left">Parent / Guaerdian Signature</div></div>
+               <div className="border-r border-black p-4 flex flex-col justify-between"><div className="text-left">Parent / Guardian Signature</div></div>
                <div className="p-4 flex flex-col justify-between items-end relative">
                  <div className="text-right w-full flex justify-between pr-2"><span></span><span>Authorized Signature</span></div>
                  <div className="text-center w-56 flex flex-col items-end mr-2 absolute bottom-2 right-4">
