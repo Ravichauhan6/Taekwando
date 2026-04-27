@@ -41,13 +41,15 @@ export const Registration = () => {
   const [files, setFiles] = useState({
     aadharFile: '',
     photoFile: '',
-    signatureFile: ''
+    signatureFile: '',
+    guardianSignatureFile: ''
   });
 
   const [fileObjects, setFileObjects] = useState<any>({
     aadharFile: null,
     photoFile: null,
-    signatureFile: null
+    signatureFile: null,
+    guardianSignatureFile: null
   });
 
   const [isUploading, setIsUploading] = useState(false);
@@ -146,6 +148,7 @@ export const Registration = () => {
     const aadharUrl = await uploadToCloudinary(fileObjects.aadharFile);
     const photoUrl = await uploadToCloudinary(fileObjects.photoFile);
     const signatureUrl = await uploadToCloudinary(fileObjects.signatureFile);
+    const guardianSignatureUrl = await uploadToCloudinary(fileObjects.guardianSignatureFile);
 
     try {
       // Setup Backend Payload
@@ -175,6 +178,7 @@ export const Registration = () => {
         aadhar_url: aadharUrl || files.aadharFile,
         photo_url: photoUrl || files.photoFile,
         signature_url: signatureUrl || files.signatureFile,
+        guardian_signature_url: guardianSignatureUrl || files.guardianSignatureFile,
         password: formData.password || '',
         status: 'Pending Verification'
       };
@@ -327,7 +331,7 @@ export const Registration = () => {
     setFormData({ ...formData, aadhar: val });
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, field: 'aadharFile' | 'photoFile' | 'signatureFile', maxSizeKB: number) => {
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, field: 'aadharFile' | 'photoFile' | 'signatureFile' | 'guardianSignatureFile', maxSizeKB: number) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -567,6 +571,12 @@ export const Registration = () => {
                       <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-4 flex items-center justify-center gap-1">Signature (50KB) {files.signatureFile && <CheckCircle className="w-3 h-3 text-green-500" />}</p>
                       <label className="inline-block bg-white/5 w-full hover:bg-white/10 text-white px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-widest cursor-pointer transition-colors border border-white/10 group-hover:bg-[#3b82f6]/10 group-hover:text-[#3b82f6]">
                         {files.signatureFile ? 'Uploaded' : 'Browse'}<input type="file" onChange={(e) => handleFileUpload(e, 'signatureFile', 50)} className="hidden" accept="image/*" />
+                      </label>
+                    </div>
+                    <div className="bg-[#111] border border-white/10 rounded-xl p-5 text-center group hover:border-purple-500/50 transition-colors">
+                      <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-4 flex items-center justify-center gap-1">Parent/Guardian Signature (50KB) {files.guardianSignatureFile && <CheckCircle className="w-3 h-3 text-green-500" />}</p>
+                      <label className="inline-block bg-white/5 w-full hover:bg-white/10 text-white px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-widest cursor-pointer transition-colors border border-white/10 group-hover:bg-purple-500/10 group-hover:text-purple-400">
+                        {files.guardianSignatureFile ? 'Uploaded' : 'Browse'}<input type="file" onChange={(e) => handleFileUpload(e, 'guardianSignatureFile', 50)} className="hidden" accept="image/*" />
                       </label>
                     </div>
                   </div>

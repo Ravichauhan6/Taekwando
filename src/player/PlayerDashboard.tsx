@@ -352,6 +352,7 @@ export const PlayerDashboard = () => {
                      photoFile:            player.photo_url || player.photoFile,
                      signatureFile:        player.signature_url || player.signatureFile,
                      aadharFile:           player.aadhar_url || player.aadharFile,
+                     guardianSignatureFile: player.guardian_signature_url || player.guardianSignatureFile,
                      status:               player.status,
                      date:                 player.date_registered ? new Date(player.date_registered).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '',
                    })}

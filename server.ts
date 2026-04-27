@@ -110,6 +110,7 @@ const PlayerSchema = new mongoose.Schema({
   aadhar_url: String,
   photo_url: String,
   signature_url: String,
+  guardian_signature_url: String,
   
   // Account
   password: String,
@@ -800,7 +801,7 @@ app.post("/api/players", async (req, res) => {
     email, mobile, blood_group, aadhar_no, height_cm, father_occupation, 
     marital_status, qualification, school_college, permanent_address, local_address,
     coach_name, training_center, training_center_address,
-    aadhar_url, photo_url, signature_url, status, password
+    aadhar_url, photo_url, signature_url, status, password, guardian_signature_url
   } = req.body;
   
   if (!name || !gender || !dob || weight === undefined) {
@@ -853,6 +854,7 @@ app.post("/api/players", async (req, res) => {
       marital_status, qualification, school_college, permanent_address, local_address,
       coach_name, training_center, training_center_address,
       aadhar_url, photo_url, signature_url,
+      guardian_signature_url: guardian_signature_url || '',
       password: password || '',
       status: status || 'Pending Verification'
     });
