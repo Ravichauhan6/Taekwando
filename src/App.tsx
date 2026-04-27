@@ -878,7 +878,7 @@ const TrainingPrograms = () => {
               key={i}
               whileHover={{ scale: 1.02, y: -5 }}
               whileTap={{ scale: 0.96 }}
-              className="group cursor-pointer bg-gradient-to-br from-[#4a4a4a] via-[#1a1a1a] to-[#050505] p-3 rounded-[24px] border border-red-500/30 md:border-white/10 shadow-[0_0_25px_rgba(255,0,0,0.25)] md:shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 hover:border-[#ff0000] hover:shadow-[0_0_40px_rgba(255,0,0,0.6)] active:border-[#ff0000] active:shadow-[0_0_40px_rgba(255,0,0,0.8)] flex flex-col"
+              className="group cursor-pointer bg-gradient-to-br from-[#4a4a4a] via-[#1a1a1a] to-[#050505] p-3 rounded-[24px] border border-red-500/30 md:border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 hover:border-[#ff0000] hover:shadow-[0_0_40px_rgba(255,0,0,0.6)] active:border-[#ff0000] active:shadow-[0_0_40px_rgba(255,0,0,0.8)] flex flex-col"
             >
               <div className="h-[220px] rounded-[18px] overflow-hidden relative bg-[#111]">
                 <img
