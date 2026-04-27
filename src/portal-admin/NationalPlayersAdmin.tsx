@@ -149,8 +149,9 @@ export const NationalPlayersAdmin = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-black text-white tracking-widest drop-shadow-[0_2px_10px_rgba(255,0,0,0.4)] flex items-center gap-3">
-            <Trophy className="w-6 h-6 text-red-500" /> NATIONAL PLAYERS
+          <h2 className="text-2xl font-black text-white tracking-tighter uppercase mb-2 flex items-center gap-3 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">
+            <Trophy className="w-6 h-6 text-red-600" />
+            National <span className="text-red-600">Players</span>
           </h2>
           <p className="text-sm text-gray-400 mt-1 font-medium">Manage and highlight your national-level athletes</p>
         </div>

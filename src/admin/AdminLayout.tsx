@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { Users, Settings, LogOut, Download, Target, Home } from 'lucide-react';
+import { Users, Settings, LogOut, Download, Target, Home, Shield } from 'lucide-react';
 import { isAuthenticated, removeToken } from './auth';
 
 export const AdminLayout = () => {
@@ -21,6 +21,7 @@ export const AdminLayout = () => {
     { path: '/admin/categories', label: 'Weight Categories', icon: <Settings className="w-5 h-5" /> },
     { path: '/admin/tiesheets', label: 'Draws & Brackets', icon: <Target className="w-5 h-5" /> },
     { path: '/admin/reports', label: 'Export Reports', icon: <Download className="w-5 h-5" /> },
+    { path: '/admin/settings', label: 'Security', icon: <Shield className="w-5 h-5" /> },
   ];
 
   return (
@@ -37,7 +38,7 @@ export const AdminLayout = () => {
                 <span className="text-[10px] sm:text-[11px] font-black tracking-widest uppercase text-white mb-1 leading-snug drop-shadow-md break-words max-w-[160px]">
                   MAHARAJGANJ DISTRICT TAEKWONDO ASSOCIATION (Regd)
                 </span>
-                <span className="text-[10px] font-bold tracking-widest uppercase text-red-500 mt-1">
+                <span className="text-[10px] font-bold tracking-widest uppercase text-red-400 mt-1">
                   Dashboard Admin
                 </span>
               </div>

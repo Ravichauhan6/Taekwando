@@ -144,8 +144,9 @@ export const TrainingCentersAdmin = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-black text-white tracking-widest drop-shadow-[0_2px_10px_rgba(255,0,0,0.4)] flex items-center gap-3">
-            <Building2 className="w-6 h-6 text-red-500" /> AFFILIATED TRAINING CENTERS
+          <h2 className="text-2xl font-black text-white tracking-tighter uppercase mb-2 flex items-center gap-3 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">
+            <Building2 className="w-6 h-6 text-red-600" />
+            Training <span className="text-red-600">Centers</span>
           </h2>
           <p className="text-sm text-gray-400 mt-1 font-medium">Manage all officially affiliated training centers</p>
         </div>

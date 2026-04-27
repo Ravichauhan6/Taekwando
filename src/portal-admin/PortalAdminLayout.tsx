@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { Globe, Users, Newspaper, Bell, LogOut, Shield, Award, Building, Building2, Image as ImageIcon, FileText, Settings, Trophy, MapPin, Quote } from 'lucide-react';
+import { Globe, Users, Newspaper, Bell, LogOut, Shield, Award, Building, Building2, Image as ImageIcon, FileText, Settings, Trophy, MapPin, Quote, Video } from 'lucide-react';
 
 export const PortalAdminLayout = () => {
   const location = useLocation();
@@ -17,6 +17,7 @@ export const PortalAdminLayout = () => {
 
   const menuItems = [
     { path: '/portal-admin', label: 'Registrations Data', icon: <Users className="w-5 h-5" /> },
+    { path: '/portal-admin/promo-videos', label: 'Promo Videos', icon: <Video className="w-5 h-5" /> },
     { path: '/portal-admin/belts', label: 'Belt Management', icon: <Award className="w-5 h-5" /> },
     { path: '/portal-admin/academy', label: 'Coach/Academy', icon: <Building className="w-5 h-5" /> },
     { path: '/portal-admin/training-centers', label: 'Training Centers', icon: <MapPin className="w-5 h-5" /> },

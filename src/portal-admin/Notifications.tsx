@@ -28,24 +28,20 @@ export const Notifications = () => {
   const handleDelete = async (id: string) => {
     if(window.confirm("Delete this notification?")) { await fetch('/api/notifications/'+id, { method: 'DELETE' }); fetchItems(); }
   };
-
-  const systemAlerts = [
-    { id: '1', title: 'Admin Login Detected', message: 'User "admin" logged into the dashboard.', time: '2 mins ago', icon: ShieldAlert, color: 'text-yellow-500', bg: 'bg-yellow-500/10 border-yellow-500/20' },
-    { id: '2', title: 'Player Login', message: 'Siddharth Sharma accessed Player Portal.', time: '15 mins ago', icon: LogIn, color: 'text-blue-500', bg: 'bg-blue-500/10 border-blue-500/20' },
-    { id: '3', title: 'Portal Accessed', message: 'Role "portal_admin" initiated new session.', time: '1 hour ago', icon: Activity, color: 'text-purple-500', bg: 'bg-purple-500/10 border-purple-500/20' },
-  ];
-
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-black text-white tracking-widest drop-shadow-[0_2px_10px_rgba(255,0,0,0.4)]">NOTIFICATIONS & LOGS</h2>
+          <h2 className="text-2xl font-black text-white tracking-tighter uppercase mb-2 flex items-center gap-3 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">
+            <Bell className="w-6 h-6 text-red-600" />
+            Notifications <span className="text-red-600">& Logs</span>
+          </h2>
           <p className="text-sm text-gray-400 mt-1 font-medium">Broadcast announcements and monitor system activity</p>
         </div>
         <button onClick={() => setIsModalOpen(true)} className="bg-gradient-to-r from-red-600 to-red-900 border border-red-500/30 text-white px-5 py-2.5 rounded-xl uppercase tracking-widest font-bold flex shadow-[0_0_20px_rgba(255,0,0,0.3)] gap-2"><Plus className="w-4 h-4"/> New Broadcast</button>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="w-full">
         <div className="bg-[#111] rounded-2xl border border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col h-[calc(100vh-220px)]">
           <div className="p-4 border-b border-white/5 bg-white/5"><h3 className="text-white font-bold tracking-widest uppercase text-sm flex items-center gap-2">Broadcasted Messages</h3></div>
           <div className="flex-1 overflow-auto custom-scrollbar p-5 space-y-4">
@@ -71,24 +67,6 @@ export const Notifications = () => {
               </div>
             ))}
             {items.length === 0 && <div className="text-center p-12 text-gray-500 bg-black/40 rounded-2xl border border-white/5 flex flex-col items-center gap-2"><Bell className="w-8 h-8 opacity-20"/> No active broadcasts</div>}
-          </div>
-        </div>
-
-        <div className="bg-[#111] rounded-2xl border border-white/5 shadow-[0_4px_30px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col h-[calc(100vh-220px)]">
-          <div className="p-4 border-b border-white/5 bg-white/5"><h3 className="text-white font-bold tracking-widest uppercase text-sm flex items-center gap-2">System Login Activity</h3></div>
-          <div className="flex-1 overflow-auto custom-scrollbar p-5 space-y-4">
-            {systemAlerts.map(alert => (
-              <div key={alert.id} className="bg-black/40 p-5 border border-white/5 rounded-2xl flex items-start gap-4 shadow-inner hover:bg-white/5 transition-all">
-                <div className={`p-3 rounded-full border shrink-0 ${alert.bg}`}><alert.icon className={`w-5 h-5 ${alert.color}`}/></div>
-                <div className="flex-1">
-                  <div className="flex justify-between items-start w-full">
-                    <h3 className="text-white font-bold text-[15px]">{alert.title}</h3>
-                    <span className="text-xs font-bold text-gray-500 uppercase">{alert.time}</span>
-                  </div>
-                  <p className="text-gray-400 text-sm font-medium mt-1">{alert.message}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>

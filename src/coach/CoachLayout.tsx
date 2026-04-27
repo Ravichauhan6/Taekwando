@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
-import { Shield, Users, Trophy, LogOut, ChevronRight, Bell } from 'lucide-react';
+import { Shield, Users, Trophy, LogOut, ChevronRight, Bell, Send } from 'lucide-react';
 
 export const CoachLayout = () => {
   const navigate = useNavigate();
@@ -17,6 +17,7 @@ export const CoachLayout = () => {
     { name: 'STUDENT ROSTER', icon: <Users size={18} />, path: '/coach/dashboard' },
     { name: 'TOURNAMENTS', icon: <Trophy size={18} />, path: '/coach/tournaments' },
     { name: 'NOTIFICATIONS', icon: <Bell size={18} />, path: '/coach/notifications' },
+    { name: 'MESSAGES', icon: <Send size={18} />, path: '/coach/messages' },
   ];
 
   return (
@@ -26,12 +27,12 @@ export const CoachLayout = () => {
         
         {/* Brand Area */}
         <div className="p-8 border-b border-[#1a1a1a] flex items-center gap-4 bg-gradient-to-b from-[#111] to-transparent">
-          <div className="relative">
-             <div className="absolute inset-0 bg-red-600 blur-xl opacity-20 rounded-full"></div>
-             <div className="w-12 h-12 bg-gradient-to-br from-[#ff0000] to-[#8b0000] rounded-xl flex items-center justify-center border border-[#ff4d4d]/30 shadow-[0_0_15px_rgba(255,0,0,0.4)] relative z-10">
-               <Shield className="w-6 h-6 text-white" />
+          <a href="/" className="relative shrink-0 block cursor-pointer group">
+             <div className="absolute inset-0 bg-red-600 blur-xl opacity-20 rounded-full group-hover:opacity-40 transition-opacity"></div>
+             <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)] relative z-10 overflow-hidden">
+               <img src="/logo.png" alt="MDTA Logo" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
              </div>
-          </div>
+          </a>
           <div className="flex flex-col flex-1 min-w-0">
              <span className="text-[10px] sm:text-[11px] font-black uppercase text-white leading-snug drop-shadow-md break-words">
                  MAHARAJGANJ DISTRICT TAEKWONDO ASSOCIATION (Regd)

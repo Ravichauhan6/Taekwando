@@ -122,8 +122,9 @@ export const BlackBeltsAdmin = () => {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-black text-white tracking-widest drop-shadow-[0_2px_10px_rgba(255,0,0,0.4)] flex items-center gap-3">
-            <Award className="w-6 h-6 text-red-500" /> BLACK BELT HOLDERS
+          <h2 className="text-2xl font-black text-white tracking-tighter uppercase mb-2 flex items-center gap-3 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">
+            <Award className="w-6 h-6 text-red-600" />
+            Black Belt <span className="text-red-600">Holders</span>
           </h2>
           <p className="text-sm text-gray-400 mt-1 font-medium">Manage affiliated black belt holders</p>
         </div>

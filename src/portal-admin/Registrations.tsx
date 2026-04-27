@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, Eye, Trash2, Download, X, Printer } from 'lucide-react';
+import { Search, Filter, Eye, Trash2, Download, X, Printer, Users } from 'lucide-react';
 import { PrintableView } from './PrintableView';
 
 export const Registrations = () => {
@@ -128,7 +128,10 @@ export const Registrations = () => {
     <div className="relative z-10 w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
         <div>
-          <h2 className="text-[32px] font-black text-white tracking-widest uppercase mb-2 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">Player Registrations</h2>
+          <h2 className="text-2xl font-black text-white tracking-tighter uppercase mb-2 flex items-center gap-3 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">
+            <Users className="w-6 h-6 text-red-600" />
+            Player <span className="text-red-600">Registrations</span>
+          </h2>
           <p className="text-gray-400 font-medium">View and manage all new player registration forms submitted via the portal.</p>
         </div>
         <button 

@@ -191,6 +191,17 @@ const NotificationSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now }
 });
 
+const CoachMessageSchema = new mongoose.Schema({
+  coach_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  coach_name: String,
+  student_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Player' },
+  audience: { type: String, default: 'Specific' }, // 'Specific' or 'All My Students'
+  title: String,
+  message: String,
+  date: { type: Date, default: Date.now }
+});
+const CoachMessageModel = mongoose.model("CoachMessage", CoachMessageSchema);
+
 const CoachStudentSchema = new mongoose.Schema({
   name: String,
   age: Number,
@@ -263,6 +274,15 @@ const TrainingCenterSchema = new mongoose.Schema({
 const VerifiedEntity = mongoose.model("VerifiedEntity", VerifiedEntitySchema);
 const ContentDetail = mongoose.model("ContentDetail", ContentDetailSchema);
 const TrainingCenter = mongoose.model("TrainingCenter", TrainingCenterSchema);
+
+const UserSessionSchema = new mongoose.Schema({
+  user: String,
+  name: String,
+  role: String,
+  ip: String,
+  last_active: { type: Date, default: Date.now }
+});
+const UserSession = mongoose.model("UserSession", UserSessionSchema);
 
 async function seedDatabase() {
   try {
@@ -506,6 +526,15 @@ app.post("/api/coach/login", async (req, res) => {
   try {
     const coach = await Coach.findOne({ email, password });
     if (!coach) return res.status(401).json({ error: "Invalid email or password" });
+    
+    // Track session
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+    await UserSession.findOneAndUpdate(
+      { user: email },
+      { name: coach.name, role: 'coach', ip: String(ip), last_active: new Date() },
+      { upsert: true, new: true }
+    );
+
     res.json({ token: coach._id, name: coach.name, academyName: coach.academyName });
   } catch (err) {
     res.status(500).json({ error: "Login failed" });
@@ -587,10 +616,34 @@ app.post("/api/admin/login", async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
+
+    // Track session
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+    await UserSession.findOneAndUpdate(
+      { user: user.username },
+      { name: user.username, role: 'admin', ip: String(ip), last_active: new Date() },
+      { upsert: true, new: true }
+    );
+
     // Simplistic token for local demo
     res.json({ token: "admin_mock_token_123", username: user.username });
   } catch (err) {
     res.status(500).json({ error: "Login failed" });
+  }
+});
+
+// Change Admin Password
+app.post("/api/admin/change-password", async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) return res.status(400).json({ error: "Missing fields" });
+  try {
+    const admin = await AdminUser.findOne({ password: currentPassword });
+    if (!admin) return res.status(401).json({ error: "Incorrect current password" });
+    admin.password = newPassword;
+    await admin.save();
+    res.json({ success: true, message: "Password updated successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -601,12 +654,12 @@ const sendCoachApprovalEmail = async (email: string, name: string, password: str
     return;
   }
   
-  const loginUrl = "https://mdta.in/coach/login"; // Adjust for production
+  const loginUrl = "http://localhost:3000/coach/login"; // Set to localhost for testing
 
   const mailOptions = {
     from: `"MDTA Support" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: "Congratulations! You are an Approved MDTA Coach",
+    subject: `Congratulations! You are an Approved MDTA Coach (Ref: ${Date.now()})`,
     html: `
       <div style="font-family: Arial, sans-serif; max-w-md: 600px; margin: 0 auto; background: #050505; color: #fff; padding: 30px; border-radius: 15px; border: 1px solid #333;">
         <div style="text-align: center; margin-bottom: 30px;">
@@ -625,6 +678,7 @@ const sendCoachApprovalEmail = async (email: string, name: string, password: str
         <a href="${loginUrl}" style="display: block; width: 100%; text-align: center; background: #cc0000; color: white; text-decoration: none; padding: 15px 0; border-radius: 8px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Proceed to Login</a>
         
         <p style="text-align: center; color: #555; font-size: 12px; margin-top: 30px;">Do not share these credentials. If you have questions, please contact the admin team.</p>
+        <p style="text-align: center; color: #222; font-size: 10px; margin-top: 10px;">Message ID: ${Date.now()}</p>
       </div>
     `
   };
@@ -754,14 +808,10 @@ app.post("/api/players", async (req, res) => {
   }
 
   try {
-    // 1. Calculate exact age
+    // 1. Calculate WT age (Competition Year - Birth Year)
     const birthDate = new Date(dob);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
+    const currentYear = new Date().getFullYear();
+    let age = currentYear - birthDate.getFullYear();
 
     // 2. Determine Age Group
     let age_group = "Unknown";
@@ -831,14 +881,10 @@ app.patch("/api/players/:id", async (req, res) => {
     let updatedWeight = updates.weight !== undefined ? parseFloat(updates.weight as string) : player.weight;
     let gender = updates.gender || player.gender;
 
-    // 1. Calculate age
+    // 1. Calculate WT age (Competition Year - Birth Year)
     const birthDate = new Date(updatedDob);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
+    const currentYear = new Date().getFullYear();
+    let age = currentYear - birthDate.getFullYear();
 
     // 2. Determine Age Group
     let age_group = "Unknown";
@@ -922,8 +968,8 @@ app.get("/api/tiesheets/:categoryId", async (req, res) => {
   const { categoryId } = req.params;
   try {
       const matches = await Match.find({ category_id: categoryId })
-        .populate('player1_id', 'name weight address')
-        .populate('player2_id', 'name weight address')
+        .populate('player1_id', 'name weight address father_name')
+        .populate('player2_id', 'name weight address father_name')
         .sort({ round_number: -1, match_number: 1 })
         .lean();
 
@@ -931,9 +977,11 @@ app.get("/api/tiesheets/:categoryId", async (req, res) => {
         ...m,
         id: m._id,
         player1_name: m.player1_id ? (m.player1_id as any).name : null,
+        player1_father: m.player1_id ? (m.player1_id as any).father_name : null,
         player1_weight: m.player1_id ? (m.player1_id as any).weight : null,
         player1_address: m.player1_id ? (m.player1_id as any).address : null,
         player2_name: m.player2_id ? (m.player2_id as any).name : null,
+        player2_father: m.player2_id ? (m.player2_id as any).father_name : null,
         player2_weight: m.player2_id ? (m.player2_id as any).weight : null,
         player2_address: m.player2_id ? (m.player2_id as any).address : null,
       }));
@@ -951,51 +999,81 @@ app.post("/api/tiesheets/generate", async (req, res) => {
     await Match.deleteMany({}); // Clear existing matches
 
     for (const catId of categoriesWithPlayers) {
-      // Fetch and shuffle players
-      const players = await Player.aggregate([
-        { $match: { weight_category_id: catId } },
-        { $sample: { size: 1000 } }
-      ]);
+      // Fetch players
+      const playersList = await Player.find({ weight_category_id: catId }).lean();
 
-      let numPlayers = players.length;
+      let numPlayers = playersList.length;
       if (numPlayers < 1) continue; 
 
       // If only 1 player, they automatically "win" their single bracket
       if (numPlayers === 1) {
-          const rootMatch = new Match({ category_id: catId, round_number: 1, match_number: 1, player1_id: players[0]._id, player2_id: null, winner_id: players[0]._id });
+          const rootMatch = new Match({ category_id: catId, round_number: 1, match_number: 1, player1_id: playersList[0]._id, player2_id: null, winner_id: playersList[0]._id });
           await rootMatch.save();
           continue;
       }
 
+      // 1. Group players by Training Center (or Coach) for Maximum Separation
+      const groups: Record<string, any[]> = {};
+      playersList.forEach(p => {
+          const tc = p.training_center || p.coach_name || 'Independent';
+          if (!groups[tc]) groups[tc] = [];
+          groups[tc].push(p);
+      });
+      
+      // Shuffle players within each group to randomize who gets better seeds
+      Object.values(groups).forEach(arr => {
+         for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+         }
+      });
+
+      // Sort groups by size descending
+      const sortedGroups = Object.values(groups).sort((a, b) => b.length - a.length);
+
+      // 2. Round-Robin selection to order players (Top Seeds are placed first, ensuring players from same academy are spread out)
+      const orderedPlayers: any[] = [];
+      let added = true;
+      let idx = 0;
+      while (added) {
+          added = false;
+          for (let g of sortedGroups) {
+              if (idx < g.length) {
+                  orderedPlayers.push(g[idx]);
+                  added = true;
+              }
+          }
+          idx++;
+      }
+
+      // 3. Determine Next Power of 2
       let nextPow2 = 1;
       while (nextPow2 < numPlayers) nextPow2 *= 2;
       
-      const numByes = nextPow2 - numPlayers;
-      const totalFirstRoundMatches = nextPow2 / 2;
-      
-      const bracketPositions: (any | null)[] = Array(nextPow2).fill(null);
-      let playersIdx = 0;
-      for (let i = 0; i < nextPow2; i++) {
-          if (i < numByes) {
-              bracketPositions[i] = players[playersIdx++]._id;
-          } else {
-              bracketPositions[i] = playersIdx < numPlayers ? players[playersIdx++]._id : null;
+      // 4. WT Bracket Seeding Order Function
+      const getBracketOrder = (n: number): number[] => {
+          if (n === 1) return [0];
+          const prev = getBracketOrder(n / 2);
+          const result: number[] = [];
+          for (let i = 0; i < prev.length; i++) {
+              result.push(prev[i]);
+              result.push(n - 1 - prev[i]);
           }
-      }
+          return result;
+      };
       
-      for (let i = bracketPositions.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [bracketPositions[i], bracketPositions[j]] = [bracketPositions[j], bracketPositions[i]];
-      }
+      const bracketOrder = getBracketOrder(nextPow2);
       
+      // 5. Place players into their designated seed positions
+      // Unfilled positions at the end of the ordered list become 'Byes' (null)
       const safePositions: (any | null)[] = [];
-      let pIdx = 0;
-      for(let i = 0; i < totalFirstRoundMatches; i++) {
-         safePositions[i*2] = players[pIdx++]._id;
-         safePositions[i*2+1] = null; 
-      }
-      for(let i = 0; i < totalFirstRoundMatches; i++) {
-         if(pIdx < numPlayers) safePositions[i*2+1] = players[pIdx++]._id;
+      for(let i = 0; i < nextPow2; i++) {
+          const seedIdx = bracketOrder[i];
+          if (seedIdx < numPlayers) {
+              safePositions.push(orderedPlayers[seedIdx]._id);
+          } else {
+              safePositions.push(null); // Bye
+          }
       }
       
       let roundNumber = Math.log2(nextPow2); 
@@ -1036,6 +1114,14 @@ app.post("/api/tiesheets/generate", async (req, res) => {
              await Match.findByIdAndUpdate(leafNode.parentId, updateField);
          }
       }
+
+      // Renumber Matches Bottom-Up so Match #1 is the first fight of the first round
+      const catMatches = await Match.find({ category_id: catId }).sort({ round_number: -1, match_number: 1 });
+      let mCount = 1;
+      for (const m of catMatches) {
+          m.match_number = mCount++;
+          await m.save();
+      }
     }
     
     res.json({ success: true, message: "Tiesheets generated successfully" });
@@ -1046,6 +1132,36 @@ app.post("/api/tiesheets/generate", async (req, res) => {
 });
 
 // --- Dynamic Admin APIs generated below ---
+
+app.get("/api/admin/online-activity", async (req, res) => {
+  try {
+    const sessions = await UserSession.find().sort({ last_active: -1 }).limit(10);
+    const now = new Date();
+    const activity = sessions.map(s => {
+      const diffMs = now.getTime() - new Date(s.last_active).getTime();
+      const diffMins = Math.floor(diffMs / 60000);
+      
+      let status = 'Online';
+      if (diffMins > 15) status = 'Away';
+      
+      let timeStr = 'Just now';
+      if (diffMins > 0 && diffMins < 60) timeStr = `${diffMins} mins ago`;
+      else if (diffMins >= 60 && diffMins < 1440) timeStr = `${Math.floor(diffMins/60)} hour(s) ago`;
+      else if (diffMins >= 1440) timeStr = `${Math.floor(diffMins/1440)} day(s) ago`;
+
+      return {
+        user: s.name || s.user,
+        status,
+        time: timeStr,
+        ip: s.ip || '127.0.0.1'
+      };
+    });
+    res.json(activity);
+  } catch (err) {
+    console.error("Activity Error:", err);
+    res.status(500).json({ error: "Failed to fetch activity" });
+  }
+});
 
 // Admin Users (UserRoles)
 app.get("/api/admin/users", async (req, res) => {
@@ -1063,6 +1179,10 @@ app.post("/api/admin/users", async (req, res) => {
 });
 app.delete("/api/admin/users/:id", async (req, res) => {
   try {
+    const user = await AdminUser.findById(req.params.id);
+    if (user && user.username === 'admin') {
+      return res.status(403).json({ error: "Cannot delete the primary admin account" });
+    }
     await AdminUser.findByIdAndDelete(req.params.id);
     res.json({ success: true });
   } catch (err) { res.status(500).json({ error: err.message }); }
@@ -1162,6 +1282,54 @@ app.post("/api/notifications", async (req, res) => {
 app.delete("/api/notifications/:id", async (req, res) => {
   try { await NotificationModel.findByIdAndDelete(req.params.id); res.json({ success: true }); }
   catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// --- Coach to Student Messaging ---
+app.post("/api/coach-messages", async (req, res) => {
+  try {
+    const { coach_id, coach_name, student_id, audience, title, message } = req.body;
+    if (!coach_id || !title || !message) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+    const newMessage = new CoachMessageModel({
+      coach_id, coach_name, student_id, audience, title, message
+    });
+    await newMessage.save();
+    res.json({ success: true, message: "Message sent successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/coach-messages/sent/:coach_id", async (req, res) => {
+  try {
+    const messages = await CoachMessageModel.find({ coach_id: req.params.coach_id }).sort({ date: -1 });
+    res.json(messages);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/coach-messages/received/:player_id", async (req, res) => {
+  try {
+    const { player_id } = req.params;
+    const player = await PlayerModel.findById(player_id);
+    if (!player) return res.json([]);
+    
+    // Only fetch if player has a coach assigned
+    if (!player.coach_id) return res.json([]);
+
+    const messages = await CoachMessageModel.find({
+      coach_id: player.coach_id,
+      $or: [
+        { student_id: player_id },
+        { audience: 'All My Students' }
+      ]
+    }).sort({ date: -1 });
+    res.json(messages);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Training Centers

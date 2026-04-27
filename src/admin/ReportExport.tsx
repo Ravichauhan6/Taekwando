@@ -7,6 +7,9 @@ export const ReportExport = () => {
   const [categories, setCategories] = useState<any[]>([]);
   const [players, setPlayers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filterAgeGroup, setFilterAgeGroup] = useState<string>('');
+  const [filterGender, setFilterGender] = useState<string>('');
+  const [filterCategoryName, setFilterCategoryName] = useState<string>('');
 
   useEffect(() => {
     Promise.all([
@@ -74,7 +77,10 @@ export const ReportExport = () => {
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div>
-        <h2 className="text-[32px] font-black text-white tracking-widest uppercase mb-2 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">Export PDF Reports</h2>
+        <h2 className="text-2xl font-black text-white tracking-tighter uppercase mb-2 flex items-center gap-3 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">
+          <Download className="w-6 h-6 text-red-600" />
+          Export PDF <span className="text-red-600">Reports</span>
+        </h2>
         <p className="text-gray-400 font-medium">Download categorized sheets for tournament weigh-in and bout management.</p>
       </div>
 
@@ -91,8 +97,50 @@ export const ReportExport = () => {
             <p className="font-bold text-lg uppercase tracking-widest">No Categories Defined</p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
-            {categories.map(cat => {
+          <>
+            {/* Filters */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-8 relative z-10">
+              <div className="flex-1">
+                <select
+                  value={filterAgeGroup}
+                  onChange={(e) => setFilterAgeGroup(e.target.value)}
+                  className="w-full bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-xl px-5 py-4 outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-white text-[13px] font-bold tracking-wide transition-all select-md appearance-none cursor-pointer"
+                >
+                  <option value="" className="bg-[#111] text-white">ALL AGE GROUPS</option>
+                  {Array.from(new Set(categories.map(c => c.age_group))).map(ag => (
+                    <option key={ag as string} value={ag as string} className="bg-[#111] text-white">{ag as string}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex-1">
+                <select
+                  value={filterGender}
+                  onChange={(e) => setFilterGender(e.target.value)}
+                  className="w-full bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-xl px-5 py-4 outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-white text-[13px] font-bold tracking-wide transition-all select-md appearance-none cursor-pointer"
+                >
+                  <option value="" className="bg-[#111] text-white">ALL GENDERS</option>
+                  <option value="Male" className="bg-[#111] text-white">MALE (BOYS/MEN)</option>
+                  <option value="Female" className="bg-[#111] text-white">FEMALE (GIRLS/WOMEN)</option>
+                </select>
+              </div>
+              <div className="flex-1">
+                <select
+                  value={filterCategoryName}
+                  onChange={(e) => setFilterCategoryName(e.target.value)}
+                  className="w-full bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-xl px-5 py-4 outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-white text-[13px] font-bold tracking-wide transition-all select-md appearance-none cursor-pointer"
+                >
+                  <option value="" className="bg-[#111] text-white">ALL WEIGHT CATEGORIES</option>
+                  {Array.from(new Set(categories.map(c => c.name))).map(nm => (
+                    <option key={nm as string} value={nm as string} className="bg-[#111] text-white">{nm as string}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
+              {categories
+                .filter(cat => (filterAgeGroup ? cat.age_group === filterAgeGroup : true) && (filterGender ? cat.gender === filterGender : true) && (filterCategoryName ? cat.name === filterCategoryName : true))
+                .map(cat => {
               const catId = cat._id || cat.id;
               const count = players.filter(p => {
                 const pCatId = p.weight_category_id && typeof p.weight_category_id === 'object' ? (p.weight_category_id._id || p.weight_category_id.id) : p.weight_category_id;
@@ -124,7 +172,8 @@ export const ReportExport = () => {
                 </div>
               );
             })}
-          </div>
+            </div>
+          </>
         )}
       </div>
     </div>

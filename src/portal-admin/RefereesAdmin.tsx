@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, Trash2, X, Upload, Shield, Pencil } from 'lucide-react';
+import { Search, Plus, Trash2, X, Upload, Shield, Pencil, Award } from 'lucide-react';
 
 const toTitleCase = (str: string) => {
   return str.replace(/\b\w+/g, function(txt) {
@@ -120,7 +120,10 @@ export const RefereesAdmin = () => {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-black text-white tracking-widest drop-shadow-[0_2px_10px_rgba(255,0,0,0.4)]">NATIONAL REFEREES</h2>
+          <h2 className="text-2xl font-black text-white tracking-tighter uppercase mb-2 flex items-center gap-3 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">
+            <Award className="w-6 h-6 text-red-600" />
+            National <span className="text-red-600">Referees</span>
+          </h2>
           <p className="text-sm text-gray-400 mt-1 font-medium">Manage affiliated national referees</p>
         </div>
         <button onClick={openAddModal} className="bg-gradient-to-r from-red-600 to-red-900 border border-red-500/30 text-white px-5 py-2.5 rounded-xl uppercase tracking-widest font-bold flex shadow-[0_0_20px_rgba(255,0,0,0.3)] gap-2 items-center">

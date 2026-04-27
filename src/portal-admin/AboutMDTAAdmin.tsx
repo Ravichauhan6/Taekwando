@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileText, Save, CheckCircle } from 'lucide-react';
+import { FileText, Save, CheckCircle, Shield } from 'lucide-react';
 
 export const AboutMDTAAdmin = () => {
   const [content, setContent] = useState('');
@@ -38,7 +38,10 @@ export const AboutMDTAAdmin = () => {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-black text-white tracking-widest drop-shadow-[0_2px_10px_rgba(255,0,0,0.4)]">ABOUT MDTA</h2>
+          <h2 className="text-2xl font-black text-white tracking-tighter uppercase mb-2 flex items-center gap-3 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">
+            <Shield className="w-6 h-6 text-red-600" />
+            About <span className="text-red-600">MDTA</span>
+          </h2>
           <p className="text-sm text-gray-400 mt-1 font-medium">Manage the content that appears on the About MDTA page</p>
         </div>
         <button 

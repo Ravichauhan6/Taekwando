@@ -1,12 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { UserPlus, Trash2, X, Activity, Circle } from 'lucide-react';
+import { UserPlus, Trash2, X, Activity, Circle, Users } from 'lucide-react';
 
 export const UserRoles = () => {
   const [users, setUsers] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({ username: '', password: '' });
+  const [onlineActivity, setOnlineActivity] = useState<any[]>([]);
   
-  useEffect(() => { fetchUsers(); }, []);
+  useEffect(() => { 
+    fetchUsers(); 
+    fetchActivity();
+    const interval = setInterval(fetchActivity, 30000);
+    return () => clearInterval(interval);
+  }, []);
+  
+  const fetchActivity = async () => {
+    try {
+      const res = await fetch('/api/admin/online-activity');
+      if (res.ok) {
+        setOnlineActivity(await res.json());
+      }
+    } catch(err) { console.error(err); }
+  };
+
   const fetchUsers = async () => {
     try {
       const res = await fetch('/api/admin/users');
@@ -31,42 +47,19 @@ export const UserRoles = () => {
     }
   };
 
-  // Simulated online activity for demonstration
-  const onlineActivity = [
-    { user: 'portal_admin', status: 'Online', time: 'Just now', ip: '192.168.1.104' },
-    { user: 'coach_ravi', status: 'Online', time: '5 mins ago', ip: '10.0.0.15' },
-    { user: 'sys_admin', status: 'Away', time: '1 hour ago', ip: '192.168.1.189' },
-  ];
-
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-black text-white tracking-widest drop-shadow-[0_2px_10px_rgba(255,0,0,0.4)]">USER ROLES & ACTIVITY</h2>
+          <h2 className="text-2xl font-black text-white tracking-tighter uppercase mb-2 flex items-center gap-3 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">
+            <Users className="w-6 h-6 text-red-600" />
+            User Roles <span className="text-red-600">& Activity</span>
+          </h2>
           <p className="text-sm text-gray-400 mt-1 font-medium">Manage administrator accounts and monitor online sessions</p>
         </div>
-        <button onClick={() => setIsModalOpen(true)} className="bg-gradient-to-r from-red-600 to-red-900 border border-red-500/30 text-white px-5 py-2.5 rounded-xl uppercase tracking-widest font-bold flex shadow-[0_0_20px_rgba(255,0,0,0.3)] gap-2"><UserPlus className="w-4 h-4"/> Add User</button>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* User Roles Table */}
-        <div className="lg:col-span-2 bg-[#111] rounded-2xl border border-white/5 overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.5)] flex flex-col h-[calc(100vh-220px)]">
-          <div className="p-4 border-b border-white/5 bg-white/5"><h3 className="text-white font-bold tracking-widest uppercase text-sm">Account Management</h3></div>
-          <div className="flex-1 overflow-auto custom-scrollbar">
-            <table className="w-full text-left">
-              <thead><tr className="bg-black/40 text-gray-400 text-xs uppercase tracking-wider"><th className="px-6 py-4">Username</th><th className="px-6 py-4 text-right">Delete</th></tr></thead>
-              <tbody className="divide-y divide-white/5 text-sm">
-                {users.map((u: any) => (
-                  <tr key={u._id} className="hover:bg-white/5 transition-colors">
-                    <td className="px-6 py-4 text-white font-bold">{u.username}</td>
-                    <td className="px-6 py-4 text-right"><button onClick={()=>handleDelete(u._id)} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"><Trash2 className="w-4 h-4"/></button></td>
-                  </tr>
-                ))}
-                {users.length === 0 && <tr><td colSpan={2} className="p-8 text-center text-gray-500">No users found.</td></tr>}
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div className="w-full">
 
         {/* Online Activity Panel */}
         <div className="bg-[#111] rounded-2xl border border-white/5 overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.5)] flex flex-col h-[calc(100vh-220px)]">

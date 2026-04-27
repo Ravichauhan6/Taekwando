@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, Edit, Trash2, X } from 'lucide-react';
+import { Search, Plus, Edit, Trash2, X, Newspaper } from 'lucide-react';
 
 export const NewsUpdates = () => {
   const [newsData, setNewsData] = useState<any[]>([]);
@@ -90,7 +90,10 @@ export const NewsUpdates = () => {
     <div className="relative z-10 w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
         <div>
-          <h2 className="text-[32px] font-black text-white tracking-widest uppercase mb-2 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">News & Updates</h2>
+          <h2 className="text-2xl font-black text-white tracking-tighter uppercase mb-2 flex items-center gap-3 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">
+            <Newspaper className="w-6 h-6 text-red-600" />
+            News <span className="text-red-600">& Updates</span>
+          </h2>
           <p className="text-gray-400 font-medium">Manage news articles, announcements, and achievements shown on the public site.</p>
         </div>
         <button 

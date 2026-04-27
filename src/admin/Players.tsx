@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { UserPlus, Filter, Search, Trash2, Edit2, XCircle } from 'lucide-react';
+import { UserPlus, Filter, Search, Trash2, Edit2, XCircle, Users } from 'lucide-react';
 
 const toTitleCase = (str: string) => {
   return str.replace(/\b\w+/g, function(txt) {
@@ -15,6 +15,7 @@ export const Players = () => {
   // Filters
   const [filterAge, setFilterAge] = useState('All');
   const [filterGender, setFilterGender] = useState('All');
+  const [filterCategory, setFilterCategory] = useState('All');
   const [search, setSearch] = useState('');
 
   // Form State
@@ -147,15 +148,19 @@ export const Players = () => {
     return players.filter(p => {
       const matchAge = filterAge === 'All' || p.age_group === filterAge;
       const matchGender = filterGender === 'All' || p.gender === filterGender;
+      const matchCategory = filterCategory === 'All' || p.category_name === filterCategory;
       const matchSearch = p.name.toLowerCase().includes(search.toLowerCase());
-      return matchAge && matchGender && matchSearch;
+      return matchAge && matchGender && matchCategory && matchSearch;
     });
-  }, [players, filterAge, filterGender, search]);
+  }, [players, filterAge, filterGender, filterCategory, search]);
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div>
-        <h2 className="text-[32px] font-black text-white tracking-widest uppercase mb-2 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">Player Management</h2>
+        <h2 className="text-2xl font-black text-white tracking-tighter uppercase mb-2 flex items-center gap-3 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">
+          <Users className="w-6 h-6 text-red-600" />
+          Player <span className="text-red-600">Management</span>
+        </h2>
         <p className="text-gray-400 font-medium">Register tournament players and view the current roster.</p>
       </div>
 
@@ -272,9 +277,17 @@ export const Players = () => {
               </div>
               <div className="flex items-center gap-2 bg-[#111] border border-white/5 hover:border-white/10 rounded-xl px-4 py-2 transition-colors">
                 <select value={filterGender} onChange={e => setFilterGender(e.target.value)} className="bg-transparent border-none outline-none text-[11px] font-black uppercase tracking-widest text-gray-300 py-1.5 cursor-pointer appearance-none pl-2">
-                  <option className="bg-[#111] text-white">All Genders</option>
-                  <option className="bg-[#111] text-white">Male</option>
-                  <option className="bg-[#111] text-white">Female</option>
+                  <option value="All" className="bg-[#111] text-white">All Genders</option>
+                  <option value="Male" className="bg-[#111] text-white">Male</option>
+                  <option value="Female" className="bg-[#111] text-white">Female</option>
+                </select>
+              </div>
+              <div className="flex items-center gap-2 bg-[#111] border border-white/5 hover:border-white/10 rounded-xl px-4 py-2 transition-colors">
+                <select value={filterCategory} onChange={e => setFilterCategory(e.target.value)} className="bg-transparent border-none outline-none text-[11px] font-black uppercase tracking-widest text-gray-300 py-1.5 cursor-pointer appearance-none pl-2">
+                  <option value="All" className="bg-[#111] text-white">All Weights</option>
+                  {Array.from(new Set(players.map(p => p.category_name).filter(Boolean))).map((cat: any) => (
+                    <option key={cat} value={cat} className="bg-[#111] text-white">{cat}</option>
+                  ))}
                 </select>
               </div>
             </div>

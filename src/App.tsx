@@ -13,6 +13,7 @@ import { Players } from './admin/Players';
 import { Categories } from './admin/Categories';
 import { Tiesheets } from './admin/Tiesheets';
 import { ReportExport } from './admin/ReportExport';
+import { AdminSettings } from './admin/AdminSettings';
 import { Registration } from './Registration';
 import { PortalLogin } from './portal-admin/PortalLogin';
 import { PortalAdminLayout } from './portal-admin/PortalAdminLayout';
@@ -28,6 +29,7 @@ import { EventCreation } from './portal-admin/EventCreation';
 import { CoachNotifications } from './coach/CoachNotifications';
 import { WhatWeSayAdmin } from './portal-admin/WhatWeSayAdmin';
 import { RefereesAdmin } from './portal-admin/RefereesAdmin';
+import { PromoVideoAdmin } from './portal-admin/PromoVideoAdmin';
 
 const ScrollToAnchor = () => {
   const { pathname, hash } = useLocation();
@@ -53,6 +55,7 @@ import { CoachLogin } from './coach/CoachLogin';
 import { CoachLayout } from './coach/CoachLayout';
 import { StudentManagement } from './coach/StudentManagement';
 import { TournamentRegistration } from './coach/TournamentRegistration';
+import { CoachMessages } from './coach/CoachMessages';
 import { AffiliatedCoaches } from './public-pages/AffiliatedCoaches';
 import { NationalReferees } from './public-pages/NationalReferees';
 import { BlackBeltHolders } from './public-pages/BlackBeltHolders';
@@ -285,11 +288,105 @@ const AboutMDTAModal = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
+const SearchModal = ({ onClose }: { onClose: () => void }) => {
+  const [query, setQuery] = useState('');
+  const navigate = useNavigate();
+
+  const searchData = [
+    { name: 'Home', href: '/' },
+    { name: 'Our Courses', href: '/#courses' },
+    { name: 'About MDTA', href: '/#', action: 'about-modal' },
+    { name: 'Affiliated Training Centers', href: '/affiliated-training-centers' },
+    { name: 'Affiliated Coaches', href: '/affiliated-coaches' },
+    { name: 'Our National Referees', href: '/national-referees' },
+    { name: 'Our Black Belt Holders', href: '/black-belt-holders' },
+    { name: 'Our National Players', href: '/national-players' },
+    { name: 'Latest News', href: '/#news' },
+    { name: 'Gallery', href: '/gallery' },
+    { name: 'Events', href: '/events' },
+    { name: 'Portal Admin Login', href: '/portal-admin/login' },
+    { name: 'Dashboard Admin Login', href: '/admin/login' },
+    { name: 'Coach Login', href: '/coach/login' },
+    { name: 'Player Login', href: '/player/login' },
+    { name: 'Register', href: '/register' },
+  ];
+
+  const filtered = query.trim() === '' ? [] : searchData.filter(item => item.name.toLowerCase().includes(query.toLowerCase()));
+
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-[200] flex items-start justify-center pt-20 px-4">
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
+      <motion.div
+        initial={{ opacity: 0, y: -20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -20, scale: 0.95 }}
+        className="relative w-full max-w-2xl bg-[#111] rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
+      >
+        <div className="p-4 border-b border-white/10 flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input
+            autoFocus
+            type="text"
+            placeholder="Search pages..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="flex-1 bg-transparent border-none outline-none text-white text-lg placeholder:text-gray-600"
+          />
+          <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors bg-white/5 p-1.5 rounded-lg hover:bg-red-500/20">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        {query && (
+          <div className="max-h-[60vh] overflow-y-auto p-2">
+            {filtered.length > 0 ? (
+              filtered.map((item, i) => (
+                <div
+                  key={i}
+                  onClick={() => {
+                    if (item.action === 'about-modal') {
+                      onClose();
+                      // Would need a global state for this ideally, but handled via navigation for now
+                      navigate('/');
+                    } else {
+                      navigate(item.href);
+                      onClose();
+                    }
+                  }}
+                  className="px-4 py-3 hover:bg-white/5 cursor-pointer rounded-xl flex items-center gap-3 group transition-colors"
+                >
+                  <ArrowRight className="w-4 h-4 text-gray-500 group-hover:text-red-500 transition-colors" />
+                  <span className="text-gray-300 group-hover:text-white font-medium">{item.name}</span>
+                </div>
+              ))
+            ) : (
+              <div className="p-8 text-center text-gray-500">
+                No results found for "{query}"
+              </div>
+            )}
+          </div>
+        )}
+        {!query && (
+          <div className="p-8 text-center text-gray-600 text-sm">
+            Type to start searching across the portal...
+          </div>
+        )}
+      </motion.div>
+    </div>
+  );
+};
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showAboutModal, setShowAboutModal] = useState(false);
   const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -447,7 +544,7 @@ const Navbar = () => {
             ))}
           </div>
           <div className="hidden md:flex items-center gap-3 lg:gap-5 shrink-0">
-            <button className="text-white hover:text-red-500 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] hover:drop-shadow-[0_0_12px_rgba(255,0,0,0.8)] transform hover:scale-110 duration-300">
+            <button onClick={() => setIsSearchOpen(true)} className="cursor-pointer text-white hover:text-red-500 transition-colors drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] hover:drop-shadow-[0_0_12px_rgba(255,0,0,0.8)] transform hover:scale-110 duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
             <div className="h-6 w-px bg-white/10 hidden lg:block"></div>
@@ -456,7 +553,7 @@ const Navbar = () => {
             </Link>
           </div>
           <div className="md:hidden flex items-center space-x-3 ml-auto">
-            <button className="text-white hover:text-red-500 transition-colors drop-shadow-md">
+            <button onClick={() => setIsSearchOpen(true)} className="cursor-pointer text-white hover:text-red-500 transition-colors drop-shadow-md">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
             <button onClick={() => setIsOpen(!isOpen)} className="text-white bg-white/5 p-2 rounded-xl hover:bg-red-600/20 hover:text-red-500 hover:border-red-500/50 transition-all border border-white/10 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
@@ -555,6 +652,9 @@ const Navbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      <AnimatePresence>
+        {isSearchOpen && <SearchModal onClose={() => setIsSearchOpen(false)} />}
+      </AnimatePresence>
       {showAboutModal && <AboutMDTAModal onClose={() => setShowAboutModal(false)} />}
     </nav>
   );
@@ -562,6 +662,21 @@ const Navbar = () => {
 
 const Hero = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [promoVideoUrl, setPromoVideoUrl] = useState("https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1");
+
+  useEffect(() => {
+    fetch('/api/content/promo_videos')
+      .then(res => res.json())
+      .then(resData => {
+        if (resData && resData.content) {
+          try {
+            const parsed = JSON.parse(resData.content);
+            if (parsed.hero_video_url) setPromoVideoUrl(parsed.hero_video_url);
+          } catch (e) {}
+        }
+      })
+      .catch(err => console.error(err));
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-[#000000]">
@@ -600,7 +715,7 @@ const Hero = () => {
             </Link>
             <button
               onClick={() => setIsVideoOpen(true)}
-              className="bg-transparent md:hover:bg-white/5 active:bg-white/10 text-gray-300 active:text-white md:hover:text-white border border-gray-500 active:border-white px-8 py-3 rounded-full text-[15px] font-medium tracking-wide flex items-center justify-center transition-all active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.05)] md:shadow-none"
+              className="cursor-pointer bg-transparent hover:bg-red-600/10 active:bg-red-600/20 text-gray-300 hover:text-white border border-gray-500 hover:border-red-500 px-8 py-3 rounded-full text-[15px] font-medium tracking-wide flex items-center justify-center transition-all active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_25px_rgba(255,0,0,0.4)] transform hover:-translate-y-0.5"
             >
               Watch Demo
             </button>
@@ -625,7 +740,7 @@ const Hero = () => {
               <iframe
                 width="100%"
                 height="100%"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+                src={promoVideoUrl}
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -824,6 +939,23 @@ const TrainingCentersSection = () => (
 const BenefitsSection = () => {
   const [activeTab, setActiveTab] = useState<'benefits' | 'self-development'>('benefits');
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [promoVideoUrl, setPromoVideoUrl] = useState("https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1");
+  const [selfDevVideoUrl, setSelfDevVideoUrl] = useState("https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1");
+
+  useEffect(() => {
+    fetch('/api/content/promo_videos')
+      .then(res => res.json())
+      .then(resData => {
+        if (resData && resData.content) {
+          try {
+            const parsed = JSON.parse(resData.content);
+            if (parsed.benefits_video_url) setPromoVideoUrl(parsed.benefits_video_url);
+            if (parsed.self_development_video_url) setSelfDevVideoUrl(parsed.self_development_video_url);
+          } catch (e) {}
+        }
+      })
+      .catch(err => console.error(err));
+  }, []);
 
   return (
     <section className="pt-8 pb-10 bg-[#020202] relative overflow-hidden">
@@ -866,7 +998,7 @@ const BenefitsSection = () => {
             <div className="flex space-x-2 mb-10 w-fit p-1.5 bg-white/[0.02] rounded-full border border-white/5 backdrop-blur-md shadow-inner">
               <button
                 onClick={() => setActiveTab('benefits')}
-                className={`py-3 px-6 sm:px-8 rounded-full text-[12px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all relative z-10 ${activeTab === 'benefits' ? 'text-white' : 'text-gray-500 hover:text-white'}`}
+                className={`cursor-pointer py-3 px-6 sm:px-8 rounded-full text-[12px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all relative z-10 ${activeTab === 'benefits' ? 'text-white' : 'text-gray-500 hover:text-white'}`}
               >
                 Benefits
                 {activeTab === 'benefits' && (
@@ -875,7 +1007,7 @@ const BenefitsSection = () => {
               </button>
               <button
                 onClick={() => setActiveTab('self-development')}
-                className={`py-3 px-6 sm:px-8 rounded-full text-[12px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all relative z-10 ${activeTab === 'self-development' ? 'text-white' : 'text-gray-500 hover:text-white'}`}
+                className={`cursor-pointer py-3 px-6 sm:px-8 rounded-full text-[12px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all relative z-10 ${activeTab === 'self-development' ? 'text-white' : 'text-gray-500 hover:text-white'}`}
               >
                 Self Development
                 {activeTab === 'self-development' && (
@@ -977,7 +1109,7 @@ const BenefitsSection = () => {
               <iframe
                 width="100%"
                 height="100%"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+                src={activeTab === 'benefits' ? promoVideoUrl : selfDevVideoUrl}
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -1158,7 +1290,7 @@ const NewsAndContact = () => {
                   <button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="bg-transparent hover:bg-[#ff1a1a]/10 hover:border-[#ff1a1a] text-white border border-[#ff1a1a] px-12 py-3 rounded-full text-[14px] font-bold transition-all shadow-[0_0_15px_rgba(255,26,26,0.2)] hover:shadow-[0_0_25px_rgba(255,26,26,0.4)] flex items-center justify-center tracking-wide"
+                    className="cursor-pointer bg-transparent hover:bg-[#ff1a1a]/10 hover:border-[#ff1a1a] text-white border border-[#ff1a1a] px-12 py-3 rounded-full text-[14px] font-bold transition-all shadow-[0_0_15px_rgba(255,26,26,0.2)] hover:shadow-[0_0_25px_rgba(255,26,26,0.4)] flex items-center justify-center tracking-wide"
                   >
                     Contact Us
                   </button>
@@ -1547,6 +1679,7 @@ export default function App() {
             <Route path="news" element={<NewsUpdates />} />
             <Route path="notifications" element={<Notifications />} />
             <Route path="what-we-say" element={<WhatWeSayAdmin />} />
+            <Route path="promo-videos" element={<PromoVideoAdmin />} />
             <Route path="referees" element={<RefereesAdmin />} />
             <Route path="black-belts" element={<BlackBeltsAdmin />} />
             <Route path="national-players" element={<NationalPlayersAdmin />} />
@@ -1560,6 +1693,7 @@ export default function App() {
             <Route path="categories" element={<Categories />} />
             <Route path="tiesheets" element={<Tiesheets />} />
             <Route path="reports" element={<ReportExport />} />
+            <Route path="settings" element={<AdminSettings />} />
           </Route>
 
           {/* Coach Dashboard Routes */}
@@ -1569,6 +1703,7 @@ export default function App() {
             <Route path="dashboard" element={<StudentManagement />} />
             <Route path="tournaments" element={<TournamentRegistration />} />
             <Route path="notifications" element={<CoachNotifications />} />
+            <Route path="messages" element={<CoachMessages />} />
           </Route>
 
           {/* Fallback */}

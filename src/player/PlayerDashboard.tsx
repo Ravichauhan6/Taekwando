@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { 
   Shield, LogOut, CheckCircle, Clock, Printer, 
   Home, Globe, Download, Trophy, Medal, Award, 
-  Newspaper, Users, Search, Bell, Menu, X, ChevronDown, ChevronRight, User as UserIcon
+  Newspaper, Users, Search, Bell, Menu, X, ChevronDown, ChevronRight, User as UserIcon, Calendar, MapPin
 } from 'lucide-react';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { PrintableView } from '../portal-admin/PrintableView';
@@ -46,15 +46,28 @@ export const PlayerDashboard = () => {
   const fetchNotifications = async () => {
     setLoadingNotifs(true);
     try {
-      const res = await fetch('/api/notifications');
-      const data = await res.json();
-      // Filter for "All" or specifically for this player's ID/Aadhar
-      const filtered = data.filter((n: any) => 
+      const [notifsRes, coachMsgsRes] = await Promise.all([
+        fetch('/api/notifications'),
+        fetch(`/api/coach-messages/received/${player._id || player.id}`)
+      ]);
+      const notifsData = await notifsRes.json();
+      const coachMsgsData = await coachMsgsRes.json();
+      
+      const filteredNotifs = notifsData.filter((n: any) => 
         n.audience === 'All' || 
         n.audience === player.id || 
         n.audience === player.aadhar
-      );
-      setNotifications(filtered.reverse());
+      ).map((n: any) => ({ ...n, type: 'system' }));
+      
+      const formattedCoachMsgs = Array.isArray(coachMsgsData) ? coachMsgsData.map((m: any) => ({
+        ...m,
+        type: 'coach'
+      })) : [];
+      
+      const combined = [...filteredNotifs, ...formattedCoachMsgs];
+      combined.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      
+      setNotifications(combined as any);
     } catch (e) {
       console.error(e);
     } finally {
@@ -70,8 +83,6 @@ export const PlayerDashboard = () => {
 
   const menuItems = [
     { name: 'Dashboard', icon: <Home className="w-5 h-5" />, path: 'Dashboard' },
-    { name: 'Home Page', icon: <Globe className="w-5 h-5" />, href: '/' },
-    { name: 'Visit Website', icon: <Globe className="w-5 h-5" />, href: '/' },
     { 
       name: 'Download', icon: <Download className="w-5 h-5" />, 
       submenus: ['Your Id Card', 'Your Registration Form']
@@ -90,7 +101,7 @@ export const PlayerDashboard = () => {
     },
     { 
       name: 'News & Events', icon: <Newspaper className="w-5 h-5" />, 
-      submenus: ['News For Me']
+      submenus: ['Upcoming Events', 'Past Events', 'News For Me']
     },
     { 
       name: 'Coach & Center Info', icon: <Users className="w-5 h-5" />, 
@@ -98,8 +109,8 @@ export const PlayerDashboard = () => {
     },
   ];
 
-  const StatCard = ({ title, value, color, icon }: any) => (
-    <div className={`relative overflow-hidden group bg-gradient-to-br from-[#111] to-[#0a0a0a] border border-white/5 rounded-2xl p-6 shadow-xl transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_${color}]`}>
+  const StatCard = ({ title, value, color, icon, onClick }: any) => (
+    <div onClick={onClick} className={`relative overflow-hidden group bg-gradient-to-br from-[#111] to-[#0a0a0a] border border-white/5 rounded-2xl p-6 shadow-xl transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_${color}] ${onClick ? 'cursor-pointer' : ''}`}>
       <div className={`absolute -right-6 -top-6 w-24 h-24 bg-${color} rounded-full blur-3xl opacity-10 group-hover:opacity-20 transition-opacity`}></div>
       <div className="flex justify-between items-start relative z-10">
         <div>
@@ -137,9 +148,9 @@ export const PlayerDashboard = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <StatCard title="Total Awards" value="70+" color="blue-500" icon={<Medal className="w-6 h-6 text-blue-500" />} />
-              <StatCard title="Total Championship" value="50+" color="red-500" icon={<Trophy className="w-6 h-6 text-red-500" />} />
-              <StatCard title="News & Events" value="189+" color="green-500" icon={<Newspaper className="w-6 h-6 text-green-500" />} />
-              <StatCard title="Certificate Issued" value="1540+" color="yellow-500" icon={<Award className="w-6 h-6 text-yellow-500" />} />
+              <StatCard title="Total Championship" value="50+" color="red-500" icon={<Trophy className="w-6 h-6 text-red-500" />} onClick={() => setActiveTab('Played Championship')} />
+              <StatCard title="News & Events" value="189+" color="green-500" icon={<Newspaper className="w-6 h-6 text-green-500" />} onClick={() => setActiveTab('Upcoming Events')} />
+              <StatCard title="Certificate Issued" value="1540+" color="yellow-500" icon={<Award className="w-6 h-6 text-yellow-500" />} onClick={() => setActiveTab('My Certificate')} />
             </div>
 
             <div className="w-full bg-[#111] border border-white/5 rounded-2xl p-12 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden group">
@@ -312,6 +323,71 @@ export const PlayerDashboard = () => {
           </div>
         );
 
+      case 'Upcoming Events':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="bg-red-500/10 p-3 rounded-2xl border border-red-500/20">
+                <Calendar className="w-6 h-6 text-red-500" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-black text-white tracking-widest uppercase">Upcoming Events</h2>
+                <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Register for the latest tournaments</p>
+              </div>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-6">
+              <div className="bg-[#111] border border-white/5 rounded-[24px] overflow-hidden group hover:border-red-500/30 transition-all shadow-xl">
+                <div className="h-40 bg-gradient-to-br from-red-900/40 to-black relative overflow-hidden flex items-center justify-center border-b border-white/5">
+                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+                  <Trophy className="w-20 h-20 text-red-500/20 drop-shadow-[0_0_15px_rgba(255,0,0,0.5)] group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute top-4 right-4 bg-red-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">Registration Open</div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-black text-white uppercase tracking-wide mb-2">State Taekwondo Championship 2026</h3>
+                  <div className="space-y-2 mb-6">
+                    <p className="text-sm text-gray-400 flex items-center gap-2"><MapPin className="w-4 h-4 text-gray-500"/> Maharajganj Indoor Stadium</p>
+                    <p className="text-sm text-gray-400 flex items-center gap-2"><Clock className="w-4 h-4 text-gray-500"/> Aug 15 - Aug 17, 2026</p>
+                  </div>
+                  <button className="w-full py-3 bg-white/5 hover:bg-red-600 text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-colors border border-white/10 hover:border-red-500">View Details</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'Past Events':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="bg-gray-800/50 p-3 rounded-2xl border border-white/5">
+                <CheckCircle className="w-6 h-6 text-gray-400" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-black text-white tracking-widest uppercase">Past Events</h2>
+                <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Results and gallery of previous tournaments</p>
+              </div>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-6">
+              <div className="bg-[#111] border border-white/5 rounded-[24px] overflow-hidden group transition-all opacity-80 hover:opacity-100">
+                <div className="h-32 bg-gradient-to-br from-gray-800/40 to-black relative overflow-hidden flex items-center justify-center border-b border-white/5">
+                  <Trophy className="w-16 h-16 text-gray-500/20 group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute top-4 right-4 bg-gray-700 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">Completed</div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-lg font-black text-white uppercase tracking-wide mb-2 text-gray-300">Winter District Cup 2025</h3>
+                  <div className="space-y-2 mb-6">
+                    <p className="text-sm text-gray-500 flex items-center gap-2"><MapPin className="w-4 h-4"/> City Sports Complex</p>
+                    <p className="text-sm text-gray-500 flex items-center gap-2"><Clock className="w-4 h-4"/> Dec 10 - Dec 12, 2025</p>
+                  </div>
+                  <button className="w-full py-3 bg-white/5 hover:bg-white/10 text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-colors border border-white/5">View Results</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
       case 'News For Me':
         return (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
@@ -337,8 +413,17 @@ export const PlayerDashboard = () => {
                         <h3 className="text-lg font-bold text-white group-hover:text-red-500 transition-colors uppercase">{n.title}</h3>
                         <p className="text-gray-400 mt-2 text-sm leading-relaxed font-medium">{n.message}</p>
                         <div className="mt-4 flex items-center gap-3">
-                           <span className="text-[10px] font-black text-white/40 uppercase tracking-widest bg-white/5 px-2 py-1 rounded-md">MDTA Official</span>
-                           <span className="text-[10px] font-black text-red-500/80 uppercase tracking-widest">New Update</span>
+                           {n.type === 'coach' ? (
+                             <>
+                               <span className="text-[10px] font-black text-blue-400 uppercase tracking-widest bg-blue-500/10 border border-blue-500/20 px-2 py-1 rounded-md">From Coach: {n.coach_name}</span>
+                               <span className="text-[10px] font-black text-blue-500/80 uppercase tracking-widest">{new Date(n.date).toLocaleDateString()}</span>
+                             </>
+                           ) : (
+                             <>
+                               <span className="text-[10px] font-black text-white/40 uppercase tracking-widest bg-white/5 px-2 py-1 rounded-md">MDTA Official</span>
+                               <span className="text-[10px] font-black text-red-500/80 uppercase tracking-widest">{n.date ? new Date(n.date).toLocaleDateString() : 'New Update'}</span>
+                             </>
+                           )}
                         </div>
                       </div>
                       <ChevronRight className="w-5 h-5 text-gray-700 group-hover:text-red-500 transition-transform group-hover:translate-x-1" />
@@ -385,9 +470,12 @@ export const PlayerDashboard = () => {
       <aside className={`fixed lg:static top-0 left-0 h-full w-[280px] bg-[#0a0a0a] border-r border-white/5 z-50 transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} flex flex-col shadow-[20px_0_50px_rgba(0,0,0,0.5)]`}>
         {/* Sidebar Header */}
         <div className="h-20 flex items-center gap-3 px-6 border-b border-white/5 bg-[#0d0d0d]">
-          <div className="bg-gradient-to-br from-red-600 to-red-800 p-2 rounded-lg shadow-lg">
-            <Shield className="w-6 h-6 text-white" />
-          </div>
+          <a href="/" className="relative shrink-0 block cursor-pointer group">
+             <div className="absolute inset-0 bg-red-600 blur-xl opacity-20 rounded-full group-hover:opacity-40 transition-opacity"></div>
+             <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1 border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)] relative z-10 overflow-hidden group-hover:scale-105 transition-transform">
+               <img src="/logo.png" alt="MDTA Logo" className="w-full h-full object-contain" />
+             </div>
+          </a>
           <div>
           <div className="flex flex-col">
              <h1 className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest leading-snug drop-shadow-md break-words max-w-[160px]">
@@ -461,10 +549,16 @@ export const PlayerDashboard = () => {
         </div>
         
         {/* Sidebar Footer */}
-        <div className="p-4 border-t border-white/5">
+        <div className="p-4 border-t border-white/5 space-y-3">
+           <a 
+            href="/"
+            className="w-full flex items-center justify-center gap-2 bg-[#111] hover:bg-white/5 text-gray-400 hover:text-white border border-white/5 hover:border-white/10 px-4 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-[0.2em] transition-all"
+           >
+             <Globe className="w-4 h-4" /> Return to Website
+           </a>
            <button 
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 bg-[#111] hover:bg-white/5 text-gray-400 hover:text-white border border-white/5 hover:border-white/10 px-4 py-3.5 rounded-xl font-bold text-xs uppercase tracking-[0.2em] transition-all"
+            className="w-full flex items-center justify-center gap-2 bg-[#111] hover:bg-red-500/10 text-red-500 hover:text-red-400 border border-white/5 hover:border-red-500/30 px-4 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-[0.2em] transition-all"
            >
              <LogOut className="w-4 h-4" /> Sign Out
            </button>
@@ -484,8 +578,8 @@ export const PlayerDashboard = () => {
               <Menu className="w-6 h-6" />
             </button>
             <div className="hidden md:flex items-center gap-6">
-              <Link to="/news" className="text-xs font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-colors">News & Events</Link>
-              <Link to="/certificates" className="text-xs font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-colors">Certificates</Link>
+              <button onClick={() => setActiveTab('Upcoming Events')} className="text-xs font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-colors">News & Events</button>
+              <button onClick={() => setActiveTab('My Certificate')} className="text-xs font-bold text-gray-400 hover:text-white uppercase tracking-widest transition-colors">Certificates</button>
             </div>
           </div>
           
