@@ -71,10 +71,10 @@ export const PrintableView = ({ reg, onClose }: { reg: any; onClose: () => void 
                  <td className="p-2 border-[1px] border-gray-400 align-top w-[25%]" colSpan={2}><span className="text-gray-700 text-[12px] mr-1">Father's Occ:</span><span className="font-bold uppercase">{reg.fatherOccupation && reg.fatherOccupation !== 'Not Provided' ? reg.fatherOccupation : '______________________'}</span></td>
                  <td className="p-2 border-[1px] border-gray-400 align-top w-[25%]" colSpan={1}><span className="text-gray-700 text-[12px] mr-1">DOB :</span><span className="font-bold">{reg.dob && reg.dob !== 'Not Provided' ? reg.dob : '_________'}</span></td>
                  {/* ===== PHOTO + SIGNATURE COLUMN ===== */}
-                 <td className="p-0 border-[1px] border-gray-400 w-[175px] text-center align-top relative bg-white" rowSpan={6} style={{WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact'}}>
+                 <td className="p-0 border-[1px] border-gray-400 w-[155px] text-center align-top relative bg-white" rowSpan={6} style={{WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact'}}>
                    <div className="absolute inset-x-1 inset-y-1 flex flex-col items-center">
                      {/* Photo box with signature overlaid at bottom */}
-                     <div className="w-full relative" style={{height: '230px'}}>
+                     <div className="w-full relative" style={{height: '165px'}}>
                        {/* Full photo - no crop */}
                        <div className="w-full h-full border border-gray-300 bg-[#00aaff] flex items-center justify-center overflow-hidden" style={{WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact'}}>
                          {reg.photoFile
