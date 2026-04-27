@@ -202,7 +202,17 @@ export const Registration = () => {
       // 3. Initiate Checkout
       const checkoutOptions = {
         paymentSessionId: orderData.payment_session_id,
-        redirectTarget: "_modal"
+        redirectTarget: "_modal",
+        // Omitting 'order-details' from components hides the coupon option
+        components: [
+            "card",
+            "upi",
+            "app",
+            "netbanking",
+            "paylater",
+            "credpay",
+            "wallet"
+        ]
       };
 
       cashfree.checkout(checkoutOptions).then(async (result: any) => {
@@ -382,7 +392,7 @@ export const Registration = () => {
             
             <h2 className="text-3xl lg:text-4xl font-black mb-8 leading-tight tracking-widest uppercase relative z-10">
               Player <span className="text-red-500">Registration</span><br />
-              <span className="text-xl text-gray-400 mt-2 block">Rs.500 / Player</span>
+              <span className="text-xl text-gray-400 mt-2 block">Rs.1 / Player</span>
             </h2>
 
             <div className="space-y-6 text-[13px] leading-relaxed text-gray-400 font-medium text-justify relative z-10">

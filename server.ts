@@ -441,7 +441,7 @@ app.post("/api/payment/create-order", async (req, res) => {
     const baseUrl = env === 'PRODUCTION' ? 'https://api.cashfree.com/pg' : 'https://sandbox.cashfree.com/pg';
     
     const payload = {
-      order_amount: 500.00,
+      order_amount: 1.00,
       order_currency: "INR",
       order_id: order_id,
       customer_details: {

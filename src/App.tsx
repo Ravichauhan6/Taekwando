@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link, useNavigate, useLocation, useParams } from 'react-router-dom';
-import { Globe, Users, Newspaper, Bell, LogOut, Shield, Award, Building, Building2, Image as ImageIcon, FileText, Settings, Trophy, MapPin, Quote, Target, Zap, ChevronRight, Phone, Mail, Menu, X, ArrowRight, Play, CheckCircle, Check, Heart, Calendar } from 'lucide-react';
+import { Globe, Users, Newspaper, Bell, LogOut, Shield, Award, Building, Building2, Image as ImageIcon, FileText, Settings, Trophy, MapPin, Quote, Target, Zap, ChevronRight, Phone, Mail, Menu, X, ArrowRight, Play, CheckCircle, Check, Heart, Calendar, Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import heroBg from './assets/hero-bg.png';
 import tcImg from './assets/tc.jpg';
@@ -696,26 +696,26 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
           className="max-w-2xl"
         >
-          <h1 className="text-[56px] md:text-[64px] lg:text-[76px] font-sans font-bold text-white leading-[1.05] mb-2 tracking-wide uppercase shadow-black drop-shadow-lg">
+          <h1 className="text-[36px] sm:text-[48px] md:text-[64px] lg:text-[76px] font-sans font-bold text-white leading-[1.05] mb-2 tracking-wide uppercase shadow-black drop-shadow-lg">
             BECOME <br />
             UNSTOPPABLE
           </h1>
-          <h2 className="text-[20px] md:text-[24px] lg:text-[28px] text-gray-200 font-normal mb-6 tracking-wide font-sans">
+          <h2 className="text-[18px] sm:text-[20px] md:text-[24px] lg:text-[28px] text-gray-200 font-normal mb-6 tracking-wide font-sans">
             Master the Art of Self Defense
           </h2>
-          <p className="text-gray-400 mb-10 font-medium text-[12px] md:text-[14px] flex items-center gap-3 tracking-wider">
-            Discipline <span className="text-[#ff1a1a]">•</span> Power <span className="text-[#ff1a1a]">•</span> Confidence
+          <p className="text-white drop-shadow-md mb-8 sm:mb-10 font-bold text-[13px] md:text-[15px] flex items-center gap-3 tracking-wider">
+            Discipline <span className="text-[#ff1a1a] drop-shadow-sm">•</span> Power <span className="text-[#ff1a1a] drop-shadow-sm">•</span> Confidence
           </p>
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-row flex-wrap gap-3 sm:gap-4">
             <Link
               to="/register"
-              className="bg-[#ff1a1a] md:hover:bg-red-500 active:bg-red-600 text-white px-8 py-3 rounded-full text-[15px] font-medium tracking-wide flex items-center justify-center transition-all shadow-[0_0_25px_rgba(255,26,26,0.5)] md:shadow-[0_0_20px_rgba(255,26,26,0.4)] md:hover:shadow-[0_0_40px_rgba(255,26,26,0.7)] active:scale-95"
+              className="bg-[#ff1a1a] md:hover:bg-red-500 active:bg-red-600 text-white px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-medium tracking-wide flex items-center justify-center transition-all shadow-[0_0_25px_rgba(255,26,26,0.5)] md:shadow-[0_0_20px_rgba(255,26,26,0.4)] md:hover:shadow-[0_0_40px_rgba(255,26,26,0.7)] active:scale-95 whitespace-nowrap"
             >
               Apply Now
             </Link>
             <button
               onClick={() => setIsVideoOpen(true)}
-              className="cursor-pointer bg-transparent hover:bg-red-600/10 active:bg-red-600/20 text-gray-300 hover:text-white border border-gray-500 hover:border-red-500 px-8 py-3 rounded-full text-[15px] font-medium tracking-wide flex items-center justify-center transition-all active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_25px_rgba(255,0,0,0.4)] transform hover:-translate-y-0.5"
+              className="cursor-pointer bg-transparent hover:bg-red-600/10 active:bg-red-600/20 text-gray-300 hover:text-white border border-gray-500 hover:border-red-500 px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-medium tracking-wide flex items-center justify-center transition-all active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_25px_rgba(255,0,0,0.4)] transform hover:-translate-y-0.5 whitespace-nowrap"
             >
               Watch Demo
             </button>
@@ -751,23 +751,27 @@ const Hero = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="absolute bottom-0 left-0 right-0 z-20 mb-4 md:mb-6">
+      <div className="absolute bottom-0 left-0 right-0 z-20 mb-2 md:mb-6">
         <div className="max-w-[1050px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="flex flex-col md:flex-row items-center justify-between bg-black/60 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-md border border-white/5 rounded-[24px] relative py-5 md:py-6 px-6 shadow-[0_0_40px_rgba(255,0,0,0.6)]"
+            className="flex flex-col md:flex-row items-center justify-between bg-black/60 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-md border border-white/5 rounded-[24px] relative py-3 md:py-6 px-4 md:px-6 shadow-[0_0_40px_rgba(255,0,0,0.6)]"
           >
             <div className="absolute top-0 left-[18%] w-[140px] h-[2px] bg-[#ff0000] shadow-[0_0_20px_4px_rgba(255,0,0,0.8)]"></div>
-            <div className="grid grid-cols-2 md:grid-cols-4 w-full divide-x divide-white/5">
+            <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-y-3 md:gap-y-0">
               {[
                 { label: 'Active Students', value: '1000+', icon: <Users className="w-[28px] h-[28px] text-[#ff0000]" strokeWidth={1.5} /> },
                 { label: 'Expert Trainers', value: '25+', icon: <Users className="w-[28px] h-[28px] text-[#ff0000]" strokeWidth={1.5} /> },
                 { label: 'Years Excellence', value: '15+', icon: <Award className="w-[28px] h-[28px] text-[#ff0000]" strokeWidth={1.5} /> },
                 { label: 'Championships', value: '75+', icon: <Trophy className="w-[28px] h-[28px] text-[#ff0000]" strokeWidth={1.5} /> },
               ].map((stat, i) => (
-                <div key={i} className="flex items-center justify-center gap-4 py-2 px-2">
+                <div key={i} className={`flex items-center justify-center gap-3 sm:gap-4 py-1 px-2 border-white/10 ${
+                  i === 0 ? 'border-r border-b pb-3 md:pb-2 md:border-b-0' :
+                  i === 1 ? 'border-b pb-3 md:pb-2 md:border-b-0 md:border-r' :
+                  i === 2 ? 'border-r pt-2 md:pt-2' : 'pt-2 md:pt-2'
+                }`}>
                   <div className="flex-shrink-0">{stat.icon}</div>
                   <div className="flex flex-col text-left">
                     <div className="text-[20px] md:text-[24px] font-bold text-white tracking-wide leading-none mb-1 shadow-black drop-shadow-md">{stat.value}</div>
@@ -1306,35 +1310,118 @@ const NewsAndContact = () => {
 
 const Footer = () => {
   return (
-    <footer className="bg-[#000000] text-white py-12 border-t border-white/10 relative shadow-[0_-10px_30px_rgba(255,0,0,0.05)]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center">
-            <div className="bg-[#FF0000]/10 p-2 rounded-lg mr-3 border border-[#FF0000]/30 shadow-[0_0_15px_rgba(255,0,0,0.3)]">
-              <Shield className="text-[#FF0000] w-6 h-6" />
+    <footer className="bg-[#050505] text-white pt-16 pb-8 border-t border-white/10 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/5 rounded-full blur-[80px] pointer-events-none"></div>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-600/5 rounded-full blur-[80px] pointer-events-none"></div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          {/* Brand Column */}
+          <div className="space-y-6">
+            <div className="flex items-center">
+              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center p-1 mr-3 border border-red-500/30 shadow-[0_0_15px_rgba(255,0,0,0.3)]">
+                <img src="/logo.png" alt="MDTA Logo" className="w-full h-full object-contain rounded-full" />
+              </div>
+              <span className="text-xl font-black tracking-widest text-white">MDTA</span>
             </div>
-            <span className="text-2xl font-bold tracking-widest text-white">MDTA</span>
-          </div>
-          <div className="flex space-x-6">
-            {['facebook', 'instagram', 'twitter', 'youtube'].map((social, i) => (
-              <a key={i} href="#" className="w-10 h-10 bg-[#151515] rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-[#FF0000]/20 hover:border hover:border-[#FF0000]/50 hover:shadow-[0_0_20px_rgba(255,0,0,0.5)] transition-all">
-                <span className="uppercase text-xs font-bold">{social[0]}</span>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Maharajganj District Taekwondo Association (Regd). 
+              Empowering athletes since 2011 with the true spirit of martial arts, discipline, and excellence.
+            </p>
+            <div className="flex space-x-4 pt-2">
+              <a href="#" className="w-9 h-9 bg-white/5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all">
+                <Facebook className="w-4 h-4" />
               </a>
-            ))}
+              <a href="#" className="w-9 h-9 bg-white/5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all">
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-9 h-9 bg-white/5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all">
+                <Twitter className="w-4 h-4" />
+              </a>
+              <a href="#" className="w-9 h-9 bg-white/5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all">
+                <Youtube className="w-4 h-4" />
+              </a>
+            </div>
           </div>
-          <div className="flex flex-col items-center md:items-end text-sm text-gray-400 space-y-2 font-medium">
-            <div className="flex items-center hover:text-[#FF0000] transition-colors">
-              <Phone className="w-4 h-4 mr-2 text-[#FF0000]" />
-              +91 9101112229
-            </div>
-            <div className="flex items-center hover:text-[#FF0000] transition-colors text-right max-w-xs">
-              <MapPin className="w-4 h-4 mr-2 text-[#FF0000] shrink-0" />
-              Sheetal Nagar, Ward No. 19, Maharajganj, UP 273303
-            </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-white font-bold tracking-widest uppercase mb-6 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-red-600"></span> Quick Links
+            </h3>
+            <ul className="space-y-3">
+              {[
+                { name: 'Home', href: '/' },
+                { name: 'About MDTA', href: '/#' },
+                { name: 'Latest Events', href: '/events' },
+                { name: 'Media Gallery', href: '/gallery' },
+                { name: 'Join Academy', href: '/register' }
+              ].map((link, i) => (
+                <li key={i}>
+                  <Link to={link.href} className="text-gray-400 hover:text-red-400 text-sm transition-colors flex items-center gap-2 group">
+                    <ChevronRight className="w-3 h-3 text-red-500/0 group-hover:text-red-500 transition-colors" />
+                    <span className="transform group-hover:translate-x-1 transition-transform">{link.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h3 className="text-white font-bold tracking-widest uppercase mb-6 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-red-600"></span> Resources
+            </h3>
+            <ul className="space-y-3">
+              {[
+                { name: 'National Referees', href: '/national-referees' },
+                { name: 'Black Belt Holders', href: '/black-belt-holders' },
+                { name: 'National Players', href: '/national-players' },
+                { name: 'Training Centers', href: '/affiliated-training-centers' },
+                { name: 'Affiliated Coaches', href: '/affiliated-coaches' }
+              ].map((link, i) => (
+                <li key={i}>
+                  <Link to={link.href} className="text-gray-400 hover:text-red-400 text-sm transition-colors flex items-center gap-2 group">
+                    <ChevronRight className="w-3 h-3 text-red-500/0 group-hover:text-red-500 transition-colors" />
+                    <span className="transform group-hover:translate-x-1 transition-transform">{link.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h3 className="text-white font-bold tracking-widest uppercase mb-6 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-red-600"></span> Contact Us
+            </h3>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3 text-gray-400 text-sm">
+                <MapPin className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                <span>Sheetal Nagar, Ward No. 19,<br />Maharajganj, UP 273303</span>
+              </li>
+              <li className="flex items-center gap-3 text-gray-400 text-sm">
+                <Phone className="w-5 h-5 text-red-500 shrink-0" />
+                <span>+91 9101112229</span>
+              </li>
+              <li className="flex items-center gap-3 text-gray-400 text-sm">
+                <Mail className="w-5 h-5 text-red-500 shrink-0" />
+                <span>info@maharajganjtkd.com</span>
+              </li>
+            </ul>
           </div>
         </div>
-        <div className="mt-12 pt-6 border-t border-white/10 text-center text-gray-600 text-xs tracking-wide">
-          <p>© {new Date().getFullYear()} Maharajganj District Taekwondo Association. All rights reserved.</p>
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-gray-500 text-xs tracking-wide text-center md:text-left">
+            &copy; {new Date().getFullYear()} Maharajganj District Taekwondo Association. All rights reserved.
+          </p>
+          <div className="flex space-x-6 text-xs text-gray-500">
+            <Link to="#" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="#" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link to="/portal-admin/login" className="hover:text-white transition-colors">Admin Portal</Link>
+          </div>
         </div>
       </div>
     </footer>
