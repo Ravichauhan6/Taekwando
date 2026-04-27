@@ -6,10 +6,14 @@ export const PrintableView = ({ reg, onClose }: { reg: any; onClose: () => void 
   if (!reg) return null;
   
   return createPortal(
-    <div className="fixed inset-0 z-[9999] bg-gray-200 text-black overflow-y-auto print:bg-white font-sans">
+    <div className="fixed inset-0 z-[9999] bg-gray-200 text-black overflow-y-auto print:absolute print:top-0 print:left-0 print:w-full print:h-auto print:overflow-visible print:bg-white font-sans">
       {/* Top Navbar */}
       <div className="flex justify-between items-center p-4 bg-gray-100 border-b border-gray-200 print:hidden sticky top-0 z-50 shadow-sm">
-        <button onClick={() => window.print()} className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded text-[13px] font-bold transition-colors shadow-sm flex items-center gap-2">
+        <button onClick={(e) => {
+          const container = e.currentTarget.closest('.overflow-y-auto');
+          if (container) container.scrollTop = 0;
+          setTimeout(() => window.print(), 100);
+        }} className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded text-[13px] font-bold transition-colors shadow-sm flex items-center gap-2">
           <Printer className="w-4 h-4"/> Print Registration Form
         </button>
         <button onClick={onClose} className="text-gray-500 hover:text-gray-800 transition-colors"><X className="w-6 h-6"/></button>
@@ -18,10 +22,10 @@ export const PrintableView = ({ reg, onClose }: { reg: any; onClose: () => void 
       {/* ======================= */}
       {/* UNIFIED PRINT & PREVIEW */}
       {/* ======================= */}
-      <div className="flex flex-col items-center w-full py-8 gap-8 print:py-0 print:gap-0 print:bg-white">
+      <div className="flex flex-col items-center w-full py-8 gap-8 print:py-0 print:gap-0 print:bg-white print:block">
         
         {/* Page 1 */}
-        <div className="print-page w-[210mm] min-h-[297mm] bg-white p-8 box-border relative overflow-hidden text-[13px] shadow-lg print:shadow-none print:w-full print:min-h-0 print:h-[297mm] print:p-8">
+        <div className="print-page w-[210mm] min-h-[297mm] bg-white p-8 box-border relative overflow-hidden text-[13px] shadow-lg print:shadow-none print:w-full print:min-h-0 print:h-auto print:p-8" style={{ pageBreakAfter: 'always' }}>
             <div className="relative text-center mb-6 border-b-[2px] border-black pb-2">
               <div className="w-full text-center px-1">
                  <h1 className="text-[30px] font-[900] tracking-wide mb-0 leading-[1.1] text-black drop-shadow-sm" style={{fontFamily: "'Tiro Devanagari Hindi', serif"}}>महाराजगंज डिस्ट्रिक्ट ताईक्वांडो एसोसिएशन</h1>
@@ -90,7 +94,7 @@ export const PrintableView = ({ reg, onClose }: { reg: any; onClose: () => void 
         </div>
 
         {/* Page 2 */}
-        <div className="print-page w-[210mm] min-h-[297mm] bg-white p-8 box-border relative overflow-hidden flex flex-col text-[13px] shadow-lg print:shadow-none print:w-full print:min-h-0 print:h-[297mm] print:p-8">
+        <div className="print-page w-[210mm] min-h-[297mm] bg-white p-8 box-border relative overflow-hidden flex flex-col text-[13px] shadow-lg print:shadow-none print:w-full print:min-h-0 print:h-auto print:p-8" style={{ pageBreakInside: 'avoid' }}>
            <div className="flex-1 mt-4">
              <div className="border border-black text-[12px] leading-[1.6] text-black text-justify mb-0 bg-transparent">
                <div className="px-5 py-6 font-medium">
