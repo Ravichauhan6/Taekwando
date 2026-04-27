@@ -235,6 +235,18 @@ export const PlayerDashboard = () => {
                        </div>
                     </div>
 
+                    {/* Authorized Signature */}
+                    <div className="px-6 pt-3 pb-2 flex flex-col items-end border-t border-gray-200 mt-2">
+                       <img 
+                         src="/signature.png" 
+                         alt="Secretary Signature" 
+                         className="h-[42px] w-auto object-contain mb-0.5"
+                         style={{ mixBlendMode: 'multiply' }}
+                       />
+                       <div className="w-32 border-t border-gray-400 mb-0.5"></div>
+                       <span className="text-[10px] font-black text-gray-700 uppercase tracking-wide text-center">(Secretary MDTA Maharajganj)</span>
+                    </div>
+
                     {/* Footer */}
                     <div className="mt-auto bg-gradient-to-b from-[#3a4161] to-[#252a40] px-6 py-4 flex justify-between items-end border-t border-gray-600">
                        <div className="flex flex-col">
