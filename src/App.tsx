@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Link, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Globe, Users, Newspaper, Bell, LogOut, Shield, Award, Building, Building2, Image as ImageIcon, FileText, Settings, Trophy, MapPin, Quote, Target, Zap, ChevronRight, Phone, Mail, Menu, X, ArrowRight, Play, CheckCircle, Check, Heart, Calendar, Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import heroBg from './assets/hero-bg.png';
+import heroBg from './assets/hero-bg.jpg';
 import tcImg from './assets/tc.jpg';
 import sfImg from './assets/sf.jpg';
 import ticImg from './assets/tic.jpeg';
