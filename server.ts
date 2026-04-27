@@ -1,5 +1,4 @@
 import express from "express";
-import { createServer as createViteServer } from "vite";
 import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -37,19 +36,17 @@ const PORT = process.env.PORT || 3000;
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  console.error("❌ MONGODB_URI is extremely missing from .env. Server will crash.");
-  process.exit(1);
+  console.error("❌ MONGODB_URI is missing from .env. Database connection will fail.");
+} else {
+  mongoose.connect(MONGODB_URI)
+    .then(async () => {
+      console.log("✅ Connected to MongoDB Cluster");
+      await seedDatabase();
+    })
+    .catch((err) => {
+      console.error("❌ MongoDB connection error:", err.message);
+    });
 }
-
-mongoose.connect(MONGODB_URI)
-  .then(async () => {
-    console.log("✅ Connected to MongoDB Cluster");
-    await seedDatabase();
-  })
-  .catch((err) => {
-    console.error("❌ MongoDB connection error:", err.message);
-    process.exit(1);
-  });
 
 // --- Schemas (for MongoDB) ---
 const NewsSchema = new mongoose.Schema({
@@ -1385,11 +1382,16 @@ app.post("/api/content", async (req, res) => {
 // --- Vite middleware for development ---
 async function startServer() {
   if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
+    try {
+      const { createServer: createViteServer } = await import("vite");
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: "spa",
+      });
+      app.use(vite.middlewares);
+    } catch (err) {
+      console.error("Failed to dynamically import vite:", err);
+    }
   } else if (!process.env.VERCEL) {
     app.use(express.static("dist"));
     app.get("*", (req, res) => {
