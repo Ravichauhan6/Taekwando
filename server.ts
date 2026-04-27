@@ -897,20 +897,103 @@ app.post("/api/players/login", async (req, res) => {
   }
 });
 
-// Player Forgot Password
-app.post("/api/players/reset-password", async (req, res) => {
-  const { email, aadhar, newPassword } = req.body;
-  if (!email || !aadhar || !newPassword) return res.status(400).json({ error: "All fields required" });
+// ========== OTP Store (in-memory, 10 min expiry) ==========
+const otpStore = new Map<string, { otp: string; expires: number; verified: boolean }>();
+
+// Step 1: Send OTP to email
+app.post("/api/players/send-otp", async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: "Email is required." });
+
   try {
-    const player = await Player.findOne({ email: email.toLowerCase().trim(), aadhar_no: aadhar });
-    if (!player) return res.status(404).json({ error: "No account found with this Email and Aadhar combination." });
-    player.set('password', newPassword);
-    await player.save();
-    res.json({ success: true });
-  } catch (err) {
-    res.status(500).json({ error: "Password reset failed" });
+    const player = await Player.findOne({ email: email.toLowerCase().trim() });
+    if (!player) return res.status(404).json({ error: "No account found with this email." });
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires = Date.now() + 10 * 60 * 1000; // 10 minutes
+
+    otpStore.set(email.toLowerCase().trim(), { otp, expires, verified: false });
+
+    // Send OTP email
+    await transporter.sendMail({
+      from: `"MDTA Maharajganj" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "🔐 Password Reset OTP - MDTA Player Portal",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 480px; margin: auto; background: #0a0a0a; color: white; border-radius: 12px; overflow: hidden; border: 1px solid #333;">
+          <div style="background: linear-gradient(135deg, #b91c1c, #7f1d1d); padding: 24px; text-align: center;">
+            <h1 style="margin: 0; font-size: 22px; font-weight: 900; letter-spacing: 2px; color: white;">MDTA MAHARAJGANJ</h1>
+            <p style="margin: 4px 0 0; color: rgba(255,255,255,0.7); font-size: 13px;">Maharajganj District Taekwondo Association</p>
+          </div>
+          <div style="padding: 32px; text-align: center;">
+            <p style="color: #9ca3af; font-size: 14px; margin-bottom: 8px;">Your Password Reset OTP is:</p>
+            <div style="background: #1a1a1a; border: 2px solid #b91c1c; border-radius: 12px; padding: 20px; margin: 16px 0;">
+              <span style="font-size: 42px; font-weight: 900; letter-spacing: 10px; color: #ef4444;">${otp}</span>
+            </div>
+            <p style="color: #9ca3af; font-size: 12px; margin-top: 12px;">⏱ This OTP is valid for <strong style="color: white;">10 minutes</strong> only.</p>
+            <p style="color: #6b7280; font-size: 11px; margin-top: 20px;">If you did not request this, please ignore this email.</p>
+          </div>
+          <div style="background: #111; padding: 16px; text-align: center; border-top: 1px solid #222;">
+            <p style="color: #4b5563; font-size: 11px; margin: 0;">© MDTA Maharajganj | www.mdtamrj.com</p>
+          </div>
+        </div>
+      `
+    });
+
+    res.json({ success: true, message: "OTP sent to your email." });
+  } catch (err: any) {
+    console.error("OTP send error:", err);
+    res.status(500).json({ error: "Failed to send OTP. Please try again." });
   }
 });
+
+// Step 2: Verify OTP
+app.post("/api/players/verify-otp", (req, res) => {
+  const { email, otp } = req.body;
+  if (!email || !otp) return res.status(400).json({ error: "Email and OTP are required." });
+
+  const key = email.toLowerCase().trim();
+  const record = otpStore.get(key);
+
+  if (!record) return res.status(400).json({ error: "No OTP found. Please request a new one." });
+  if (Date.now() > record.expires) {
+    otpStore.delete(key);
+    return res.status(400).json({ error: "OTP has expired. Please request a new one." });
+  }
+  if (record.otp !== otp.trim()) return res.status(400).json({ error: "Incorrect OTP. Please try again." });
+
+  // Mark as verified
+  otpStore.set(key, { ...record, verified: true });
+  res.json({ success: true, message: "OTP verified successfully." });
+});
+
+// Step 3: Reset Password (requires OTP to be verified)
+app.post("/api/players/reset-password", async (req, res) => {
+  const { email, newPassword } = req.body;
+  if (!email || !newPassword) return res.status(400).json({ error: "All fields required." });
+  if (newPassword.length < 6) return res.status(400).json({ error: "Password must be at least 6 characters." });
+
+  const key = email.toLowerCase().trim();
+  const record = otpStore.get(key);
+
+  if (!record || !record.verified) {
+    return res.status(403).json({ error: "OTP not verified. Please verify OTP first." });
+  }
+
+  try {
+    const player = await Player.findOne({ email: key });
+    if (!player) return res.status(404).json({ error: "No account found with this email." });
+
+    player.set('password', newPassword);
+    await player.save();
+    otpStore.delete(key); // Clear OTP after successful reset
+    res.json({ success: true, message: "Password reset successfully!" });
+  } catch (err) {
+    res.status(500).json({ error: "Password reset failed." });
+  }
+});
+
 
 app.patch("/api/players/:id", async (req, res) => {
   const { id } = req.params;

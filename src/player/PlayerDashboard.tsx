@@ -483,6 +483,100 @@ export const PlayerDashboard = () => {
           </div>
         );
 
+      case 'My Coach Info':
+        return (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
+            {/* Header */}
+            <div className="flex items-center gap-4 mb-2">
+              <div className="bg-blue-500/10 p-3 rounded-2xl border border-blue-500/20">
+                <Users className="w-6 h-6 text-blue-400" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-black text-white tracking-widest uppercase">My Coach & Center Info</h2>
+                <p className="text-xs text-gray-500 font-bold uppercase tracking-wider">Your registered training details</p>
+              </div>
+            </div>
+
+            {/* Coach Card */}
+            <div className="bg-[#111] border border-white/5 rounded-[24px] overflow-hidden">
+              {/* Card Header */}
+              <div className="bg-gradient-to-r from-blue-900/30 to-[#111] px-8 py-6 border-b border-white/5 flex items-center gap-5">
+                <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+                  <Users className="w-8 h-8 text-blue-400" />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">Your Trainer / Coach</p>
+                  <h3 className="text-2xl font-black text-white uppercase tracking-wide">
+                    {player.coach_name || player.coachName || 'Not Assigned'}
+                  </h3>
+                </div>
+              </div>
+
+              {/* Info Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-0 divide-y md:divide-y-0 md:divide-x divide-white/5">
+                {/* Training Center */}
+                <div className="p-6 flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                    <MapPin className="w-5 h-5 text-red-400" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Training Center</p>
+                    <p className="text-white font-bold text-base uppercase">
+                      {player.training_center || player.center || 'Not Provided'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Center Address */}
+                <div className="p-6 flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                    <MapPin className="w-5 h-5 text-green-400" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Center Address</p>
+                    <p className="text-white font-bold text-base uppercase">
+                      {player.training_center_address || player.trainingCenterAddress || 'Not Provided'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Registration Info */}
+              <div className="border-t border-white/5 px-8 py-5 bg-white/[0.02] flex flex-wrap gap-6">
+                <div>
+                  <p className="text-[9px] font-black text-gray-600 uppercase tracking-widest mb-1">Registered On</p>
+                  <p className="text-sm font-bold text-gray-300">
+                    {player.date_registered
+                      ? new Date(player.date_registered).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })
+                      : 'N/A'}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[9px] font-black text-gray-600 uppercase tracking-widest mb-1">Account Status</p>
+                  <span className={`text-sm font-black uppercase px-3 py-1 rounded-full ${
+                    isVerified ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+                  }`}>
+                    {player.status || 'Pending'}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-[9px] font-black text-gray-600 uppercase tracking-widest mb-1">Belt / Rank</p>
+                  <p className="text-sm font-bold text-gray-300">{player.belt || player.current_belt || 'Not Assigned'}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Notice */}
+            <div className="bg-blue-500/5 border border-blue-500/20 rounded-2xl p-5 flex items-start gap-4">
+              <Bell className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-bold text-white mb-1">Need to contact your coach?</p>
+                <p className="text-xs text-gray-400">Please visit your training center directly or contact MDTA at <span className="text-blue-400 font-bold">+91 9161115569</span></p>
+              </div>
+            </div>
+          </div>
+        );
+
       default:
         // Placeholder for unimplemented tabs like "Played Championship", "My Certificate", etc.
         return (
