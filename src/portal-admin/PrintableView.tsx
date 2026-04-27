@@ -72,20 +72,22 @@ export const PrintableView = ({ reg, onClose }: { reg: any; onClose: () => void 
                  <td className="p-2 border-[1px] border-gray-400 align-top w-[25%]" colSpan={1}><span className="text-gray-700 text-[12px] mr-1">DOB :</span><span className="font-bold">{reg.dob && reg.dob !== 'Not Provided' ? reg.dob : '_________'}</span></td>
                  {/* ===== PHOTO + SIGNATURE COLUMN ===== */}
                  <td className="p-0 border-[1px] border-gray-400 w-[175px] text-center align-top relative bg-white" rowSpan={6} style={{WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact'}}>
-                   <div className="absolute inset-x-1 inset-y-1 flex flex-col items-center gap-1">
-                     {/* Photo — object-contain so full face visible, no crop */}
-                     <div className="w-full h-[170px] border border-gray-300 bg-white flex items-center justify-center overflow-hidden">
-                       {reg.photoFile
-                         ? <img src={reg.photoFile} className="w-full h-full object-contain" style={{objectPosition:'center top'}}/>
-                         : <span className="text-gray-400 text-[10px] font-bold">No Photo</span>}
+                   <div className="absolute inset-x-1 inset-y-1 flex flex-col items-center">
+                     {/* Photo box with signature overlaid at bottom */}
+                     <div className="w-full relative" style={{height: '230px'}}>
+                       {/* Full photo - no crop */}
+                       <div className="w-full h-full border border-gray-300 bg-[#00aaff] flex items-center justify-center overflow-hidden" style={{WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact'}}>
+                         {reg.photoFile
+                           ? <img src={reg.photoFile} className="w-full h-full object-contain" style={{objectPosition:'center top'}}/>
+                           : <span className="text-white text-[10px] font-bold">No Photo</span>}
+                       </div>
+                       {/* Signature overlaid at bottom of photo */}
+                       <div className="absolute bottom-0 left-0 right-0 h-[55px] bg-white/90 border-t border-gray-300 flex items-center justify-center overflow-hidden" style={{WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact'}}>
+                         {reg.signatureFile
+                           ? <img src={reg.signatureFile} className="w-full h-full object-contain px-1" style={{mixBlendMode:'multiply'}}/>
+                           : <span className="text-gray-400 text-[9px]">Signature</span>}
+                       </div>
                      </div>
-                     {/* Signature — wider & taller */}
-                     <div className="w-full h-[55px] bg-white flex items-center justify-center overflow-hidden border border-gray-300">
-                       {reg.signatureFile
-                         ? <img src={reg.signatureFile} className="w-full h-full object-contain" style={{mixBlendMode:'multiply'}}/>
-                         : <span className="text-gray-400 text-[9px]">Signature</span>}
-                     </div>
-                     <div className="text-[8px] text-gray-500 font-bold tracking-wide w-full text-center">— Candidate Signature —</div>
                    </div>
                  </td>
                </tr>
