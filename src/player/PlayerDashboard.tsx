@@ -198,11 +198,11 @@ export const PlayerDashboard = () => {
                     {/* Photo Area */}
                     <div className="flex justify-center mt-3">
                        <div className="w-[145px] h-[145px] rounded-full overflow-hidden flex items-center justify-center bg-gray-100 z-10" style={{ boxShadow: '0 0 0 1px white, 0 0 0 2px #e5e7eb' }}>
-                          {player.photoFile ? (
-                             <img src={player.photoFile} alt="Player" className="w-full h-full object-cover" />
-                          ) : (
-                             <span className="text-gray-400 text-xs font-bold uppercase">No Photo</span>
-                          )}
+                           {(player.photo_url || player.photoFile) ? (
+                              <img src={player.photo_url || player.photoFile} alt="Player" className="w-full h-full object-cover" />
+                           ) : (
+                              <span className="text-gray-400 text-xs font-bold uppercase">No Photo</span>
+                           )}
                        </div>
                     </div>
 
@@ -313,7 +313,33 @@ export const PlayerDashboard = () => {
                  <h3 className="text-2xl font-black text-white mb-3 uppercase tracking-widest">Download Official Form</h3>
                  <p className="text-gray-400 max-w-md mx-auto mb-8 text-sm">Your registration has been approved. You can now view and print a copy of your official MDTA registration document.</p>
                  <button 
-                  onClick={() => setPrintReg(player)}
+                  onClick={() => setPrintReg({
+                     id:                   player._id || player.id,
+                     name:                 player.name,
+                     email:                player.email,
+                     center:               player.training_center || player.center,
+                     fatherName:           player.father_name || player.fatherName,
+                     fatherOccupation:     player.father_occupation || player.fatherOccupation,
+                     dob:                  player.dob,
+                     gender:               player.gender,
+                     mobile:               player.mobile,
+                     height:               player.height_cm || player.height,
+                     weight:               player.weight,
+                     bloodGroup:           player.blood_group || player.bloodGroup,
+                     aadhar:               player.aadhar_no || player.aadhar,
+                     maritalStatus:        player.marital_status || player.maritalStatus,
+                     qualification:        player.qualification,
+                     schoolCollege:        player.school_college || player.schoolCollege,
+                     permanentAddress:     player.permanent_address || player.permanentAddress,
+                     localAddress:         player.local_address || player.localAddress,
+                     coachName:            player.coach_name || player.coachName,
+                     trainingCenterAddress:player.training_center_address || player.trainingCenterAddress,
+                     photoFile:            player.photo_url || player.photoFile,
+                     signatureFile:        player.signature_url || player.signatureFile,
+                     aadharFile:           player.aadhar_url || player.aadharFile,
+                     status:               player.status,
+                     date:                 player.date_registered ? new Date(player.date_registered).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '',
+                   })}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-[0.2em] transition-all shadow-[0_0_30px_rgba(37,99,235,0.3)] hover:shadow-[0_0_40px_rgba(37,99,235,0.5)] flex items-center gap-3 max-w-xs mx-auto justify-center"
                  >
                    <Printer className="w-5 h-5" /> View & Print Form
@@ -603,12 +629,12 @@ export const PlayerDashboard = () => {
              
              <div className="flex items-center gap-3 pl-4 sm:pl-6 border-l border-white/10 group cursor-pointer hover:opacity-80 transition-opacity">
                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 border border-white/10 flex items-center justify-center overflow-hidden">
-                 {player.photoFile ? (
-                   <img src={player.photoFile} alt="Profile" className="w-full h-full object-cover" />
-                 ) : (
-                   <UserIcon className="w-4 h-4 text-gray-400" />
-                 )}
-               </div>
+                  {(player.photo_url || player.photoFile) ? (
+                    <img src={player.photo_url || player.photoFile} alt="Profile" className="w-full h-full object-cover" />
+                  ) : (
+                    <UserIcon className="w-4 h-4 text-gray-400" />
+                  )}
+                </div>
                <div className="hidden md:block text-right">
                  <p className="text-xs font-bold text-white uppercase tracking-wider">{player.name.split(' ')[0]}</p>
                  <p className="text-[9px] text-gray-500 font-bold uppercase tracking-widest">Player</p>

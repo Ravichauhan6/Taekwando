@@ -116,7 +116,7 @@ export const PrintableView = ({ reg, onClose }: { reg: any; onClose: () => void 
                <div className="p-4 flex flex-col justify-between items-end relative">
                  <div className="text-right w-full flex justify-between pr-2"><span></span><span>Authorized Signature</span></div>
                  <div className="text-center w-56 flex flex-col items-end mr-2 absolute bottom-2 right-4">
-                     <img src="/signature.png" alt="Sig" className="h-[55px] w-auto object-contain mix-blend-multiply mb-1" />
+                     <img src="/signature.png" alt="Sig" className="h-[55px] w-auto object-contain mb-1 bg-white" style={{mixBlendMode: 'normal'}} />
                      <div className="text-[12px] font-black tracking-wide">(Secretary MDTA Maharajganj)</div>
                  </div>
                </div>
