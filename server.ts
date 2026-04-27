@@ -111,6 +111,9 @@ const PlayerSchema = new mongoose.Schema({
   photo_url: String,
   signature_url: String,
   
+  // Account
+  password: String,
+  
   status: { type: String, default: 'Pending Verification' },
   
   // Belt Grading
@@ -797,7 +800,7 @@ app.post("/api/players", async (req, res) => {
     email, mobile, blood_group, aadhar_no, height_cm, father_occupation, 
     marital_status, qualification, school_college, permanent_address, local_address,
     coach_name, training_center, training_center_address,
-    aadhar_url, photo_url, signature_url, status
+    aadhar_url, photo_url, signature_url, status, password
   } = req.body;
   
   if (!name || !gender || !dob || weight === undefined) {
@@ -850,6 +853,7 @@ app.post("/api/players", async (req, res) => {
       marital_status, qualification, school_college, permanent_address, local_address,
       coach_name, training_center, training_center_address,
       aadhar_url, photo_url, signature_url,
+      password: password || '',
       status: status || 'Pending Verification'
     });
     await player.save();
@@ -864,6 +868,45 @@ app.post("/api/players", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to register player" });
+  }
+});
+
+// Player Login
+app.post("/api/players/login", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) return res.status(400).json({ error: "Email and password required" });
+  try {
+    const player = await Player.findOne({ email: email.toLowerCase().trim() });
+    if (!player) return res.status(401).json({ error: "Invalid email or password." });
+    if (player.get('password') !== password) return res.status(401).json({ error: "Invalid email or password." });
+    
+    // Track session
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '127.0.0.1';
+    await UserSession.findOneAndUpdate(
+      { user: email },
+      { name: player.name, role: 'player', ip: String(ip), last_active: new Date() },
+      { upsert: true, new: true }
+    );
+
+    const playerObj = player.toObject();
+    res.json({ success: true, player: { ...playerObj, id: playerObj._id } });
+  } catch (err) {
+    res.status(500).json({ error: "Login failed" });
+  }
+});
+
+// Player Forgot Password
+app.post("/api/players/reset-password", async (req, res) => {
+  const { email, aadhar, newPassword } = req.body;
+  if (!email || !aadhar || !newPassword) return res.status(400).json({ error: "All fields required" });
+  try {
+    const player = await Player.findOne({ email: email.toLowerCase().trim(), aadhar_no: aadhar });
+    if (!player) return res.status(404).json({ error: "No account found with this Email and Aadhar combination." });
+    player.set('password', newPassword);
+    await player.save();
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: "Password reset failed" });
   }
 });
 

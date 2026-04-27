@@ -175,6 +175,7 @@ export const Registration = () => {
         aadhar_url: aadharUrl || files.aadharFile,
         photo_url: photoUrl || files.photoFile,
         signature_url: signatureUrl || files.signatureFile,
+        password: formData.password || '',
         status: 'Pending Verification'
       };
 

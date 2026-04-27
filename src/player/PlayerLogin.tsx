@@ -12,62 +12,61 @@ export const PlayerLogin = () => {
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess('');
 
-    const savedRegs = localStorage.getItem('portal_registrations');
-    if (!savedRegs) {
-      setError('No registered users found.');
-      return;
-    }
+    try {
+      const res = await fetch('/api/players/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.toLowerCase().trim(), password })
+      });
+      const data = await res.json();
 
-    const users = JSON.parse(savedRegs);
-    const user = users.find((u: any) => 
-      u.email?.toLowerCase().trim() === email.toLowerCase().trim() && 
-      u.password === password
-    );
+      if (!res.ok) {
+        setError(data.error || 'Invalid email or password.');
+        return;
+      }
 
-    if (user) {
-      localStorage.setItem('current_player', JSON.stringify(user));
+      localStorage.setItem('current_player', JSON.stringify(data.player));
       navigate('/player/dashboard');
-    } else {
-      setError('Invalid email or password.');
+    } catch (err) {
+      setError('Server error. Please try again.');
     }
   };
 
-  const handleForgotPassword = (e: React.FormEvent) => {
+  const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess('');
 
-    const savedRegs = localStorage.getItem('portal_registrations');
-    if (!savedRegs) {
-      setError('No registered users found.');
+    if (newPassword.length < 6) {
+      setError('New password must be at least 6 characters.');
       return;
     }
 
-    const users = JSON.parse(savedRegs);
-    const userIndex = users.findIndex((u: any) => 
-      u.email?.toLowerCase().trim() === email.toLowerCase().trim() && 
-      u.aadhar === aadhar
-    );
+    try {
+      const res = await fetch('/api/players/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.toLowerCase().trim(), aadhar, newPassword })
+      });
+      const data = await res.json();
 
-    if (userIndex !== -1) {
-      if (newPassword.length < 6) {
-        setError('New password must be at least 6 characters.');
+      if (!res.ok) {
+        setError(data.error || 'No account found with this Email and Aadhar combination.');
         return;
       }
-      users[userIndex].password = newPassword;
-      localStorage.setItem('portal_registrations', JSON.stringify(users));
+
       setSuccess('Password reset successfully! Please log in.');
       setIsForgotPassword(false);
       setPassword('');
       setAadhar('');
       setNewPassword('');
-    } else {
-      setError('No account found with this Email and Aadhar combination.');
+    } catch (err) {
+      setError('Server error. Please try again.');
     }
   };
 
