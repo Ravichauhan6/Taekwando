@@ -639,7 +639,7 @@ const Hero = () => {
           try {
             const parsed = JSON.parse(resData.content);
             if (parsed.hero_video_url) setPromoVideoUrl(parsed.hero_video_url);
-          } catch (e) {}
+          } catch (e) { }
         }
       })
       .catch(err => console.error(err));
@@ -734,11 +734,10 @@ const Hero = () => {
                 { label: 'Years Excellence', value: '15+', icon: <Award className="w-[28px] h-[28px] text-[#ff0000]" strokeWidth={1.5} /> },
                 { label: 'Championships', value: '75+', icon: <Trophy className="w-[28px] h-[28px] text-[#ff0000]" strokeWidth={1.5} /> },
               ].map((stat, i) => (
-                <div key={i} className={`flex items-center justify-center gap-3 sm:gap-4 py-1 px-2 border-white/10 ${
-                  i === 0 ? 'border-r border-b pb-3 md:pb-2 md:border-b-0' :
+                <div key={i} className={`flex items-center justify-center gap-3 sm:gap-4 py-1 px-2 border-white/10 ${i === 0 ? 'border-r border-b pb-3 md:pb-2 md:border-b-0' :
                   i === 1 ? 'border-b pb-3 md:pb-2 md:border-b-0 md:border-r' :
-                  i === 2 ? 'border-r pt-2 md:pt-2' : 'pt-2 md:pt-2'
-                }`}>
+                    i === 2 ? 'border-r pt-2 md:pt-2' : 'pt-2 md:pt-2'
+                  }`}>
                   <div className="flex-shrink-0">{stat.icon}</div>
                   <div className="flex flex-col text-left">
                     <div className="text-[20px] md:text-[24px] font-bold text-white tracking-wide leading-none mb-1 shadow-black drop-shadow-md">{stat.value}</div>
@@ -826,7 +825,7 @@ const WhyChooseUs = () => {
 const TrainingPrograms = () => {
   const programs = [
     { title: 'TAEKWONDO', image: tcImg, desc: 'Traditional Korean martial art for all.' },
-    { title: 'MMA / Self Defense', image: sfImg, desc: 'Practical combat for street awareness.' },
+    { title: 'Self Defense', image: sfImg, desc: 'Practical combat for street awareness.' },
     { title: 'Fitness Training', image: fitnessImg, desc: 'Build strength, speed, and endurance.' },
     { title: 'Yoga', image: yogaImg, desc: 'Mindful movement for balance and flexibility.' },
   ];
@@ -922,7 +921,7 @@ const BenefitsSection = () => {
             const parsed = JSON.parse(resData.content);
             if (parsed.benefits_video_url) setPromoVideoUrl(parsed.benefits_video_url);
             if (parsed.self_development_video_url) setSelfDevVideoUrl(parsed.self_development_video_url);
-          } catch (e) {}
+          } catch (e) { }
         }
       })
       .catch(err => console.error(err));
@@ -1280,7 +1279,7 @@ const Footer = () => {
     <footer className="bg-[#050505] text-white pt-16 pb-8 border-t border-white/10 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/5 rounded-full blur-[80px] pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-red-600/5 rounded-full blur-[80px] pointer-events-none"></div>
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand Column */}
@@ -1292,7 +1291,7 @@ const Footer = () => {
               <span className="text-xl font-black tracking-widest text-white">MDTA</span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Maharajganj District Taekwondo Association (Regd). 
+              Maharajganj District Taekwondo Association (Regd).
               Empowering athletes since 2011 with the true spirit of martial arts, discipline, and excellence.
             </p>
             <div className="flex space-x-4 pt-2">
