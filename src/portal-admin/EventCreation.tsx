@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Plus, Trash2, X, MapPin, Trophy } from 'lucide-react';
+import { Calendar, Plus, Trash2, X, MapPin, Trophy, UploadCloud, Loader2 } from 'lucide-react';
 
 export const EventCreation = () => {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<any[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({ title: '', date: '', location: '', type: 'Upcoming', image: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   useEffect(() => { fetchItems(); }, []);
   const fetchItems = async () => {
@@ -12,12 +15,47 @@ export const EventCreation = () => {
     setItems(await res.json());
   };
   
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
   const handleAdd = async () => {
     if(!formData.title || !formData.date || !formData.location) return;
-    await fetch('/api/events', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(formData) });
-    setIsModalOpen(false);
-    setFormData({ title: '', date: '', location: '', type: 'Upcoming', image: '' });
-    fetchItems();
+    setIsSubmitting(true);
+    try {
+      let finalImageUrl = formData.image;
+      if (imageFile) {
+        const uploadData = new FormData();
+        uploadData.append('image', imageFile);
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: uploadData
+        });
+        if (uploadRes.ok) {
+          const uploadJson = await uploadRes.json();
+          finalImageUrl = uploadJson.url;
+        }
+      }
+
+      await fetch('/api/events', { 
+        method: 'POST', 
+        headers: {'Content-Type':'application/json'}, 
+        body: JSON.stringify({...formData, image: finalImageUrl}) 
+      });
+      setIsModalOpen(false);
+      setFormData({ title: '', date: '', location: '', type: 'Upcoming', image: '' });
+      setImageFile(null);
+      setImagePreview(null);
+      fetchItems();
+    } catch(err) {
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   const handleDelete = async (id) => {
@@ -97,12 +135,24 @@ export const EventCreation = () => {
                 <input type="text" value={formData.location} onChange={(e)=>setFormData({...formData, location: e.target.value})} className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-all font-medium" placeholder="E.g. Indoor Stadium, Main Branch"/>
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Event Image URL</label>
-                <input type="text" value={formData.image} onChange={(e)=>setFormData({...formData, image: e.target.value})} className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-all font-medium" placeholder="https://unsplash.com/... or /event1.jpg"/>
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Event Image / Poster</label>
+                <div className="w-full h-40 bg-black/50 border-2 border-dashed border-white/10 hover:border-red-500/50 rounded-xl flex flex-col items-center justify-center relative overflow-hidden transition-all group">
+                  {imagePreview ? (
+                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="text-gray-500 flex flex-col items-center gap-2 group-hover:text-red-400 transition-colors">
+                      <UploadCloud className="w-8 h-8" />
+                      <span className="text-xs font-bold uppercase tracking-widest text-center px-4">Click to upload poster image</span>
+                    </div>
+                  )}
+                  <input type="file" accept="image/*" onChange={handleImageChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                </div>
               </div>
               <div className="flex gap-3 pt-4">
                 <button onClick={() => setIsModalOpen(false)} className="flex-1 py-3.5 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold tracking-widest uppercase transition-all">Cancel</button>
-                <button onClick={handleAdd} className="flex-1 py-3.5 bg-gradient-to-r from-red-600 to-red-900 border border-red-500/50 hover:from-red-500 hover:to-red-800 text-white rounded-xl font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(255,0,0,0.3)] transition-all">Publish</button>
+                <button onClick={handleAdd} disabled={isSubmitting} className="flex-1 py-3.5 bg-gradient-to-r from-red-600 to-red-900 border border-red-500/50 hover:from-red-500 hover:to-red-800 disabled:opacity-50 text-white rounded-xl font-bold tracking-widest uppercase shadow-[0_0_15px_rgba(255,0,0,0.3)] transition-all flex items-center justify-center gap-2">
+                  {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : "Publish Event"}
+                </button>
               </div>
             </div>
           </div>

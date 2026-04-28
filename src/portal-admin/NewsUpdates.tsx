@@ -96,12 +96,20 @@ export const NewsUpdates = () => {
           </h2>
           <p className="text-gray-400 font-medium">Manage news articles, announcements, and achievements shown on the public site.</p>
         </div>
-        <button 
-          onClick={handleAddClick}
-          className="flex items-center gap-2 bg-gradient-to-r from-[#ff0000] to-[#990000] hover:from-[#ff1a1a] hover:to-[#cc0000] text-white px-6 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest transition-all border border-red-500/50 shadow-[0_4px_15px_rgba(255,0,0,0.3)]"
-        >
-          <Plus className="w-5 h-5" /> Add News
-        </button>
+        <div className="flex items-center gap-4">
+          {newsData.length >= 3 && <span className="text-xs text-red-500 font-bold uppercase tracking-wider hidden sm:block">Max limit (3) reached</span>}
+          <button 
+            onClick={handleAddClick}
+            disabled={newsData.length >= 3}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest transition-all ${
+              newsData.length >= 3 
+                ? 'bg-white/5 text-gray-500 cursor-not-allowed border border-white/5' 
+                : 'bg-gradient-to-r from-[#ff0000] to-[#990000] hover:from-[#ff1a1a] hover:to-[#cc0000] text-white border border-red-500/50 shadow-[0_4px_15px_rgba(255,0,0,0.3)]'
+            }`}
+          >
+            <Plus className="w-5 h-5" /> Add News
+          </button>
+        </div>
       </div>
 
       <div className="bg-[#111] border border-red-500/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden">
@@ -168,8 +176,20 @@ export const NewsUpdates = () => {
                         <Edit className="w-4 h-4" />
                       </button>
                       <button 
-                        onClick={() => handleDelete(news._id)}
-                        className="p-2.5 bg-[#0a0a0a] border border-white/5 hover:border-[#ef4444]/50 text-[#ef4444] hover:bg-[#ef4444]/10 rounded-xl transition-all shadow-inner" title="Delete"
+                        onClick={() => {
+                          if (newsData.length <= 3) {
+                            alert("You must maintain exactly 3 news items for the website layout. Please edit an existing item instead of deleting it.");
+                            return;
+                          }
+                          handleDelete(news._id);
+                        }}
+                        className={`p-2.5 rounded-xl transition-all shadow-inner ${
+                          newsData.length <= 3 
+                           ? 'bg-[#0a0a0a] border border-white/5 text-gray-600 cursor-not-allowed opacity-50' 
+                           : 'bg-[#0a0a0a] border border-white/5 hover:border-[#ef4444]/50 text-[#ef4444] hover:bg-[#ef4444]/10'
+                        }`} 
+                        title={newsData.length <= 3 ? "Cannot delete: Minimum 3 items required" : "Delete"}
+                        disabled={newsData.length <= 3}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>

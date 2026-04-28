@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Plus, Trash2, X, Upload, Building2, Phone, Mail, MapPin, User, Pencil } from 'lucide-react';
 
 const toTitleCase = (str: string) => {
-  return str.replace(/\b\w+/g, function(txt) {
+  return str.replace(/\b\w+/g, function (txt) {
     return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
   });
 };
@@ -130,10 +130,10 @@ export const TrainingCentersAdmin = () => {
         onChange={e => setFormData({ ...formData, [label === 'Training Center Name *' ? 'centerName' : label === 'Address' ? 'address' : label === 'Coach / Incharge Name' ? 'coachName' : label === 'Contact Number' ? 'contact' : 'email']: e.target.value })}
         className="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500 transition-all font-medium placeholder-gray-600"
         placeholder={
-          label === 'Training Center Name *' ? 'E.g. Maharajganj Taekwondo Training Center & Club' :
-          label === 'Address' ? 'E.g. Dhanewa Dhanei, Maharajganj, U.P.' :
-          label === 'Coach / Incharge Name' ? 'E.g. Abhishek Kumar Vishwakarma' :
-          label === 'Contact Number' ? 'E.g. 9161115569' : 'E.g. tkdabhi@gmail.com'
+          label === 'Training Center Name *' ? 'Enter Training Center & Club Name' :
+            label === 'Address' ? 'Enter Training Center Address' :
+              label === 'Coach / Incharge Name' ? 'Enter Coach Name' :
+                label === 'Contact Number' ? 'Enter Contact Number' : 'Enter Email'
         }
       />
     </div>
