@@ -124,7 +124,8 @@ const PlayerSchema = new mongoose.Schema({
     promotion_date: { type: Date, default: Date.now }
   }],
   
-  date_registered: { type: Date, default: Date.now }
+  date_registered: { type: Date, default: Date.now },
+  registration_number: { type: String, unique: true, sparse: true }
 });
 
 const MatchSchema = new mongoose.Schema({
@@ -786,7 +787,7 @@ app.get("/api/players", async (req, res) => {
     // Transform specifically to flatten 'category_name' for frontend
     const mappedPlayers = players.map(p => ({
        ...p,
-       id: p._id,
+       id: (p as any).registration_number || p._id,
        category_name: p.weight_category_id ? (p.weight_category_id as any).name : 'Unknown'
     }));
     res.json(mappedPlayers);
@@ -847,7 +848,21 @@ app.post("/api/players", async (req, res) => {
       return res.status(400).json({ error: `Please create a valid weight division in Categories for ${age_group} ${gender} at ${weight}kg` });
     }
 
-    // 4. Insert player
+    // 4. Calculate Sequential Registration Number
+    const lastPlayer = await Player.findOne({}, 'registration_number').sort({ date_registered: -1, _id: -1 }).lean();
+    let nextNum = 1;
+    if (lastPlayer && (lastPlayer as any).registration_number) {
+      const parsed = parseInt((lastPlayer as any).registration_number, 10);
+      if (!isNaN(parsed)) {
+        nextNum = parsed + 1;
+      }
+    } else {
+      const count = await Player.countDocuments();
+      nextNum = count + 1;
+    }
+    const registration_number = String(nextNum).padStart(5, '0');
+
+    // 5. Insert player
     const player = new Player({ 
       name, father_name, gender, dob, address, weight, age, age_group, weight_category_id: matchedCategoryId,
       email, mobile, blood_group, aadhar_no, height_cm, father_occupation, 
@@ -856,7 +871,8 @@ app.post("/api/players", async (req, res) => {
       aadhar_url, photo_url, signature_url,
       guardian_signature_url: guardian_signature_url || '',
       password: password || '',
-      status: status || 'Pending Verification'
+      status: status || 'Pending Verification',
+      registration_number
     });
     await player.save();
 

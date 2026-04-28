@@ -86,6 +86,11 @@ export const PromoVideoAdmin = () => {
             className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-3.5 text-white focus:border-red-600 focus:outline-none focus:ring-1 focus:ring-red-600/50 transition-all font-medium text-sm placeholder-gray-600"
             placeholder="e.g. https://www.youtube.com/embed/..."
           />
+          {data.hero_video_url && (
+            <div className="w-full aspect-video rounded-xl overflow-hidden border border-white/10 mt-2">
+              <iframe src={data.hero_video_url.replace('autoplay=1', 'autoplay=0')} className="w-full h-full" allowFullScreen></iframe>
+            </div>
+          )}
         </div>
 
         <div className="bg-[#0a0a0a] rounded-[32px] border border-white/5 p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden">
@@ -100,6 +105,11 @@ export const PromoVideoAdmin = () => {
             className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-3.5 text-white focus:border-red-600 focus:outline-none focus:ring-1 focus:ring-red-600/50 transition-all font-medium text-sm placeholder-gray-600"
             placeholder="e.g. https://www.youtube.com/embed/..."
           />
+          {data.benefits_video_url && (
+            <div className="w-full aspect-video rounded-xl overflow-hidden border border-white/10 mt-2">
+              <iframe src={data.benefits_video_url.replace('autoplay=1', 'autoplay=0')} className="w-full h-full" allowFullScreen></iframe>
+            </div>
+          )}
         </div>
 
         <div className="bg-[#0a0a0a] rounded-[32px] border border-white/5 p-8 flex flex-col gap-6 shadow-2xl relative overflow-hidden md:col-span-2">
@@ -114,6 +124,11 @@ export const PromoVideoAdmin = () => {
             className="w-full bg-black/40 border border-white/5 rounded-xl px-4 py-3.5 text-white focus:border-red-600 focus:outline-none focus:ring-1 focus:ring-red-600/50 transition-all font-medium text-sm placeholder-gray-600"
             placeholder="e.g. https://www.youtube.com/embed/..."
           />
+          {data.self_development_video_url && (
+            <div className="w-full aspect-video rounded-xl overflow-hidden border border-white/10 mt-2">
+              <iframe src={data.self_development_video_url.replace('autoplay=1', 'autoplay=0')} className="w-full h-full" allowFullScreen></iframe>
+            </div>
+          )}
         </div>
       </div>
     </div>

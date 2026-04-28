@@ -256,7 +256,7 @@ export const Registration = () => {
 
           // Map to proper view fields for PrintableView
           const newReg = {
-            id: data.player.id || data.player._id,
+            id: data.player.registration_number || data.player.id || data.player._id,
             name: data.player.name,
             email: data.player.email,
             center: data.player.training_center,

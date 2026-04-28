@@ -57,6 +57,37 @@ export const Registrations = () => {
     fetchRecords();
   }, []);
 
+  // Handle browser back button to close modals instead of leaving the page
+  React.useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      if (printReg || selectedReg) {
+        // Prevent navigating back
+        window.history.pushState(null, '', window.location.href);
+        setPrintReg(null);
+        setSelectedReg(null);
+      }
+    };
+    
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [printReg, selectedReg]);
+
+  const openPrintModal = (reg: any) => {
+    window.history.pushState({ modal: 'print' }, '', window.location.href);
+    setPrintReg(reg);
+  };
+
+  const openViewModal = (reg: any) => {
+    window.history.pushState({ modal: 'view' }, '', window.location.href);
+    setSelectedReg(reg);
+  };
+
+  const closeModals = () => {
+    if (printReg || selectedReg) {
+      window.history.back(); // This will trigger popstate which closes the modal
+    }
+  };
+
 // Reusable print component moved to external file PrintableView.tsx
 
 
@@ -204,13 +235,13 @@ export const Registrations = () => {
                   </td>
                   <td className="px-6 py-5 text-right flex items-center justify-end gap-3 opacity-100 sm:opacity-50 group-hover:opacity-100 transition-opacity">
                     <button 
-                      onClick={() => setPrintReg(reg)}
+                      onClick={() => openPrintModal(reg)}
                       className="p-2.5 bg-[#0a0a0a] border border-white/5 hover:border-[#10b981]/50 text-[#10b981] hover:bg-[#10b981]/10 rounded-xl transition-all shadow-inner" title="Print Form Format"
                     >
                       <Printer className="w-4 h-4" />
                     </button>
                     <button 
-                      onClick={() => setSelectedReg(reg)}
+                      onClick={() => openViewModal(reg)}
                       className="p-2.5 bg-[#0a0a0a] border border-white/5 hover:border-[#3b82f6]/50 text-[#3b82f6] hover:bg-[#3b82f6]/10 rounded-xl transition-all shadow-inner" title="View Document Details"
                     >
                       <Eye className="w-4 h-4" />
@@ -247,7 +278,7 @@ export const Registrations = () => {
                 <span className="p-2 bg-[#3b82f6]/10 text-[#3b82f6] rounded-xl"><Eye className="w-5 h-5" /></span>
                 Registration Details
               </h3>
-              <button onClick={() => setSelectedReg(null)} className="text-gray-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-lg">
+              <button onClick={closeModals} className="text-gray-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 p-2 rounded-lg">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -319,7 +350,7 @@ export const Registrations = () => {
                   </button>
                 )}
                 <button 
-                  onClick={() => setSelectedReg(null)} 
+                  onClick={closeModals} 
                   className="w-full bg-white/5 hover:bg-white/10 text-white font-bold py-3.5 rounded-xl uppercase tracking-widest text-xs transition-colors border border-white/10 hover:border-[#3b82f6]/50"
                 >
                   Close Document
@@ -331,7 +362,7 @@ export const Registrations = () => {
       )}
 
       {/* Print View Component */}
-      <PrintableView reg={printReg} onClose={() => setPrintReg(null)} />
+      <PrintableView reg={printReg} onClose={closeModals} />
 
     </div>
   );
