@@ -30,7 +30,7 @@ export const PortalLogin = () => {
                <img src="/logo.png" alt="MDTA Logo" className="w-full h-full object-contain" />
              </div>
            </Link>
-           <h2 className="text-[28px] font-black text-white tracking-widest uppercase mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">Portal Admin</h2>
+           <h2 className="text-[28px] font-black text-white tracking-widest uppercase mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">Admin Login</h2>
            <p className="text-gray-400 text-sm font-medium">Sign in to manage portal content & forms</p>
         </div>
         {error && <div className="bg-red-500/10 border border-red-500/50 text-red-500 p-4 rounded-xl mb-6 text-[13px] font-bold text-center animate-in fade-in slide-in-from-top-2">{error}</div>}

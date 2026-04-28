@@ -49,6 +49,26 @@ const ScrollToAnchor = () => {
 
   return null;
 };
+
+const getYouTubeEmbedUrl = (url: string) => {
+  if (!url) return '';
+  if (url.includes('youtube.com/embed/')) return url;
+  
+  let videoId = '';
+  if (url.includes('youtube.com/shorts/')) {
+    videoId = url.split('youtube.com/shorts/')[1].split(/[?#]/)[0];
+  } else if (url.includes('youtu.be/')) {
+    videoId = url.split('youtu.be/')[1].split(/[?#]/)[0];
+  } else if (url.includes('youtube.com/watch')) {
+    try {
+      const urlObj = new URL(url);
+      videoId = urlObj.searchParams.get('v') || '';
+    } catch (e) { return url; }
+  }
+  
+  if (videoId) return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+  return url;
+};
 import { BlackBeltsAdmin } from './portal-admin/BlackBeltsAdmin';
 import { NationalPlayersAdmin } from './portal-admin/NationalPlayersAdmin';
 import { PlayerLogin } from './player/PlayerLogin';
@@ -64,7 +84,9 @@ import { BlackBeltHolders } from './public-pages/BlackBeltHolders';
 import { NationalPlayers } from './public-pages/NationalPlayers';
 import { AffiliatedTrainingCenters } from './public-pages/AffiliatedTrainingCenters';
 import { Gallery } from './public-pages/Gallery';
+import { UpcomingCamps } from './public-pages/UpcomingCamps';
 import { TrainingCentersAdmin } from './portal-admin/TrainingCentersAdmin';
+import { UpcomingCampsAdmin } from './portal-admin/UpcomingCampsAdmin';
 import { AboutMDTA } from './public-pages/AboutMDTA';
 
 // --- Components ---
@@ -307,7 +329,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
     { name: 'Latest News', href: '/#news' },
     { name: 'Gallery', href: '/gallery' },
     { name: 'Events', href: '/events' },
-    { name: 'Portal Admin Login', href: '/portal-admin/login' },
+    { name: 'Admin Login', href: '/portal-admin/login' },
     { name: 'Dashboard Admin Login', href: '/admin/login' },
     { name: 'Coach Login', href: '/coach/login' },
     { name: 'Player Login', href: '/player/login' },
@@ -414,18 +436,18 @@ const Navbar = () => {
         { name: 'Gallery', href: '/gallery' },
         { name: 'Events', href: '/events' },
         { name: 'Documents & Download', href: '#' },
-        { name: 'Upcoming Training Camps', href: '#' },
+        { name: 'Upcoming Training Camps', href: '/upcoming-training-camps' },
       ]
     },
     {
       name: 'Login',
       href: '#',
       dropdown: [
-        { name: 'Portal Admin Login', href: '/portal-admin/login' },
+        { name: 'Admin Login', href: '/portal-admin/login' },
         { name: 'Dashboard Admin Login', href: '/admin/login' },
         { name: 'Coach Login', href: '/coach/login' },
         { name: 'Player Login', href: '/player/login' },
-        { name: 'Webmail Login', href: '/admin/login' },
+        { name: 'Webmail Login', href: 'https://mail.hostinger.com/auth/login' },
       ]
     },
   ];
@@ -486,6 +508,8 @@ const Navbar = () => {
                           <LinkComponent
                             to={dropLink.href.startsWith('/') ? dropLink.href : undefined}
                             href={!dropLink.href.startsWith('/') ? dropLink.href : undefined}
+                            target={!dropLink.href.startsWith('/') ? "_blank" : undefined}
+                            rel={!dropLink.href.startsWith('/') ? "noopener noreferrer" : undefined}
                             className="flex items-center justify-between px-6 py-3.5 text-[12px] font-bold tracking-widest uppercase text-gray-400 hover:text-white hover:bg-white/5 transition-all border-l-2 border-transparent hover:border-red-500 group/item relative overflow-hidden"
                           >
                             <div className="absolute inset-0 bg-gradient-to-r from-red-600/10 to-transparent translate-x-[-100%] group-hover/item:translate-x-0 transition-transform duration-300 ease-out"></div>
@@ -596,6 +620,8 @@ const Navbar = () => {
                             <LinkComponent
                               to={dropLink.href.startsWith('/') ? dropLink.href : undefined}
                               href={!dropLink.href.startsWith('/') ? dropLink.href : undefined}
+                              target={!dropLink.href.startsWith('/') ? "_blank" : undefined}
+                              rel={!dropLink.href.startsWith('/') ? "noopener noreferrer" : undefined}
                               onClick={() => setIsOpen(false)}
                               className="flex items-center justify-between px-5 py-3 text-[12px] font-bold tracking-widest uppercase text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-white/5 hover:to-transparent rounded-r-lg transition-all border-l border-transparent hover:border-red-500"
                             >
@@ -638,7 +664,7 @@ const Hero = () => {
         if (resData && resData.content) {
           try {
             const parsed = JSON.parse(resData.content);
-            if (parsed.hero_video_url) setPromoVideoUrl(parsed.hero_video_url);
+            if (parsed.hero_video_url) setPromoVideoUrl(getYouTubeEmbedUrl(parsed.hero_video_url));
           } catch (e) { }
         }
       })
@@ -682,9 +708,9 @@ const Hero = () => {
             </Link>
             <button
               onClick={() => setIsVideoOpen(true)}
-              className="cursor-pointer bg-transparent hover:bg-red-600/10 active:bg-red-600/20 text-gray-300 hover:text-white border border-gray-500 hover:border-red-500 px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-medium tracking-wide flex items-center justify-center transition-all active:scale-95 shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_25px_rgba(255,0,0,0.4)] transform hover:-translate-y-0.5 whitespace-nowrap"
+              className="cursor-pointer bg-white/10 backdrop-blur-md hover:bg-red-600/20 active:bg-red-600/30 text-white border border-white/20 hover:border-red-500 px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all active:scale-95 shadow-[0_0_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_25px_rgba(255,0,0,0.4)] transform hover:-translate-y-0.5 whitespace-nowrap gap-2"
             >
-              Watch Demo
+              <Play className="w-4 h-4 fill-current" /> Watch Demo
             </button>
           </div>
         </motion.div>
@@ -844,7 +870,7 @@ const TrainingPrograms = () => {
               key={i}
               whileHover={{ scale: 1.02, y: -5 }}
               whileTap={{ scale: 0.96 }}
-              className="group cursor-pointer bg-gradient-to-br from-[#4a4a4a] via-[#1a1a1a] to-[#050505] p-3 rounded-[24px] border border-red-500/30 md:border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 hover:border-[#ff0000] hover:shadow-[0_0_40px_rgba(255,0,0,0.6)] active:border-[#ff0000] active:shadow-[0_0_40px_rgba(255,0,0,0.8)] flex flex-col"
+              className="group cursor-pointer bg-gradient-to-br from-[#4a4a4a] via-[#1a1a1a] to-[#050505] p-3 rounded-[24px] border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 hover:border-[#ff0000] hover:shadow-[0_0_40px_rgba(255,0,0,0.6)] active:border-[#ff0000] active:shadow-[0_0_40px_rgba(255,0,0,0.8)] flex flex-col"
             >
               <div className="h-[220px] rounded-[18px] overflow-hidden relative bg-[#111]">
                 <img
@@ -856,7 +882,7 @@ const TrainingPrograms = () => {
                 <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] z-10 pointer-events-none"></div>
               </div>
               <div className="px-3 pt-5 pb-3">
-                <h3 className="text-[19px] font-bold text-[#ff1a1a] md:text-white mb-2 tracking-wide md:group-hover:text-[#ff1a1a] transition-colors">{p.title}</h3>
+                <h3 className="text-[19px] font-bold text-white mb-2 tracking-wide group-hover:text-[#ff1a1a] transition-colors">{p.title}</h3>
                 <p className="text-gray-300 text-[14px] leading-relaxed font-normal">{p.desc}</p>
               </div>
             </motion.div>
@@ -919,8 +945,8 @@ const BenefitsSection = () => {
         if (resData && resData.content) {
           try {
             const parsed = JSON.parse(resData.content);
-            if (parsed.benefits_video_url) setPromoVideoUrl(parsed.benefits_video_url);
-            if (parsed.self_development_video_url) setSelfDevVideoUrl(parsed.self_development_video_url);
+            if (parsed.benefits_video_url) setPromoVideoUrl(getYouTubeEmbedUrl(parsed.benefits_video_url));
+            if (parsed.self_development_video_url) setSelfDevVideoUrl(getYouTubeEmbedUrl(parsed.self_development_video_url));
           } catch (e) { }
         }
       })
@@ -1711,6 +1737,7 @@ export default function App() {
           <Route path="/black-belt-holders" element={<PublicLayout><BlackBeltHolders /></PublicLayout>} />
           <Route path="/national-players" element={<PublicLayout><NationalPlayers /></PublicLayout>} />
           <Route path="/gallery" element={<PublicLayout><Gallery /></PublicLayout>} />
+          <Route path="/upcoming-training-camps" element={<PublicLayout><UpcomingCamps /></PublicLayout>} />
           <Route path="/register" element={<Registration />} />
           <Route path="/events" element={<PublicLayout><EventsDisplay /></PublicLayout>} />
           <Route path="/events/upcoming" element={<PublicLayout><EventsDisplay /></PublicLayout>} />
@@ -1727,6 +1754,7 @@ export default function App() {
             <Route path="belts" element={<BeltManagement />} />
             <Route path="academy" element={<CoachAcademy />} />
             <Route path="training-centers" element={<TrainingCentersAdmin />} />
+            <Route path="camps" element={<UpcomingCampsAdmin />} />
             <Route path="events" element={<EventCreation />} />
             <Route path="gallery" element={<MediaGallery />} />
             <Route path="documents" element={<DocumentDownloads />} />

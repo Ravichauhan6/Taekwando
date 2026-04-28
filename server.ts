@@ -273,9 +273,20 @@ const TrainingCenterSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now }
 });
 
+const TrainingCampSchema = new mongoose.Schema({
+  title: String,
+  date: String,
+  location: String,
+  description: String,
+  status: { type: String, default: 'Upcoming' },
+  image_url: String,
+  created_at: { type: Date, default: Date.now }
+});
+
 const VerifiedEntity = mongoose.model("VerifiedEntity", VerifiedEntitySchema);
 const ContentDetail = mongoose.model("ContentDetail", ContentDetailSchema);
 const TrainingCenter = mongoose.model("TrainingCenter", TrainingCenterSchema);
+const TrainingCamp = mongoose.model("TrainingCamp", TrainingCampSchema);
 
 const UserSessionSchema = new mongoose.Schema({
   user: String,
@@ -379,7 +390,7 @@ app.post("/api/news", async (req, res) => {
 
 app.patch("/api/news/:id", async (req, res) => {
   try {
-    const news = await News.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const news = await News.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     res.json({ success: true, news });
   } catch (err) {
     res.status(500).json({ error: "Failed to update news" });
@@ -722,7 +733,7 @@ app.post("/api/coaches", async (req, res) => {
 
 app.put("/api/coaches/:id", async (req, res) => {
   try {
-    const coach = await Coach.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const coach = await Coach.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' });
     res.json({ success: true, coach });
   } catch (err) {
     res.status(500).json({ error: "Failed to update coach" });
@@ -1065,7 +1076,7 @@ app.patch("/api/players/:id", async (req, res) => {
     updates.age_group = age_group;
     updates.weight_category_id = matchedCategoryId;
 
-    const updatedPlayer = await Player.findByIdAndUpdate(id, updates, { new: true });
+    const updatedPlayer = await Player.findByIdAndUpdate(id, updates, { returnDocument: 'after' });
     
     const finalPlayer = await Player.findById(updatedPlayer._id).populate('weight_category_id').lean();
     res.json({ success: true, player: {
@@ -1095,7 +1106,7 @@ app.patch("/api/players/:id/status", async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
   try {
-    const player = await Player.findByIdAndUpdate(id, { status }, { new: true });
+    const player = await Player.findByIdAndUpdate(id, { status }, { returnDocument: 'after' });
     if (!player) return res.status(404).json({ error: "Player not found" });
     res.json({ success: true, player });
   } catch (err) {
@@ -1339,7 +1350,7 @@ app.post("/api/belt-promotions", async (req, res) => {
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.patch("/api/belt-promotions/:id", async (req, res) => {
-  try { res.json(await BeltPromotion.findByIdAndUpdate(req.params.id, req.body, { new: true })); }
+  try { res.json(await BeltPromotion.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.delete("/api/belt-promotions/:id", async (req, res) => {
@@ -1357,7 +1368,7 @@ app.post("/api/coaches", async (req, res) => {
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.patch("/api/coaches/:id", async (req, res) => {
-  try { res.json(await Coach.findByIdAndUpdate(req.params.id, req.body, { new: true })); }
+  try { res.json(await Coach.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.delete("/api/coaches/:id", async (req, res) => {
@@ -1375,7 +1386,7 @@ app.post("/api/events", async (req, res) => {
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.patch("/api/events/:id", async (req, res) => {
-  try { res.json(await Event.findByIdAndUpdate(req.params.id, req.body, { new: true })); }
+  try { res.json(await Event.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.delete("/api/events/:id", async (req, res) => {
@@ -1483,7 +1494,37 @@ app.post("/api/training-centers", async (req, res) => {
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.patch("/api/training-centers/:id", async (req, res) => {
-  try { res.json(await TrainingCenter.findByIdAndUpdate(req.params.id, req.body, { new: true })); }
+  try { res.json(await TrainingCenter.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' })); }
+  catch (err) { res.status(500).json({ error: err.message }); }
+});
+app.delete("/api/training-centers/:id", async (req, res) => {
+  try { await TrainingCenter.findByIdAndDelete(req.params.id); res.json({ success: true }); }
+  catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// Training Camps
+app.get("/api/training-camps", async (req, res) => {
+  try { res.json(await TrainingCamp.find().sort({ created_at: 1 })); }
+  catch (err) { res.status(500).json({ error: err.message }); }
+});
+app.post("/api/training-camps", async (req, res) => {
+  try { res.json(await new TrainingCamp(req.body).save()); }
+  catch (err) { res.status(500).json({ error: err.message }); }
+});
+app.patch("/api/training-camps/:id", async (req, res) => {
+  try { res.json(await TrainingCamp.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' })); }
+  catch (err) { res.status(500).json({ error: err.message }); }
+});
+app.delete("/api/training-camps/:id", async (req, res) => {
+  try { await TrainingCamp.findByIdAndDelete(req.params.id); res.json({ success: true }); }
+  catch (err) { res.status(500).json({ error: err.message }); }
+});
+app.post("/api/training-centers", async (req, res) => {
+  try { res.json(await new TrainingCenter(req.body).save()); }
+  catch (err) { res.status(500).json({ error: err.message }); }
+});
+app.patch("/api/training-centers/:id", async (req, res) => {
+  try { res.json(await TrainingCenter.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.delete("/api/training-centers/:id", async (req, res) => {
@@ -1505,7 +1546,7 @@ app.delete("/api/verified-entities/:id", async (req, res) => {
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.patch("/api/verified-entities/:id", async (req, res) => {
-  try { res.json(await VerifiedEntity.findByIdAndUpdate(req.params.id, req.body, { new: true })); }
+  try { res.json(await VerifiedEntity.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after' })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 

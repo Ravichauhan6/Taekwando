@@ -27,15 +27,59 @@ export const PromoVideoAdmin = () => {
       .catch(err => console.error(err));
   }, []);
 
+  const getYouTubeEmbedUrl = (url: string) => {
+    if (!url) return '';
+    if (url.includes('youtube.com/embed/')) return url;
+    
+    let videoId = '';
+    if (url.includes('youtube.com/shorts/')) {
+      videoId = url.split('youtube.com/shorts/')[1].split(/[?#]/)[0];
+    } else if (url.includes('youtu.be/')) {
+      videoId = url.split('youtu.be/')[1].split(/[?#]/)[0];
+    } else if (url.includes('youtube.com/watch')) {
+      const urlObj = new URL(url);
+      videoId = urlObj.searchParams.get('v') || '';
+    }
+    
+    if (videoId) return `https://www.youtube.com/embed/${videoId}`;
+    return url;
+  };
+
+  const getYouTubeThumbnail = (url: string) => {
+    if (!url) return null;
+    let videoId = '';
+    if (url.includes('youtube.com/embed/')) {
+      videoId = url.split('youtube.com/embed/')[1].split(/[?#]/)[0];
+    } else if (url.includes('youtube.com/shorts/')) {
+      videoId = url.split('youtube.com/shorts/')[1].split(/[?#]/)[0];
+    } else if (url.includes('youtu.be/')) {
+      videoId = url.split('youtu.be/')[1].split(/[?#]/)[0];
+    } else if (url.includes('youtube.com/watch')) {
+      const urlObj = new URL(url);
+      videoId = urlObj.searchParams.get('v') || '';
+    }
+    
+    if (videoId) return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+    return null;
+  };
+
   const handleSave = async () => {
     setIsSaving(true);
     setSuccess(false);
     try {
+      // Clean up URLs before saving
+      const cleanedData = {
+        hero_video_url: getYouTubeEmbedUrl(data.hero_video_url),
+        benefits_video_url: getYouTubeEmbedUrl(data.benefits_video_url),
+        self_development_video_url: getYouTubeEmbedUrl(data.self_development_video_url)
+      };
+
       await fetch('/api/content', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ section_name: 'promo_videos', content: JSON.stringify(data) })
+        body: JSON.stringify({ section_name: 'promo_videos', content: JSON.stringify(cleanedData) })
       });
+      setData(cleanedData);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch(err) {
@@ -87,8 +131,30 @@ export const PromoVideoAdmin = () => {
             placeholder="e.g. https://www.youtube.com/embed/..."
           />
           {data.hero_video_url && (
-            <div className="w-full aspect-video rounded-xl overflow-hidden border border-white/10 mt-2">
-              <iframe src={data.hero_video_url.replace('autoplay=1', 'autoplay=0')} className="w-full h-full" allowFullScreen></iframe>
+            <div className="w-full aspect-video rounded-xl overflow-hidden border border-white/10 mt-2 bg-black relative group/preview">
+              {getYouTubeThumbnail(data.hero_video_url) ? (
+                <>
+                  <img 
+                    src={getYouTubeThumbnail(data.hero_video_url) || ''} 
+                    className="w-full h-full object-cover opacity-60" 
+                    onError={(e) => {
+                      // Fallback to hqdefault if maxresdefault is not available
+                      const target = e.target as HTMLImageElement;
+                      if (target.src.includes('maxresdefault')) {
+                        target.src = target.src.replace('maxresdefault', 'hqdefault');
+                      }
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-red-600/20 backdrop-blur-md border border-red-500/30 p-3 rounded-full">
+                       <Video className="w-6 h-6 text-red-500" />
+                    </div>
+                  </div>
+                  <div className="absolute bottom-2 left-2 bg-black/80 px-2 py-1 rounded text-[9px] font-black text-white uppercase tracking-widest border border-white/10">Thumbnail Preview</div>
+                </>
+              ) : (
+                <iframe src={data.hero_video_url.replace('autoplay=1', 'autoplay=0')} className="w-full h-full" allowFullScreen></iframe>
+              )}
             </div>
           )}
         </div>
@@ -106,8 +172,29 @@ export const PromoVideoAdmin = () => {
             placeholder="e.g. https://www.youtube.com/embed/..."
           />
           {data.benefits_video_url && (
-            <div className="w-full aspect-video rounded-xl overflow-hidden border border-white/10 mt-2">
-              <iframe src={data.benefits_video_url.replace('autoplay=1', 'autoplay=0')} className="w-full h-full" allowFullScreen></iframe>
+            <div className="w-full aspect-video rounded-xl overflow-hidden border border-white/10 mt-2 bg-black relative group/preview">
+              {getYouTubeThumbnail(data.benefits_video_url) ? (
+                <>
+                  <img 
+                    src={getYouTubeThumbnail(data.benefits_video_url) || ''} 
+                    className="w-full h-full object-cover opacity-60" 
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      if (target.src.includes('maxresdefault')) {
+                        target.src = target.src.replace('maxresdefault', 'hqdefault');
+                      }
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-red-600/20 backdrop-blur-md border border-red-500/30 p-3 rounded-full">
+                       <Video className="w-6 h-6 text-red-500" />
+                    </div>
+                  </div>
+                  <div className="absolute bottom-2 left-2 bg-black/80 px-2 py-1 rounded text-[9px] font-black text-white uppercase tracking-widest border border-white/10">Thumbnail Preview</div>
+                </>
+              ) : (
+                <iframe src={data.benefits_video_url.replace('autoplay=1', 'autoplay=0')} className="w-full h-full" allowFullScreen></iframe>
+              )}
             </div>
           )}
         </div>
@@ -125,8 +212,29 @@ export const PromoVideoAdmin = () => {
             placeholder="e.g. https://www.youtube.com/embed/..."
           />
           {data.self_development_video_url && (
-            <div className="w-full aspect-video rounded-xl overflow-hidden border border-white/10 mt-2">
-              <iframe src={data.self_development_video_url.replace('autoplay=1', 'autoplay=0')} className="w-full h-full" allowFullScreen></iframe>
+            <div className="w-full aspect-video rounded-xl overflow-hidden border border-white/10 mt-2 bg-black relative group/preview">
+              {getYouTubeThumbnail(data.self_development_video_url) ? (
+                <>
+                  <img 
+                    src={getYouTubeThumbnail(data.self_development_video_url) || ''} 
+                    className="w-full h-full object-cover opacity-60" 
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      if (target.src.includes('maxresdefault')) {
+                        target.src = target.src.replace('maxresdefault', 'hqdefault');
+                      }
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="bg-red-600/20 backdrop-blur-md border border-red-500/30 p-3 rounded-full">
+                       <Video className="w-6 h-6 text-red-500" />
+                    </div>
+                  </div>
+                  <div className="absolute bottom-2 left-2 bg-black/80 px-2 py-1 rounded text-[9px] font-black text-white uppercase tracking-widest border border-white/10">Thumbnail Preview</div>
+                </>
+              ) : (
+                <iframe src={data.self_development_video_url.replace('autoplay=1', 'autoplay=0')} className="w-full h-full" allowFullScreen></iframe>
+              )}
             </div>
           )}
         </div>
