@@ -695,7 +695,7 @@ const sendCoachApprovalEmail = async (email: string, name: string, password: str
 
 app.get("/api/coaches", async (req, res) => {
   try {
-    const coaches = await Coach.find().sort({ date: -1 });
+    const coaches = await Coach.find().sort({ date: 1 });
     res.json(coaches);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch coaches" });
@@ -782,7 +782,7 @@ app.delete("/api/categories/:id", async (req, res) => {
 // 3. Players API
 app.get("/api/players", async (req, res) => {
   try {
-    const players = await Player.find().populate('weight_category_id').sort({ date_registered: -1 }).lean();
+    const players = await Player.find().populate('weight_category_id').sort({ date_registered: 1 }).lean();
     
     // Transform specifically to flatten 'category_name' for frontend
     const mappedPlayers = players.map(p => ({
@@ -1331,7 +1331,7 @@ app.delete("/api/admin/users/:id", async (req, res) => {
 
 // Belt Promotions
 app.get("/api/belt-promotions", async (req, res) => {
-  try { res.json(await BeltPromotion.find().sort({ date: -1 })); }
+  try { res.json(await BeltPromotion.find().sort({ date: 1 })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.post("/api/belt-promotions", async (req, res) => {
@@ -1349,7 +1349,7 @@ app.delete("/api/belt-promotions/:id", async (req, res) => {
 
 // Coach Academy
 app.get("/api/coaches", async (req, res) => {
-  try { res.json(await Coach.find().sort({ date: -1 })); }
+  try { res.json(await Coach.find().sort({ date: 1 })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.post("/api/coaches", async (req, res) => {
@@ -1367,7 +1367,7 @@ app.delete("/api/coaches/:id", async (req, res) => {
 
 // Events
 app.get("/api/events", async (req, res) => {
-  try { res.json(await Event.find().sort({ created_at: -1 })); }
+  try { res.json(await Event.find().sort({ created_at: 1 })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.post("/api/events", async (req, res) => {
@@ -1385,7 +1385,7 @@ app.delete("/api/events/:id", async (req, res) => {
 
 // Media Gallery
 app.get("/api/media", async (req, res) => {
-  try { res.json(await Media.find().sort({ date: -1 })); }
+  try { res.json(await Media.find().sort({ date: 1 })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.post("/api/media", async (req, res) => {
@@ -1399,7 +1399,7 @@ app.delete("/api/media/:id", async (req, res) => {
 
 // Document Downloads
 app.get("/api/documents", async (req, res) => {
-  try { res.json(await DocumentModel.find().sort({ date: -1 })); }
+  try { res.json(await DocumentModel.find().sort({ date: 1 })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.post("/api/documents", async (req, res) => {
@@ -1413,7 +1413,7 @@ app.delete("/api/documents/:id", async (req, res) => {
 
 // Notifications
 app.get("/api/notifications", async (req, res) => {
-  try { res.json(await NotificationModel.find().sort({ date: -1 })); }
+  try { res.json(await NotificationModel.find().sort({ date: 1 })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.post("/api/notifications", async (req, res) => {
@@ -1475,7 +1475,7 @@ app.get("/api/coach-messages/received/:player_id", async (req, res) => {
 
 // Training Centers
 app.get("/api/training-centers", async (req, res) => {
-  try { res.json(await TrainingCenter.find().sort({ date: -1 })); }
+  try { res.json(await TrainingCenter.find().sort({ date: 1 })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.post("/api/training-centers", async (req, res) => {
@@ -1493,7 +1493,7 @@ app.delete("/api/training-centers/:id", async (req, res) => {
 
 // Verify Us & Content
 app.get("/api/verified-entities", async (req, res) => {
-  try { res.json(await VerifiedEntity.find().sort({ date: -1 })); }
+  try { res.json(await VerifiedEntity.find().sort({ date: 1 })); }
   catch (err) { res.status(500).json({ error: err.message }); }
 });
 app.post("/api/verified-entities", async (req, res) => {

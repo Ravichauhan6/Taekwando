@@ -195,9 +195,11 @@ export const CoachAcademy = () => {
                      </div>
                   </td>
                   <td className="px-6 py-4"><span className="text-green-500 bg-green-500/10 px-3 py-1.5 rounded-full text-[11px] uppercase tracking-widest font-black border border-green-500/20 shadow-[0_0_10px_rgba(34,197,94,0.1)]">{coach.status}</span></td>
-                  <td className="px-6 py-4 text-right space-x-2">
-                     <button onClick={()=>openEditModal(coach)} className="p-2.5 bg-white/5 hover:bg-blue-500/20 text-gray-500 hover:text-blue-400 rounded-xl transition-all"><Edit3 className="w-4 h-4" /></button>
-                     <button onClick={()=>handleDelete(coach._id)} className="p-2.5 bg-white/5 hover:bg-red-500/20 text-gray-500 hover:text-red-500 rounded-xl transition-all"><Trash2 className="w-4 h-4" /></button>
+                  <td className="px-6 py-4">
+                     <div className="flex items-center justify-end gap-2 whitespace-nowrap">
+                       <button onClick={()=>openEditModal(coach)} className="p-2.5 bg-white/5 hover:bg-blue-500/20 text-gray-500 hover:text-blue-400 rounded-xl transition-all"><Edit3 className="w-4 h-4" /></button>
+                       <button onClick={()=>handleDelete(coach._id)} className="p-2.5 bg-white/5 hover:bg-red-500/20 text-gray-500 hover:text-red-500 rounded-xl transition-all"><Trash2 className="w-4 h-4" /></button>
+                     </div>
                   </td>
                 </tr>
               ))}

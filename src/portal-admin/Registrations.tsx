@@ -233,25 +233,27 @@ export const Registrations = () => {
                       {reg.status}
                     </span>
                   </td>
-                  <td className="px-6 py-5 text-right flex items-center justify-end gap-3 opacity-100 sm:opacity-50 group-hover:opacity-100 transition-opacity">
-                    <button 
-                      onClick={() => openPrintModal(reg)}
-                      className="p-2.5 bg-[#0a0a0a] border border-white/5 hover:border-[#10b981]/50 text-[#10b981] hover:bg-[#10b981]/10 rounded-xl transition-all shadow-inner" title="Print Form Format"
-                    >
-                      <Printer className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={() => openViewModal(reg)}
-                      className="p-2.5 bg-[#0a0a0a] border border-white/5 hover:border-[#3b82f6]/50 text-[#3b82f6] hover:bg-[#3b82f6]/10 rounded-xl transition-all shadow-inner" title="View Document Details"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={() => handleDelete(reg.id)}
-                      className="p-2.5 bg-[#0a0a0a] border border-white/5 hover:border-[#ef4444]/50 text-[#ef4444] hover:bg-[#ef4444]/10 rounded-xl transition-all shadow-inner" title="Delete Form"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                  <td className="px-6 py-5 opacity-100 sm:opacity-50 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center justify-end gap-3 whitespace-nowrap">
+                      <button 
+                        onClick={() => openPrintModal(reg)}
+                        className="p-2.5 bg-[#0a0a0a] border border-white/5 hover:border-[#10b981]/50 text-[#10b981] hover:bg-[#10b981]/10 rounded-xl transition-all shadow-inner" title="Print Form Format"
+                      >
+                        <Printer className="w-4 h-4" />
+                      </button>
+                      <button 
+                        onClick={() => openViewModal(reg)}
+                        className="p-2.5 bg-[#0a0a0a] border border-white/5 hover:border-[#3b82f6]/50 text-[#3b82f6] hover:bg-[#3b82f6]/10 rounded-xl transition-all shadow-inner" title="View Document Details"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(reg.id)}
+                        className="p-2.5 bg-[#0a0a0a] border border-white/5 hover:border-[#ef4444]/50 text-[#ef4444] hover:bg-[#ef4444]/10 rounded-xl transition-all shadow-inner" title="Delete Form"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
