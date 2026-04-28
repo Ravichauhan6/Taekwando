@@ -4,8 +4,10 @@ import { Globe, Users, Newspaper, Bell, LogOut, Shield, Award, Building, Buildin
 import { motion, AnimatePresence } from 'motion/react';
 import heroBg from './assets/hero-bg.jpg';
 import tcImg from './assets/tc.jpg';
-import sfImg from './assets/sf.jpg';
+import sfImg from './assets/sf..jpg';
 import ticImg from './assets/tic.jpeg';
+import yogaImg from './assets/yoga.jpg';
+import fitnessImg from './assets/fitness.jpg';
 
 import { AdminLayout } from './admin/AdminLayout';
 import { Login } from './admin/Login';
@@ -63,6 +65,7 @@ import { NationalPlayers } from './public-pages/NationalPlayers';
 import { AffiliatedTrainingCenters } from './public-pages/AffiliatedTrainingCenters';
 import { Gallery } from './public-pages/Gallery';
 import { TrainingCentersAdmin } from './portal-admin/TrainingCentersAdmin';
+import { AboutMDTA } from './public-pages/AboutMDTA';
 
 // --- Components ---
 
@@ -295,7 +298,7 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
   const searchData = [
     { name: 'Home', href: '/' },
     { name: 'Our Courses', href: '/#courses' },
-    { name: 'About MDTA', href: '/#', action: 'about-modal' },
+    { name: 'About MDTA', href: '/about' },
     { name: 'Affiliated Training Centers', href: '/affiliated-training-centers' },
     { name: 'Affiliated Coaches', href: '/affiliated-coaches' },
     { name: 'Our National Referees', href: '/national-referees' },
@@ -349,14 +352,8 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
                 <div
                   key={i}
                   onClick={() => {
-                    if (item.action === 'about-modal') {
-                      onClose();
-                      // Would need a global state for this ideally, but handled via navigation for now
-                      navigate('/');
-                    } else {
-                      navigate(item.href);
-                      onClose();
-                    }
+                    navigate(item.href);
+                    onClose();
                   }}
                   className="px-4 py-3 hover:bg-white/5 cursor-pointer rounded-xl flex items-center gap-3 group transition-colors"
                 >
@@ -384,7 +381,6 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [showAboutModal, setShowAboutModal] = useState(false);
   const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -401,7 +397,7 @@ const Navbar = () => {
       name: 'Verify Us',
       href: '#',
       dropdown: [
-        { name: 'About MDTA', href: '/#', action: 'about-modal' },
+        { name: 'About MDTA', href: '/about' },
         { name: 'Affiliated Training Centers', href: '/affiliated-training-centers' },
         { name: 'Affiliated Coaches', href: '/affiliated-coaches' },
         { name: 'Our National Referees', href: '/national-referees' },
@@ -482,23 +478,6 @@ const Navbar = () => {
                   <div className={`absolute top-[90%] ${link.name === 'Login' || link.name === 'Updates' ? 'right-0' : 'left-0'} opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:top-full transition-all duration-500 min-w-[280px] bg-[#0a0a0a]/95 backdrop-blur-2xl shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_30px_rgba(255,0,0,0.15)] rounded-[20px] py-5 border border-white/10 overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-[3px] before:bg-gradient-to-r before:from-[#ff0000] before:to-[#8b0000] z-50`}>
                     <div className="absolute -top-20 -right-20 w-48 h-48 bg-red-600/10 rounded-full blur-[60px] pointer-events-none"></div>
                     {link.dropdown.map((dropLink, idx) => {
-                      if ((dropLink as any).action === 'about-modal') {
-                        return (
-                          <button
-                            key={idx}
-                            onClick={() => setShowAboutModal(true)}
-                            className="w-full flex items-center px-6 py-3.5 text-[12px] font-bold tracking-widest uppercase text-gray-400 hover:text-white hover:bg-white/5 transition-all border-l-2 border-transparent hover:border-red-500 group/item relative overflow-hidden"
-                          >
-                            <div className="absolute inset-0 bg-gradient-to-r from-red-600/10 to-transparent translate-x-[-100%] group-hover/item:translate-x-0 transition-transform duration-300 ease-out"></div>
-                            <span className="transform translate-x-0 group-hover/item:translate-x-2 transition-transform duration-300 flex items-center relative z-10 w-full">
-                              <span className="w-1.5 h-1.5 rounded-full bg-red-600 mr-4 opacity-0 group-hover/item:opacity-100 transition-all duration-300 shadow-[0_0_8px_rgba(255,0,0,0.8)] group-hover/item:scale-125"></span>
-                              {(dropLink as any).icon && <span className="mr-3 text-red-500">{(dropLink as any).icon}</span>}
-                              {dropLink.name}
-                            </span>
-                          </button>
-                        );
-                      }
-
                       const hasSublinks = (dropLink as any).sublinks;
                       const LinkComponent = dropLink.href.startsWith('/') ? Link : 'a';
 
@@ -610,17 +589,6 @@ const Navbar = () => {
                   {link.dropdown && openMobileDropdown === link.name && (
                     <div className="pl-5 space-y-2 mt-4 mb-2 border-l-2 border-red-500/20 ml-1.5">
                       {link.dropdown.map((dropLink, idx) => {
-                        if ((dropLink as any).action === 'about-modal') {
-                          return (
-                            <button
-                              key={idx}
-                              onClick={() => { setShowAboutModal(true); setIsOpen(false); }}
-                              className="block w-full text-left px-5 py-3 text-[12px] font-bold tracking-widest uppercase text-gray-400 hover:text-white hover:bg-gradient-to-r hover:from-white/5 hover:to-transparent rounded-r-lg transition-all border-l border-transparent hover:border-red-500"
-                            >
-                              {dropLink.name}
-                            </button>
-                          );
-                        }
                         const hasSublinks = (dropLink as any).sublinks;
                         const LinkComponent = dropLink.href.startsWith('/') ? Link : 'a';
                         return (
@@ -655,7 +623,6 @@ const Navbar = () => {
       <AnimatePresence>
         {isSearchOpen && <SearchModal onClose={() => setIsSearchOpen(false)} />}
       </AnimatePresence>
-      {showAboutModal && <AboutMDTAModal onClose={() => setShowAboutModal(false)} />}
     </nav>
   );
 };
@@ -860,8 +827,8 @@ const TrainingPrograms = () => {
   const programs = [
     { title: 'TAEKWONDO', image: tcImg, desc: 'Traditional Korean martial art for all.' },
     { title: 'MMA / Self Defense', image: sfImg, desc: 'Practical combat for street awareness.' },
-    { title: 'Fitness Training', image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&q=80&w=800', desc: 'Build strength, speed, and endurance.' },
-    { title: 'Yoga', image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=800', desc: 'Mindful movement for balance and flexibility.' },
+    { title: 'Fitness Training', image: fitnessImg, desc: 'Build strength, speed, and endurance.' },
+    { title: 'Yoga', image: yogaImg, desc: 'Mindful movement for balance and flexibility.' },
   ];
 
   return (
@@ -1352,7 +1319,7 @@ const Footer = () => {
             <ul className="space-y-3">
               {[
                 { name: 'Home', href: '/' },
-                { name: 'About MDTA', href: '/#' },
+                { name: 'About MDTA', href: '/about' },
                 { name: 'Latest Events', href: '/events' },
                 { name: 'Media Gallery', href: '/gallery' },
                 { name: 'Join Academy', href: '/register' }
@@ -1738,6 +1705,7 @@ export default function App() {
       <div className="min-h-screen bg-transparent">
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/about" element={<PublicLayout><AboutMDTA /></PublicLayout>} />
           <Route path="/affiliated-coaches" element={<PublicLayout><AffiliatedCoaches /></PublicLayout>} />
           <Route path="/affiliated-training-centers" element={<PublicLayout><AffiliatedTrainingCenters /></PublicLayout>} />
           <Route path="/national-referees" element={<PublicLayout><NationalReferees /></PublicLayout>} />
