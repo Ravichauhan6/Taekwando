@@ -702,15 +702,15 @@ const Hero = () => {
           <div className="flex flex-row flex-wrap gap-3 sm:gap-4">
             <Link
               to="/register"
-              className="bg-[#ff1a1a] md:hover:bg-red-500 active:bg-red-600 text-white px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-medium tracking-wide flex items-center justify-center transition-all shadow-[0_0_25px_rgba(255,26,26,0.5)] md:shadow-[0_0_20px_rgba(255,26,26,0.4)] md:hover:shadow-[0_0_40px_rgba(255,26,26,0.7)] active:scale-95 whitespace-nowrap"
+              className="bg-[#ff1a1a] hover:bg-red-500 active:bg-red-600 text-white px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all shadow-[0_0_25px_rgba(255,26,26,0.5)] hover:shadow-[0_0_40px_rgba(255,26,26,0.7)] hover:-translate-y-1 active:scale-95 whitespace-nowrap"
             >
               Apply Now
             </Link>
             <button
               onClick={() => setIsVideoOpen(true)}
-              className="cursor-pointer bg-white/10 backdrop-blur-md hover:bg-red-600/20 active:bg-red-600/30 text-white border border-white/20 hover:border-red-500 px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all active:scale-95 shadow-[0_0_20px_rgba(0,0,0,0.3)] hover:shadow-[0_0_25px_rgba(255,0,0,0.4)] transform hover:-translate-y-0.5 whitespace-nowrap gap-2"
+              className="cursor-pointer bg-transparent hover:bg-[#ff1a1a] text-white border border-white hover:border-[#ff1a1a] px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all hover:shadow-[0_0_30px_rgba(255,26,26,0.4)] hover:-translate-y-1 active:scale-95 whitespace-nowrap gap-2 group"
             >
-              <Play className="w-4 h-4 fill-current" /> Watch Demo
+              <Play className="w-4 h-4 fill-current group-hover:animate-pulse" /> Watch Demo
             </button>
           </div>
         </motion.div>
@@ -911,7 +911,7 @@ const TrainingCentersSection = () => (
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/affiliated-training-centers"
-                className="inline-flex items-center gap-3 bg-red-600 md:hover:bg-red-700 active:bg-red-800 text-white px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-[0_0_25px_rgba(255,0,0,0.45)] md:shadow-[0_10px_25px_rgba(255,0,0,0.3)] md:hover:shadow-[0_0_40px_rgba(255,0,0,0.6)] transition-all md:hover:scale-105 active:scale-95"
+                className="inline-flex items-center gap-3 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-[0_0_25px_rgba(255,0,0,0.45)] hover:shadow-[0_0_40px_rgba(255,0,0,0.6)] transition-all hover:scale-105 hover:-translate-y-1 active:scale-95"
               >
                 View Directory <ArrowRight className="w-4 h-4 text-white" />
               </Link>
@@ -994,7 +994,7 @@ const BenefitsSection = () => {
             <div className="flex space-x-2 mb-10 w-fit p-1.5 bg-white/[0.02] rounded-full border border-white/5 backdrop-blur-md shadow-inner">
               <button
                 onClick={() => setActiveTab('benefits')}
-                className={`cursor-pointer py-3 px-6 sm:px-8 rounded-full text-[12px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all relative z-10 ${activeTab === 'benefits' ? 'text-white' : 'text-gray-500 hover:text-white'}`}
+                className={`cursor-pointer py-3 px-6 sm:px-8 rounded-full text-[12px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all relative z-10 hover:scale-105 active:scale-95 ${activeTab === 'benefits' ? 'text-white' : 'text-gray-500 hover:text-white'}`}
               >
                 Benefits
                 {activeTab === 'benefits' && (
@@ -1003,7 +1003,7 @@ const BenefitsSection = () => {
               </button>
               <button
                 onClick={() => setActiveTab('self-development')}
-                className={`cursor-pointer py-3 px-6 sm:px-8 rounded-full text-[12px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all relative z-10 ${activeTab === 'self-development' ? 'text-white' : 'text-gray-500 hover:text-white'}`}
+                className={`cursor-pointer py-3 px-6 sm:px-8 rounded-full text-[12px] sm:text-[13px] font-black tracking-[0.2em] uppercase transition-all relative z-10 hover:scale-105 active:scale-95 ${activeTab === 'self-development' ? 'text-white' : 'text-gray-500 hover:text-white'}`}
               >
                 Self Development
                 {activeTab === 'self-development' && (
@@ -1286,7 +1286,7 @@ const NewsAndContact = () => {
                   <button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="cursor-pointer bg-transparent hover:bg-[#ff1a1a]/10 hover:border-[#ff1a1a] text-white border border-[#ff1a1a] px-12 py-3 rounded-full text-[14px] font-bold transition-all shadow-[0_0_15px_rgba(255,26,26,0.2)] hover:shadow-[0_0_25px_rgba(255,26,26,0.4)] flex items-center justify-center tracking-wide"
+                    className="cursor-pointer bg-transparent hover:bg-[#ff1a1a] text-white border border-[#ff1a1a] px-12 py-3 rounded-full text-[14px] font-bold transition-all shadow-[0_0_15px_rgba(255,26,26,0.2)] hover:shadow-[0_0_30px_#ff1a1a] hover:-translate-y-1 active:scale-95 flex items-center justify-center tracking-wide"
                   >
                     Contact Us
                   </button>
