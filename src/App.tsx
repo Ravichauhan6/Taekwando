@@ -400,11 +400,102 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
+const JoinUsModal = ({ onClose }: { onClose: () => void }) => {
+  const navigate = useNavigate();
+  const options = [
+    {
+      title: 'Join as Player',
+      desc: 'Register yourself for official training and tournaments.',
+      icon: <Users className="w-8 h-8" />,
+      action: () => { onClose(); navigate('/register'); },
+      color: 'from-red-600 to-red-800'
+    },
+    {
+      title: 'Coach Portal',
+      desc: 'Manage your students and tournament registrations.',
+      icon: <Shield className="w-8 h-8" />,
+      action: () => { onClose(); navigate('/coach/login'); },
+      color: 'from-blue-600 to-blue-800'
+    },
+    {
+      title: 'Academy Check',
+      desc: 'Verify affiliated training centers and masters.',
+      icon: <Building2 className="w-8 h-8" />,
+      action: () => { onClose(); navigate('/affiliated-training-centers'); },
+      color: 'from-gray-700 to-gray-900'
+    }
+  ];
+
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <div className="absolute inset-0 bg-black/90 backdrop-blur-md" />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+        className="relative w-full max-w-2xl bg-[#0a0a0a] border border-white/10 rounded-[32px] overflow-hidden shadow-2xl"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="p-8 md:p-12">
+          <div className="flex justify-between items-center mb-10">
+            <div>
+              <h2 className="text-3xl font-black text-white tracking-tight uppercase mb-2">Join <span className="text-red-600">MDTA</span></h2>
+              <p className="text-gray-500 text-xs font-bold uppercase tracking-[0.2em]">Select your pathway to excellence</p>
+            </div>
+            <button onClick={onClose} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600/20 transition-all">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <div className="grid gap-4">
+            {options.map((opt, i) => (
+              <button
+                key={i}
+                onClick={opt.action}
+                className="group relative flex items-center gap-6 p-6 bg-white/[0.02] border border-white/5 rounded-2xl text-left hover:border-red-500/30 hover:bg-white/[0.04] transition-all"
+              >
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${opt.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
+                  {opt.icon}
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-white mb-1">{opt.title}</h3>
+                  <p className="text-gray-400 text-sm">{opt.desc}</p>
+                </div>
+                <ChevronRight className="w-6 h-6 text-gray-600 group-hover:text-red-500 group-hover:translate-x-1 transition-all" />
+              </button>
+            ))}
+          </div>
+          <div className="mt-10 pt-8 border-t border-white/5 text-center">
+            <p className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.3em] mb-4">Official District Association (Regd.)</p>
+            <div className="flex justify-center gap-6">
+              <Link to="/player/login" onClick={onClose} className="text-xs font-black text-white hover:text-red-500 uppercase tracking-widest transition-colors">Player Login</Link>
+              <span className="w-1 h-1 rounded-full bg-white/10 mt-1.5"></span>
+              <Link to="/portal-admin/login" onClick={onClose} className="text-xs font-black text-white hover:text-red-500 uppercase tracking-widest transition-colors">Admin Login</Link>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -460,7 +551,7 @@ const Navbar = () => {
             to="/"
             className="flex items-center group cursor-pointer shrink-0 max-w-[200px] md:max-w-[240px] lg:max-w-[300px] xl:max-w-[360px]"
           >
-            <div className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-white rounded-full mr-2 md:mr-3 shadow-[0_0_15px_rgba(255,0,0,0.5)] group-hover:shadow-[0_0_30px_rgba(255,0,0,0.8)] border border-red-500/50 transition-all duration-300 overflow-hidden shrink-0 flex items-center justify-center">
+            <div className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 bg-white rounded-full mr-2 md:mr-3 shadow-[0_0_15px_rgba(255,0,0,0.5)] group-hover:shadow-[0_0_30px_rgba(255,0,0,0.8)] active:shadow-[0_0_30px_rgba(255,0,0,0.8)] border border-red-500/50 transition-all duration-300 overflow-hidden shrink-0 flex items-center justify-center">
               <img src="/logo.png" alt="Logo" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300" />
             </div>
             <div className="flex flex-col justify-center">
@@ -551,9 +642,12 @@ const Navbar = () => {
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
             <div className="h-6 w-px bg-white/10 hidden lg:block"></div>
-            <Link to="/register" className="bg-gradient-to-r from-[#ff0000] to-[#990000] hover:from-[#ff1a1a] hover:to-[#cc0000] text-white px-4 lg:px-6 py-2.5 rounded-full text-[11px] lg:text-[12px] font-black tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(255,0,0,0.3)] hover:shadow-[0_0_30px_rgba(255,0,0,0.6)] transform hover:-translate-y-0.5 border border-red-500/30 inline-flex whitespace-nowrap">
+            <button
+              onClick={() => setIsJoinModalOpen(true)}
+              className="bg-gradient-to-r from-[#ff0000] to-[#990000] hover:from-[#ff1a1a] hover:to-[#cc0000] text-white px-4 lg:px-6 py-2.5 rounded-full text-[11px] lg:text-[12px] font-black tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(255,0,0,0.3)] hover:shadow-[0_0_30px_rgba(255,0,0,0.6)] transform hover:-translate-y-0.5 border border-red-500/30 inline-flex whitespace-nowrap cursor-pointer"
+            >
               Join Now
-            </Link>
+            </button>
           </div>
           <div className="md:hidden flex items-center space-x-3 ml-auto">
             <button onClick={() => setIsSearchOpen(true)} className="cursor-pointer text-white hover:text-red-500 transition-colors drop-shadow-md">
@@ -638,13 +732,19 @@ const Navbar = () => {
                 </div>
               ))}
               <div className="pt-6 mt-4 border-t border-white/5 relative z-10 w-full flex">
-                <Link to="/register" onClick={() => setIsOpen(false)} className="w-full text-center bg-gradient-to-r from-[#ff0000] to-[#990000] hover:from-[#ff1a1a] hover:to-[#cc0000] text-white py-4 rounded-xl font-black tracking-widest uppercase shadow-[0_0_20px_rgba(255,0,0,0.3)] hover:shadow-[0_0_30px_rgba(255,0,0,0.5)] border border-red-500/50 transition-all transform active:scale-[0.98]">
+                <button
+                  onClick={() => { setIsOpen(false); setIsJoinModalOpen(true); }}
+                  className="w-full text-center bg-gradient-to-r from-[#ff0000] to-[#990000] hover:from-[#ff1a1a] hover:to-[#cc0000] text-white py-4 rounded-xl font-black tracking-widest uppercase shadow-[0_0_20px_rgba(255,0,0,0.3)] hover:shadow-[0_0_30px_rgba(255,0,0,0.5)] border border-red-500/50 transition-all transform active:scale-[0.98] cursor-pointer"
+                >
                   Join Now
-                </Link>
+                </button>
               </div>
             </div>
           </motion.div>
         )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {isJoinModalOpen && <JoinUsModal onClose={() => setIsJoinModalOpen(false)} />}
       </AnimatePresence>
       <AnimatePresence>
         {isSearchOpen && <SearchModal onClose={() => setIsSearchOpen(false)} />}
@@ -655,6 +755,7 @@ const Navbar = () => {
 
 const Hero = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [promoVideoUrl, setPromoVideoUrl] = useState("https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1");
 
   useEffect(() => {
@@ -700,15 +801,15 @@ const Hero = () => {
             Discipline <span className="text-[#ff1a1a] drop-shadow-sm">•</span> Power <span className="text-[#ff1a1a] drop-shadow-sm">•</span> Confidence
           </p>
           <div className="flex flex-row flex-wrap gap-3 sm:gap-4">
-            <Link
-              to="/register"
-              className="bg-[#ff1a1a] hover:bg-red-500 active:bg-red-600 text-white px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all shadow-[0_0_25px_rgba(255,26,26,0.5)] hover:shadow-[0_0_40px_rgba(255,26,26,0.7)] hover:-translate-y-1 active:scale-95 whitespace-nowrap"
+            <button
+              onClick={() => setIsJoinModalOpen(true)}
+              className="bg-[#ff1a1a] hover:bg-red-500 active:bg-red-600 text-white px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all shadow-[0_0_25px_rgba(255,26,26,0.5)] hover:shadow-[0_0_40px_rgba(255,26,26,0.7)] active:scale-95 whitespace-nowrap cursor-pointer"
             >
               Apply Now
-            </Link>
+            </button>
             <button
               onClick={() => setIsVideoOpen(true)}
-              className="cursor-pointer bg-transparent hover:bg-[#ff1a1a] text-white border border-white hover:border-[#ff1a1a] px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all hover:shadow-[0_0_30px_rgba(255,26,26,0.4)] hover:-translate-y-1 active:scale-95 whitespace-nowrap gap-2 group"
+              className="cursor-pointer bg-transparent hover:bg-[#ff1a1a] text-white border border-white hover:border-[#ff1a1a] px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all hover:shadow-[0_0_30px_rgba(255,26,26,0.4)] active:scale-95 whitespace-nowrap gap-2 group"
             >
               <Play className="w-4 h-4 fill-current group-hover:animate-pulse" /> Watch Demo
             </button>
@@ -744,13 +845,16 @@ const Hero = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      <AnimatePresence>
+        {isJoinModalOpen && <JoinUsModal onClose={() => setIsJoinModalOpen(false)} />}
+      </AnimatePresence>
       <div className="absolute bottom-0 left-0 right-0 z-20 mb-2 md:mb-6">
         <div className="max-w-[1050px] mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="flex flex-col md:flex-row items-center justify-between bg-black/60 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-md border border-white/5 rounded-[24px] relative py-3 md:py-6 px-4 md:px-6 shadow-[0_0_40px_rgba(255,0,0,0.6)]"
+            className="flex flex-col md:flex-row items-center justify-between bg-black/60 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-md border border-white/5 rounded-[24px] relative py-3 md:py-6 px-4 md:px-6 shadow-[0_0_20px_rgba(255,0,0,0.4)] md:shadow-[0_0_40px_rgba(255,0,0,0.6)]"
           >
             <div className="absolute top-0 left-[18%] w-[140px] h-[2px] bg-[#ff0000] shadow-[0_0_20px_4px_rgba(255,0,0,0.8)]"></div>
             <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-y-3 md:gap-y-0">
@@ -803,7 +907,7 @@ const WhyChooseUs = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-10">
         <div className="text-center mb-16">
           <h2 className="text-2xl md:text-[28px] font-bold text-white tracking-widest uppercase drop-shadow-[0_0_20px_rgba(255,26,26,0.4)] font-sans">
-            WHY <span className="text-white">CHOOSE US</span>
+            WHY <span className="text-red-500">CHOOSE US</span>
           </h2>
         </div>
 
@@ -861,7 +965,7 @@ const TrainingPrograms = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-[24px] md:text-[28px] font-bold text-white mb-2 tracking-wide font-sans drop-shadow-[0_0_15px_rgba(255,26,26,0.4)]">
-            Our Elite Training Programs
+            Our Elite <span className="text-red-500">Training Programs</span>
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

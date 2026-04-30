@@ -31,6 +31,26 @@
   white-space: nowrap;
 }
 
+@keyframes glow-pulse {
+  0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); }
+  50% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.7); }
+  100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.4); }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
 /* Enforce pointer cursor on all clickable elements */
 a, 
 button, 
