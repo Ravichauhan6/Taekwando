@@ -144,15 +144,29 @@ export const Registration = () => {
     setErrorData('');
     setIsUploading(true);
 
-    // Upload files
-    const aadharUrl = await uploadToCloudinary(fileObjects.aadharFile);
-    const photoUrl = await uploadToCloudinary(fileObjects.photoFile);
-    const signatureUrl = await uploadToCloudinary(fileObjects.signatureFile);
-    const guardianSignatureUrl = await uploadToCloudinary(fileObjects.guardianSignatureFile);
-
     try {
+      // 0. Check if email already exists
+      const checkRes = await fetch('/api/players/check-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email })
+      });
+      const checkData = await checkRes.json();
+      if (checkData.exists) {
+        setErrorData('This email is already registered. Please use a different email or login.');
+        setIsUploading(false);
+        return;
+      }
+
+      // Upload files
+      const aadharUrl = await uploadToCloudinary(fileObjects.aadharFile);
+      const photoUrl = await uploadToCloudinary(fileObjects.photoFile);
+      const signatureUrl = await uploadToCloudinary(fileObjects.signatureFile);
+      const guardianSignatureUrl = await uploadToCloudinary(fileObjects.guardianSignatureFile);
+
       // Setup Backend Payload
       const payload = {
+
         name: formData.fullName,
         father_name: formData.fatherName || 'Not Provided',
         gender: formData.gender || 'Not Provided',

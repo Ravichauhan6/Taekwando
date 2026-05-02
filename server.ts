@@ -91,7 +91,7 @@ const PlayerSchema = new mongoose.Schema({
   weight_category_id: { type: mongoose.Schema.Types.ObjectId, ref: 'WeightCategory' },
   
   // Extended fields for Portal Admin Full Registration
-  email: String,
+  email: { type: String, unique: true, sparse: true },
   mobile: String,
   blood_group: String,
   aadhar_no: String,
@@ -822,6 +822,20 @@ app.get("/api/players/:id", async (req, res) => {
   }
 });
 
+app.post("/api/players/check-email", async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: "Email is required" });
+  try {
+    const existingPlayer = await Player.findOne({ email: { $regex: new RegExp(`^${email.trim()}$`, "i") } });
+    if (existingPlayer) {
+      return res.json({ exists: true });
+    }
+    res.json({ exists: false });
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 app.post("/api/players", async (req, res) => {
   const { 
     name, father_name, gender, dob, address, weight,
@@ -836,6 +850,14 @@ app.post("/api/players", async (req, res) => {
   }
 
   try {
+    // 0. Check for duplicate email
+    if (email) {
+      const existingEmail = await Player.findOne({ email: { $regex: new RegExp(`^${email.trim()}$`, "i") } });
+      if (existingEmail) {
+        return res.status(400).json({ error: "This email is already registered with another player. Please use a different email or login to your dashboard." });
+      }
+    }
+
     // 1. Calculate WT age (Competition Year - Birth Year)
     const birthDate = new Date(dob);
     const currentYear = new Date().getFullYear();
