@@ -572,7 +572,7 @@ const Navbar = () => {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center text-[10.5px] lg:text-[11px] xl:text-[12px] font-bold tracking-widest uppercase transition-all duration-300 text-white/90 hover:text-white py-5 whitespace-nowrap"
+                    className="flex items-center text-[10.5px] lg:text-[11px] xl:text-[12px] font-bold tracking-widest uppercase transition-all duration-300 text-white/90 hover:text-white active:text-white py-5 whitespace-nowrap"
                   >
                     <span className="relative">
                       {link.name}
@@ -582,7 +582,7 @@ const Navbar = () => {
                 ) : (
                   <Link
                     to={link.href}
-                    className="flex items-center text-[10.5px] lg:text-[11px] xl:text-[12px] font-bold tracking-widest uppercase transition-all duration-300 text-white/90 hover:text-white py-5 whitespace-nowrap"
+                    className="flex items-center text-[10.5px] lg:text-[11px] xl:text-[12px] font-bold tracking-widest uppercase transition-all duration-300 text-white/90 hover:text-white active:text-white py-5 whitespace-nowrap"
                   >
                     <span className="relative">
                       {link.name}
@@ -992,7 +992,7 @@ const TrainingPrograms = () => {
                 <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] z-10 pointer-events-none"></div>
               </div>
               <div className="px-3 pt-5 pb-3">
-                <h3 className="text-[19px] font-bold text-white mb-2 tracking-wide group-hover:text-[#ff1a1a] transition-colors">{p.title}</h3>
+                <h3 className="text-[19px] font-bold text-white mb-2 tracking-wide group-hover:text-[#ff1a1a] group-active:text-[#ff1a1a] transition-colors">{p.title}</h3>
                 <p className="text-gray-300 text-[14px] leading-relaxed font-normal">{p.desc}</p>
               </div>
             </motion.div>
@@ -1156,7 +1156,7 @@ const BenefitsSection = () => {
                           <div className="mt-1 w-6 h-6 rounded-full bg-white/[0.03] border border-white/10 group-hover:bg-red-500/10 group-hover:border-red-500/50 flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(255,0,0,0.4)]">
                             <svg className="w-3.5 h-3.5 text-gray-500 group-hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                           </div>
-                          <span className="text-gray-400 text-[15px] sm:text-[16px] font-medium leading-[1.4] group-hover:text-white transition-colors duration-300">{benefit}</span>
+                          <span className="text-gray-400 text-[15px] sm:text-[16px] font-medium leading-[1.4] group-hover:text-white group-active:text-white transition-colors duration-300">{benefit}</span>
                         </motion.div>
                       ))}
                     </div>
@@ -1317,7 +1317,7 @@ const NewsAndContact = () => {
                     <span className="inline-block px-3 py-1 rounded-full text-[11px] font-bold tracking-wide mb-5 border bg-[#ff1a1a]/10 text-gray-100 border-[#ff1a1a]/40 transition-colors">
                       {item.category}
                     </span>
-                    <h3 className="text-[17px] md:text-[19px] font-bold text-white mb-3 leading-[1.3] group-hover:text-[#ff1a1a] transition-colors drop-shadow-sm">{item.title}</h3>
+                    <h3 className="text-[17px] md:text-[19px] font-bold text-white mb-3 leading-[1.3] group-hover:text-[#ff1a1a] group-active:text-[#ff1a1a] transition-colors drop-shadow-sm">{item.title}</h3>
                     <p className="text-[13px] md:text-[14px] text-gray-300 mb-6 leading-[1.6] font-medium line-clamp-3">{item.content}</p>
                   </div>
                   <div className="mt-auto">
