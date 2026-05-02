@@ -467,7 +467,7 @@ const JoinUsModal = ({ onClose }: { onClose: () => void }) => {
               <button
                 key={i}
                 onClick={opt.action}
-                className="group relative flex items-center gap-6 p-6 bg-white/[0.02] border border-white/5 rounded-2xl text-left hover:border-red-500/30 hover:bg-white/[0.04] transition-all"
+                className="group relative flex items-center gap-6 p-6 bg-white/[0.02] border border-white/5 rounded-2xl text-left hover:border-red-500/30 hover:bg-white/[0.04] transition-all hover:-translate-y-1 hover:scale-[1.02]"
               >
                 <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${opt.color} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
                   {opt.icon}
@@ -648,7 +648,7 @@ const Navbar = () => {
             <div className="h-6 w-px bg-white/10 hidden lg:block"></div>
             <Link
               to="/register"
-              className="bg-gradient-to-r from-[#ff0000] to-[#990000] hover:from-[#ff1a1a] hover:to-[#cc0000] text-white px-4 lg:px-6 py-2.5 rounded-full text-[11px] lg:text-[12px] font-black tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(255,0,0,0.3)] hover:shadow-[0_0_30px_rgba(255,0,0,0.6)] transform hover:-translate-y-0.5 border border-red-500/30 inline-flex whitespace-nowrap cursor-pointer"
+              className="bg-gradient-to-r from-[#ff0000] to-[#990000] hover:from-[#ff1a1a] hover:to-[#cc0000] text-white px-4 lg:px-6 py-2.5 rounded-full text-[11px] lg:text-[12px] font-black tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(255,0,0,0.3)] hover:shadow-[0_0_30px_rgba(255,0,0,0.6)] active:shadow-[0_0_30px_rgba(255,0,0,0.6)] hover:-translate-y-1 active:-translate-y-1 hover:scale-105 active:scale-95 border border-red-500/30 inline-flex whitespace-nowrap cursor-pointer"
             >
               Join Now
             </Link>
@@ -739,7 +739,7 @@ const Navbar = () => {
                 <Link
                   to="/register"
                   onClick={() => setIsOpen(false)}
-                  className="w-full text-center bg-gradient-to-r from-[#ff0000] to-[#990000] hover:from-[#ff1a1a] hover:to-[#cc0000] text-white py-4 rounded-xl font-black tracking-widest uppercase shadow-[0_0_20px_rgba(255,0,0,0.3)] hover:shadow-[0_0_30px_rgba(255,0,0,0.5)] border border-red-500/50 transition-all transform active:scale-[0.98] cursor-pointer"
+                  className="w-full text-center bg-gradient-to-r from-[#ff0000] to-[#990000] hover:from-[#ff1a1a] hover:to-[#cc0000] text-white py-4 rounded-xl font-black tracking-widest uppercase shadow-[0_0_20px_rgba(255,0,0,0.3)] hover:shadow-[0_0_30px_rgba(255,0,0,0.5)] border border-red-500/50 transition-all transform hover:-translate-y-1 active:scale-[0.98] cursor-pointer"
                 >
                   Join Now
                 </Link>
@@ -809,13 +809,13 @@ const Hero = () => {
           <div className="flex flex-row flex-wrap gap-3 sm:gap-4">
             <button
               onClick={() => navigate('/register')}
-              className="bg-[#ff1a1a] hover:bg-red-500 active:bg-red-600 text-white px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all shadow-[0_0_25px_rgba(255,26,26,0.5)] hover:shadow-[0_0_40px_rgba(255,26,26,0.7)] active:scale-95 whitespace-nowrap cursor-pointer"
+              className="bg-[#ff1a1a] hover:bg-red-500 active:bg-red-600 text-white px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all shadow-[0_0_25px_rgba(255,26,26,0.5)] hover:shadow-[0_0_40px_rgba(255,26,26,0.7)] active:shadow-[0_0_40px_rgba(255,26,26,0.7)] hover:-translate-y-1 active:-translate-y-1 hover:scale-105 active:scale-95 whitespace-nowrap cursor-pointer"
             >
               Apply Now
             </button>
             <button
               onClick={() => setIsVideoOpen(true)}
-              className="cursor-pointer bg-transparent hover:bg-[#ff1a1a] text-white border border-white hover:border-[#ff1a1a] px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all hover:shadow-[0_0_30px_rgba(255,26,26,0.4)] active:scale-95 whitespace-nowrap gap-2 group"
+              className="cursor-pointer bg-transparent hover:bg-[#ff1a1a] active:bg-[#ff1a1a] text-white border border-white hover:border-[#ff1a1a] active:border-[#ff1a1a] px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all hover:shadow-[0_0_30px_rgba(255,26,26,0.4)] active:shadow-[0_0_30px_rgba(255,26,26,0.4)] hover:-translate-y-1 active:-translate-y-1 hover:scale-105 active:scale-95 whitespace-nowrap gap-2 group"
             >
               <Play className="w-4 h-4 fill-current group-hover:animate-pulse" /> Watch Demo
             </button>
@@ -1310,7 +1310,8 @@ const NewsAndContact = () => {
                 <motion.div
                   key={i}
                   whileHover={{ y: -5 }}
-                  className="bg-gradient-to-br from-[#383838] via-[#1a1a1a] to-[#0a0a0a] p-6 rounded-[20px] border border-white/10 transition-all group flex flex-col justify-between min-h-[260px] shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:border-[#ff0000] hover:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)]"
+                  whileTap={{ scale: 0.98 }}
+                  className="bg-gradient-to-br from-[#383838] via-[#1a1a1a] to-[#0a0a0a] p-6 rounded-[20px] border border-white/10 transition-all group flex flex-col justify-between min-h-[260px] shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:border-[#ff0000] hover:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)] active:border-[#ff0000] active:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)]"
                 >
                   <div>
                     <span className="inline-block px-3 py-1 rounded-full text-[11px] font-bold tracking-wide mb-5 border bg-[#ff1a1a]/10 text-gray-100 border-[#ff1a1a]/40 transition-colors">
@@ -1330,8 +1331,13 @@ const NewsAndContact = () => {
               ))}
             </div>
           </div>
-          <div id="contact" className="lg:w-[42%] flex pt-12 lg:pt-0 pl-0 lg:pl-4">
-            <div className="w-full bg-gradient-to-br from-[#333333] via-[#1a1a1a] to-[#0a0a0a] border border-white/10 p-8 rounded-[24px] shadow-[0_0_40px_rgba(0,0,0,0.8),inset_0_0_30px_rgba(255,26,26,0.02)] relative overflow-hidden flex flex-col justify-center transition-all hover:border-[#ff0000] hover:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)]">
+          <motion.div 
+            id="contact" 
+            whileHover={{ y: -5 }}
+            whileTap={{ scale: 0.99 }}
+            className="lg:w-[42%] flex pt-12 lg:pt-0 pl-0 lg:pl-4"
+          >
+            <div className="w-full bg-gradient-to-br from-[#333333] via-[#1a1a1a] to-[#0a0a0a] border border-white/10 p-8 rounded-[24px] shadow-[0_0_40px_rgba(0,0,0,0.8),inset_0_0_30px_rgba(255,26,26,0.02)] relative overflow-hidden flex flex-col justify-center transition-all hover:border-[#ff0000] hover:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)] active:border-[#ff0000] active:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)]">
               <h3 className="text-[22px] md:text-[26px] font-bold text-white mb-8 text-center drop-shadow-md">Contact Us</h3>
               <form onSubmit={handleSubmit} action="https://formsubmit.co/saabhisaabhishek@gmail.com" method="POST" className="space-y-4 relative z-10 w-full mx-auto">
                 <input type="hidden" name="_captcha" value="false" />
@@ -1345,7 +1351,7 @@ const NewsAndContact = () => {
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: toTitleCase(e.target.value) })}
-                      className="w-full px-4 py-3 bg-black/40 border border-white/5 hover:border-[#ff1a1a]/40 text-white focus:ring-1 focus:ring-[#ff1a1a] focus:border-[#ff1a1a] outline-none transition-all text-[13px] placeholder-gray-500 rounded-[14px]"
+                      className="w-full px-4 py-3 bg-black/40 border border-white/5 hover:border-[#ff1a1a]/40 active:border-[#ff1a1a]/40 text-white focus:ring-1 focus:ring-[#ff1a1a] focus:border-[#ff1a1a] outline-none transition-all text-[13px] placeholder-gray-500 rounded-[14px]"
                       placeholder="Full Name"
                     />
                   </div>
@@ -1356,7 +1362,7 @@ const NewsAndContact = () => {
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
-                      className="w-full px-4 py-3 bg-black/40 border border-white/5 hover:border-[#ff1a1a]/40 text-white focus:ring-1 focus:ring-[#ff1a1a] focus:border-[#ff1a1a] outline-none transition-all text-[13px] placeholder-gray-500 rounded-[14px]"
+                      className="w-full px-4 py-3 bg-black/40 border border-white/5 hover:border-[#ff1a1a]/40 active:border-[#ff1a1a]/40 text-white focus:ring-1 focus:ring-[#ff1a1a] focus:border-[#ff1a1a] outline-none transition-all text-[13px] placeholder-gray-500 rounded-[14px]"
                       placeholder="Phone Number"
                     />
                   </div>
@@ -1369,7 +1375,7 @@ const NewsAndContact = () => {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-4 py-3 bg-black/40 border border-white/5 hover:border-[#ff1a1a]/40 text-white focus:ring-1 focus:ring-[#ff1a1a] focus:border-[#ff1a1a] outline-none transition-all text-[13px] placeholder-gray-500 rounded-[14px]"
+                      className="w-full px-4 py-3 bg-black/40 border border-white/5 hover:border-[#ff1a1a]/40 active:border-[#ff1a1a]/40 text-white focus:ring-1 focus:ring-[#ff1a1a] focus:border-[#ff1a1a] outline-none transition-all text-[13px] placeholder-gray-500 rounded-[14px]"
                       placeholder="Email Address"
                     />
                   </div>
@@ -1408,14 +1414,14 @@ const NewsAndContact = () => {
                   <button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="cursor-pointer bg-transparent hover:bg-[#ff1a1a] text-white border border-[#ff1a1a] px-12 py-3 rounded-full text-[14px] font-bold transition-all shadow-[0_0_15px_rgba(255,26,26,0.2)] hover:shadow-[0_0_30px_#ff1a1a] hover:-translate-y-1 active:scale-95 flex items-center justify-center tracking-wide"
+                    className="cursor-pointer bg-transparent hover:bg-[#ff1a1a] active:bg-[#ff1a1a] text-white border border-[#ff1a1a] px-12 py-3 rounded-full text-[14px] font-bold transition-all shadow-[0_0_15px_rgba(255,26,26,0.2)] hover:shadow-[0_0_30px_#ff1a1a] active:shadow-[0_0_30px_#ff1a1a] hover:-translate-y-1 active:-translate-y-1 active:scale-95 flex items-center justify-center tracking-wide"
                   >
                     Contact Us
                   </button>
                 </div>
               </form>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
