@@ -5,7 +5,7 @@ import {
   Newspaper, Users, Search, Bell, Menu, X, ChevronDown, ChevronRight, User as UserIcon, Calendar, MapPin
 } from 'lucide-react';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
-import { PrintableView } from '../portal-admin/PrintableView';
+import { PrintableView } from '../admin/PrintableView';
 
 export const PlayerDashboard = () => {
   const [player, setPlayer] = useState<any>(() => {
@@ -27,6 +27,35 @@ export const PlayerDashboard = () => {
   const [printReg, setPrintReg] = useState<any>(null);
   const [notifications, setNotifications] = useState([]);
   const [loadingNotifs, setLoadingNotifs] = useState(false);
+  const [coachDetails, setCoachDetails] = useState<any>(null);
+
+  const fetchPlayerData = async () => {
+    if (!player?._id && !player?.id) return;
+    try {
+      const res = await fetch(`/api/players/${player._id || player.id}`);
+      if (res.ok) {
+        const freshData = await res.json();
+        setPlayer(freshData);
+        localStorage.setItem('current_player', JSON.stringify(freshData));
+      }
+    } catch (e) {
+      console.error("Failed to fetch fresh player data", e);
+    }
+  };
+
+  const fetchCoachDetails = async (coachName: string) => {
+    if (!coachName || coachName === 'Not Assigned') return;
+    try {
+      const res = await fetch('/api/coaches');
+      if (res.ok) {
+        const coaches = await res.json();
+        const match = coaches.find((c: any) => c.name === coachName);
+        if (match) setCoachDetails(match);
+      }
+    } catch (e) {
+      console.error("Failed to fetch coach details", e);
+    }
+  };
 
   const fetchNotifications = async () => {
     if (!player) return;
@@ -61,6 +90,19 @@ export const PlayerDashboard = () => {
     }
   };
 
+  // ✅ Fetch latest player data on mount
+  useEffect(() => {
+    fetchPlayerData();
+  }, []);
+
+  // ✅ Fetch coach details when player data is loaded
+  useEffect(() => {
+    const name = player?.coach_name || player?.coachName;
+    if (name) {
+      fetchCoachDetails(name);
+    }
+  }, [player]);
+
   // ✅ useEffect MUST be before any conditional return (Rules of Hooks)
   useEffect(() => {
     if (activeTab === 'News For Me') {
@@ -84,7 +126,7 @@ export const PlayerDashboard = () => {
     setOpenMenus(prev => ({ ...prev, [menu]: !prev[menu] }));
   };
 
-  const menuItems = [
+  const menuItems: { name: string; icon: any; path?: string; submenus?: string[]; href?: string }[] = [
     { name: 'Dashboard', icon: <Home className="w-5 h-5" />, path: 'Dashboard' },
     { 
       name: 'Download', icon: <Download className="w-5 h-5" />, 
@@ -501,14 +543,21 @@ export const PlayerDashboard = () => {
             <div className="bg-[#111] border border-white/5 rounded-[24px] overflow-hidden">
               {/* Card Header */}
               <div className="bg-gradient-to-r from-blue-900/30 to-[#111] px-8 py-6 border-b border-white/5 flex items-center gap-5">
-                <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
-                  <Users className="w-8 h-8 text-blue-400" />
+                <div className="w-16 h-16 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0 overflow-hidden">
+                  {coachDetails?.image_url ? (
+                    <img src={coachDetails.image_url} alt="Coach" className="w-full h-full object-cover" />
+                  ) : (
+                    <Users className="w-8 h-8 text-blue-400" />
+                  )}
                 </div>
                 <div>
                   <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">Your Trainer / Coach</p>
                   <h3 className="text-2xl font-black text-white uppercase tracking-wide">
                     {player.coach_name || player.coachName || 'Not Assigned'}
                   </h3>
+                  {coachDetails?.qualifications && (
+                    <p className="text-[10px] text-red-500 font-bold uppercase tracking-wider mt-0.5">{coachDetails.qualifications}</p>
+                  )}
                 </div>
               </div>
 
@@ -522,7 +571,7 @@ export const PlayerDashboard = () => {
                   <div>
                     <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Training Center</p>
                     <p className="text-white font-bold text-base uppercase">
-                      {player.training_center || player.center || 'Not Provided'}
+                      {(player.training_center || player.center || 'Not Provided').replace(/TRAINNING/g, 'TRAINING')}
                     </p>
                   </div>
                 </div>
@@ -535,7 +584,7 @@ export const PlayerDashboard = () => {
                   <div>
                     <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">Center Address</p>
                     <p className="text-white font-bold text-base uppercase">
-                      {player.training_center_address || player.trainingCenterAddress || 'Not Provided'}
+                      {(player.training_center_address || player.trainingCenterAddress || 'Not Provided').replace(/TRAINNING/g, 'TRAINING')}
                     </p>
                   </div>
                 </div>

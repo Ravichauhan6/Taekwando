@@ -9,29 +9,33 @@ import ticImg from './assets/tic.jpeg';
 import yogaImg from './assets/yoga.jpg';
 import fitnessImg from './assets/fitness.jpg';
 
-import { AdminLayout } from './admin/AdminLayout';
-import { Login } from './admin/Login';
-import { Players } from './admin/Players';
-import { Categories } from './admin/Categories';
-import { Tiesheets } from './admin/Tiesheets';
-import { ReportExport } from './admin/ReportExport';
-import { AdminSettings } from './admin/AdminSettings';
+import { AdminLayout } from './dashboard-admin/AdminLayout';
+import { Login } from './dashboard-admin/Login';
+import { Players } from './dashboard-admin/Players';
+import { Categories } from './dashboard-admin/Categories';
+import { Tiesheets } from './dashboard-admin/Tiesheets';
+import { ReportExport } from './dashboard-admin/ReportExport';
+import { AdminSettings } from './dashboard-admin/AdminSettings';
 import { Registration } from './Registration';
-import { PortalLogin } from './portal-admin/PortalLogin';
-import { PortalAdminLayout } from './portal-admin/PortalAdminLayout';
-import { Registrations } from './portal-admin/Registrations';
-import { NewsUpdates } from './portal-admin/NewsUpdates';
-import { Notifications } from './portal-admin/Notifications';
-import { BeltManagement } from './portal-admin/BeltManagement';
-import { CoachAcademy } from './portal-admin/CoachAcademy';
-import { MediaGallery } from './portal-admin/MediaGallery';
-import { DocumentDownloads } from './portal-admin/DocumentDownloads';
-import { UserRoles } from './portal-admin/UserRoles';
-import { EventCreation } from './portal-admin/EventCreation';
+import { AdminLogin } from './admin/AdminLogin';
+import { AdminLayout as MasterAdminLayout } from './admin/AdminLayout';
+import { Registrations } from './admin/Registrations';
+import { NewsUpdates } from './admin/NewsUpdates';
+import { Notifications } from './admin/Notifications';
+import { BeltManagement } from './admin/BeltManagement';
+import { CoachAcademy } from './admin/CoachAcademy';
+import { MediaGallery } from './admin/MediaGallery';
+import { DocumentDownloads } from './admin/DocumentDownloads';
+import { UserRoles } from './admin/UserRoles';
+import { EventCreation } from './admin/EventCreation';
 import { CoachNotifications } from './coach/CoachNotifications';
-import { WhatWeSayAdmin } from './portal-admin/WhatWeSayAdmin';
-import { RefereesAdmin } from './portal-admin/RefereesAdmin';
-import { PromoVideoAdmin } from './portal-admin/PromoVideoAdmin';
+import { WhatWeSayAdmin } from './admin/WhatWeSayAdmin';
+import { RefereesAdmin } from './admin/RefereesAdmin';
+import { PromoVideoAdmin } from './admin/PromoVideoAdmin';
+import { StandalonePrintView } from './admin/PrintableView';
+import { SiteSettings } from './admin/SiteSettings';
+import { HomePageAdmin } from './admin/HomePageAdmin';
+import { AboutMDTAAdmin } from './admin/AboutMDTAAdmin';
 
 const ScrollToAnchor = () => {
   const { pathname, hash } = useLocation();
@@ -69,8 +73,8 @@ const getYouTubeEmbedUrl = (url: string) => {
   if (videoId) return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
   return url;
 };
-import { BlackBeltsAdmin } from './portal-admin/BlackBeltsAdmin';
-import { NationalPlayersAdmin } from './portal-admin/NationalPlayersAdmin';
+import { BlackBeltsAdmin } from './admin/BlackBeltsAdmin';
+import { NationalPlayersAdmin } from './admin/NationalPlayersAdmin';
 import { PlayerLogin } from './player/PlayerLogin';
 import { PlayerDashboard } from './player/PlayerDashboard';
 import { CoachLogin } from './coach/CoachLogin';
@@ -85,8 +89,8 @@ import { NationalPlayers } from './public-pages/NationalPlayers';
 import { AffiliatedTrainingCenters } from './public-pages/AffiliatedTrainingCenters';
 import { Gallery } from './public-pages/Gallery';
 import { UpcomingCamps } from './public-pages/UpcomingCamps';
-import { TrainingCentersAdmin } from './portal-admin/TrainingCentersAdmin';
-import { UpcomingCampsAdmin } from './portal-admin/UpcomingCampsAdmin';
+import { TrainingCentersAdmin } from './admin/TrainingCentersAdmin';
+import { UpcomingCampsAdmin } from './admin/UpcomingCampsAdmin';
 import { AboutMDTA } from './public-pages/AboutMDTA';
 
 // --- Components ---
@@ -329,8 +333,8 @@ const SearchModal = ({ onClose }: { onClose: () => void }) => {
     { name: 'Latest News', href: '/#news' },
     { name: 'Gallery', href: '/gallery' },
     { name: 'Events', href: '/events' },
-    { name: 'Admin Login', href: '/portal-admin/login' },
-    { name: 'Dashboard Admin Login', href: '/admin/login' },
+    { name: 'Admin Login', href: '/admin/login' },
+    { name: 'Dashboard Admin Login', href: '/dashboard-admin/login' },
     { name: 'Coach Login', href: '/coach/login' },
     { name: 'Player Login', href: '/player/login' },
     { name: 'Register', href: '/register' },
@@ -481,7 +485,7 @@ const JoinUsModal = ({ onClose }: { onClose: () => void }) => {
             <div className="flex justify-center gap-6">
               <Link to="/player/login" onClick={onClose} className="text-xs font-black text-white hover:text-red-500 uppercase tracking-widest transition-colors">Player Login</Link>
               <span className="w-1 h-1 rounded-full bg-white/10 mt-1.5"></span>
-              <Link to="/portal-admin/login" onClick={onClose} className="text-xs font-black text-white hover:text-red-500 uppercase tracking-widest transition-colors">Admin Login</Link>
+              <Link to="/admin/login" onClick={onClose} className="text-xs font-black text-white hover:text-red-500 uppercase tracking-widest transition-colors">Admin Login</Link>
             </div>
           </div>
         </div>
@@ -534,8 +538,8 @@ const Navbar = () => {
       name: 'Login',
       href: '#',
       dropdown: [
-        { name: 'Admin Login', href: '/portal-admin/login' },
-        { name: 'Dashboard Admin Login', href: '/admin/login' },
+        { name: 'Admin Login', href: '/admin/login' },
+        { name: 'Dashboard Admin Login', href: '/dashboard-admin/login' },
         { name: 'Coach Login', href: '/coach/login' },
         { name: 'Player Login', href: '/player/login' },
         { name: 'Webmail Login', href: 'https://mail.hostinger.com/auth/login' },
@@ -642,12 +646,12 @@ const Navbar = () => {
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
             <div className="h-6 w-px bg-white/10 hidden lg:block"></div>
-            <button
-              onClick={() => setIsJoinModalOpen(true)}
+            <Link
+              to="/register"
               className="bg-gradient-to-r from-[#ff0000] to-[#990000] hover:from-[#ff1a1a] hover:to-[#cc0000] text-white px-4 lg:px-6 py-2.5 rounded-full text-[11px] lg:text-[12px] font-black tracking-widest uppercase transition-all shadow-[0_0_20px_rgba(255,0,0,0.3)] hover:shadow-[0_0_30px_rgba(255,0,0,0.6)] transform hover:-translate-y-0.5 border border-red-500/30 inline-flex whitespace-nowrap cursor-pointer"
             >
               Join Now
-            </button>
+            </Link>
           </div>
           <div className="md:hidden flex items-center space-x-3 ml-auto">
             <button onClick={() => setIsSearchOpen(true)} className="cursor-pointer text-white hover:text-red-500 transition-colors drop-shadow-md">
@@ -732,12 +736,13 @@ const Navbar = () => {
                 </div>
               ))}
               <div className="pt-6 mt-4 border-t border-white/5 relative z-10 w-full flex">
-                <button
-                  onClick={() => { setIsOpen(false); setIsJoinModalOpen(true); }}
+                <Link
+                  to="/register"
+                  onClick={() => setIsOpen(false)}
                   className="w-full text-center bg-gradient-to-r from-[#ff0000] to-[#990000] hover:from-[#ff1a1a] hover:to-[#cc0000] text-white py-4 rounded-xl font-black tracking-widest uppercase shadow-[0_0_20px_rgba(255,0,0,0.3)] hover:shadow-[0_0_30px_rgba(255,0,0,0.5)] border border-red-500/50 transition-all transform active:scale-[0.98] cursor-pointer"
                 >
                   Join Now
-                </button>
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -757,6 +762,7 @@ const Hero = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
   const [promoVideoUrl, setPromoVideoUrl] = useState("https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1");
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('/api/content/promo_videos')
@@ -802,7 +808,7 @@ const Hero = () => {
           </p>
           <div className="flex flex-row flex-wrap gap-3 sm:gap-4">
             <button
-              onClick={() => setIsJoinModalOpen(true)}
+              onClick={() => navigate('/register')}
               className="bg-[#ff1a1a] hover:bg-red-500 active:bg-red-600 text-white px-6 sm:px-8 py-3 rounded-full text-[14px] sm:text-[15px] font-bold tracking-wide flex items-center justify-center transition-all shadow-[0_0_25px_rgba(255,26,26,0.5)] hover:shadow-[0_0_40px_rgba(255,26,26,0.7)] active:scale-95 whitespace-nowrap cursor-pointer"
             >
               Apply Now
@@ -1269,11 +1275,23 @@ const NewsAndContact = () => {
     }
   };
 
-  const newsItems = [
-    { title: 'New Batch for Kids Starting Soon', date: 'March 10, 2026', category: 'Admission', desc: 'Enroll now for beginner-level taekwondo training.' },
-    { title: 'MDTA Students Win Gold at State Level', date: 'February 28, 2026', category: 'Achievement', desc: 'Our students secured top positions in state championship.' },
-    { title: 'District Taekwondo Championship 2026', date: 'March 15, 2026', category: 'Event', desc: 'MDTA to host district-level competition for all categories.' },
-  ];
+  const [newsItems, setNewsItems] = useState<any[]>([
+    { title: 'New Batch for Kids Starting Soon', date: 'March 10, 2026', category: 'Admission', content: 'Enroll now for beginner-level taekwondo training.' },
+    { title: 'MDTA Students Win Gold at State Level', date: 'February 28, 2026', category: 'Achievement', content: 'Our students secured top positions in state championship.' },
+    { title: 'District Taekwondo Championship 2026', date: 'March 15, 2026', category: 'Event', content: 'MDTA to host district-level competition for all categories.' },
+  ]);
+
+  useEffect(() => {
+    fetch('/api/news')
+      .then(res => res.json())
+      .then(data => {
+        const published = data.filter((d: any) => d.status === 'Published');
+        if (published.length > 0) {
+          setNewsItems(published.slice(0, 3));
+        }
+      })
+      .catch(err => console.error(err));
+  }, []);
 
   return (
     <section id="news" className="pt-6 pb-20 bg-[#050505] relative">
@@ -1299,13 +1317,13 @@ const NewsAndContact = () => {
                       {item.category}
                     </span>
                     <h3 className="text-[17px] md:text-[19px] font-bold text-white mb-3 leading-[1.3] group-hover:text-[#ff1a1a] transition-colors drop-shadow-sm">{item.title}</h3>
-                    <p className="text-[13px] md:text-[14px] text-gray-300 mb-6 leading-[1.6] font-medium">{item.desc}</p>
+                    <p className="text-[13px] md:text-[14px] text-gray-300 mb-6 leading-[1.6] font-medium line-clamp-3">{item.content}</p>
                   </div>
                   <div className="mt-auto">
                     <div className="h-[1px] w-full bg-white/10 mb-4"></div>
                     <div className="flex items-center text-gray-400 text-[13px] font-medium">
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-3"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                      {item.date}
+                      {new Date(item.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                     </div>
                   </div>
                 </motion.div>
@@ -1405,6 +1423,19 @@ const NewsAndContact = () => {
 };
 
 const Footer = () => {
+  const [socialLinks, setSocialLinks] = React.useState({ facebook: '#', instagram: '#', twitter: '#', youtube: '#' });
+
+  React.useEffect(() => {
+    fetch('/api/content/social_links')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.content) {
+          try { setSocialLinks(prev => ({ ...prev, ...JSON.parse(data.content) })); } catch (e) {}
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <footer className="bg-[#050505] text-white pt-16 pb-8 border-t border-white/10 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/5 rounded-full blur-[80px] pointer-events-none"></div>
@@ -1425,16 +1456,16 @@ const Footer = () => {
               Empowering athletes since 2011 with the true spirit of martial arts, discipline, and excellence.
             </p>
             <div className="flex space-x-4 pt-2">
-              <a href="#" className="w-9 h-9 bg-white/5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all">
+              <a href={socialLinks.facebook || '#'} target="_blank" rel="noreferrer" className="w-9 h-9 bg-white/5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all">
                 <Facebook className="w-4 h-4" />
               </a>
-              <a href="#" className="w-9 h-9 bg-white/5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all">
+              <a href={socialLinks.instagram || '#'} target="_blank" rel="noreferrer" className="w-9 h-9 bg-white/5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all">
                 <Instagram className="w-4 h-4" />
               </a>
-              <a href="#" className="w-9 h-9 bg-white/5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all">
+              <a href={socialLinks.twitter || '#'} target="_blank" rel="noreferrer" className="w-9 h-9 bg-white/5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all">
                 <Twitter className="w-4 h-4" />
               </a>
-              <a href="#" className="w-9 h-9 bg-white/5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all">
+              <a href={socialLinks.youtube || '#'} target="_blank" rel="noreferrer" className="w-9 h-9 bg-white/5 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-600 hover:shadow-[0_0_15px_rgba(255,0,0,0.5)] transition-all">
                 <Youtube className="w-4 h-4" />
               </a>
             </div>
@@ -1509,14 +1540,20 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-500 text-xs tracking-wide text-center md:text-left">
-            &copy; {new Date().getFullYear()} Maharajganj District Taekwondo Association. All rights reserved.
-          </p>
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-2">
+          <div className="text-center md:text-left">
+            <p className="text-gray-500 text-xs tracking-wide">
+              &copy; {new Date().getFullYear()} Maharajganj District Taekwondo Association. All rights reserved.
+            </p>
+            <p className="text-gray-600 text-[10px] tracking-widest uppercase font-medium mt-1">
+              Designed &amp; Developed by{' '}
+              <span className="text-red-500/80 font-bold hover:text-red-400 transition-colors cursor-default">Abhi</span>
+            </p>
+          </div>
           <div className="flex space-x-6 text-xs text-gray-500">
             <Link to="#" className="hover:text-white transition-colors">Privacy Policy</Link>
             <Link to="#" className="hover:text-white transition-colors">Terms of Service</Link>
-            <Link to="/portal-admin/login" className="hover:text-white transition-colors">Admin Portal</Link>
+            <Link to="/admin-login" className="hover:text-white transition-colors">Admin Login</Link>
           </div>
         </div>
       </div>
@@ -1848,12 +1885,13 @@ export default function App() {
           <Route path="/events/past" element={<PublicLayout><EventsDisplay /></PublicLayout>} />
 
           {/* Player Routes */}
+          <Route path="/print-registration/:id" element={<StandalonePrintView />} />
           <Route path="/player/login" element={<PlayerLogin />} />
           <Route path="/player/dashboard" element={<PlayerDashboard />} />
 
-          {/* Portal Admin Routes */}
-          <Route path="/portal-admin/login" element={<PortalLogin />} />
-          <Route path="/portal-admin" element={<PortalAdminLayout />}>
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<MasterAdminLayout />}>
             <Route index element={<Registrations />} />
             <Route path="belts" element={<BeltManagement />} />
             <Route path="academy" element={<CoachAcademy />} />
@@ -1870,11 +1908,14 @@ export default function App() {
             <Route path="black-belts" element={<BlackBeltsAdmin />} />
             <Route path="national-players" element={<NationalPlayersAdmin />} />
             <Route path="roles" element={<UserRoles />} />
+            <Route path="homepage" element={<HomePageAdmin />} />
+            <Route path="about-mdta" element={<AboutMDTAAdmin />} />
+            <Route path="site-settings" element={<SiteSettings />} />
           </Route>
 
-          <Route path="/admin/login" element={<Login />} />
+          <Route path="/dashboard-admin/login" element={<Login />} />
 
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/dashboard-admin" element={<AdminLayout />}>
             <Route index element={<Players />} />
             <Route path="categories" element={<Categories />} />
             <Route path="tiesheets" element={<Tiesheets />} />

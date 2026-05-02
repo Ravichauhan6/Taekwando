@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, CheckCircle, ArrowLeft, Printer } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { PrintableView } from './portal-admin/PrintableView';
+import { PrintableView } from './admin/PrintableView';
 import { load } from '@cashfreepayments/cashfree-js';
 
 const toTitleCase = (str: string) => {
@@ -284,14 +284,14 @@ export const Registration = () => {
             date: new Date(data.player.date_registered || new Date()).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, ' ')
           };
 
-          // Generate Notification to Local Storage for Portal Admin
+          // Generate Notification to Local Storage for Admin Dashboard
           const newNotif = {
             id: Date.now().toString(),
             message: `New player ${formData.fullName} applied and paid for ${formData.trainingCenter}.`,
             time: 'Just now',
             type: 'Registration'
           };
-          const storedNotifsStr = localStorage.getItem('portal_notifications');
+          const storedNotifsStr = localStorage.getItem('admin_notifications');
           let savedNotifs = [];
           if (storedNotifsStr) {
             savedNotifs = JSON.parse(storedNotifsStr);
@@ -301,7 +301,7 @@ export const Registration = () => {
               { id: '2', title: 'System Maintenance at 12:00 AM tonight.', time: '5 hours ago', type: 'System' }
             ];
           }
-          localStorage.setItem('portal_notifications', JSON.stringify([newNotif, ...savedNotifs]));
+          localStorage.setItem('admin_notifications', JSON.stringify([newNotif, ...savedNotifs]));
 
           setSubmittedReg(newReg);
           setIsUploading(false);

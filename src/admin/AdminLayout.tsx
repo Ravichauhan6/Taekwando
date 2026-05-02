@@ -1,91 +1,104 @@
 import React from 'react';
 import { Navigate, Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { Users, Settings, LogOut, Download, Target, Home, Shield } from 'lucide-react';
-import { isAuthenticated, removeToken } from './auth';
+import { Globe, Users, Newspaper, Bell, LogOut, Shield, Award, Building, Building2, Image as ImageIcon, FileText, Settings, Trophy, MapPin, Quote, Video, Calendar, Settings2 } from 'lucide-react';
 
 export const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  if (!isAuthenticated()) {
+  if (!localStorage.getItem('portal_token')) {
     return <Navigate to="/admin/login" replace />;
   }
 
   const handleLogout = () => {
-    removeToken();
+    localStorage.removeItem('portal_token');
     navigate('/admin/login');
   };
 
   const menuItems = [
-    { path: '/admin', label: 'Players', icon: <Users className="w-5 h-5" /> },
-    { path: '/admin/categories', label: 'Weight Categories', icon: <Settings className="w-5 h-5" /> },
-    { path: '/admin/tiesheets', label: 'Draws & Brackets', icon: <Target className="w-5 h-5" /> },
-    { path: '/admin/reports', label: 'Export Reports', icon: <Download className="w-5 h-5" /> },
-    { path: '/admin/settings', label: 'Security', icon: <Shield className="w-5 h-5" /> },
+    { path: '/admin', label: 'Registrations Data', icon: <Users className="w-5 h-5" /> },
+    { path: '/admin/promo-videos', label: 'Promo Videos', icon: <Video className="w-5 h-5" /> },
+    { path: '/admin/belts', label: 'Belt Management', icon: <Award className="w-5 h-5" /> },
+    { path: '/admin/academy', label: 'Coach/Academy', icon: <Building className="w-5 h-5" /> },
+    { path: '/admin/training-centers', label: 'Training Centers', icon: <MapPin className="w-5 h-5" /> },
+    { path: '/admin/camps', label: 'Upcoming Camps', icon: <Calendar className="w-5 h-5" /> },
+    { path: '/admin/events', label: 'Event Creation', icon: <Trophy className="w-5 h-5" /> },
+    { path: '/admin/gallery', label: 'Media Gallery', icon: <ImageIcon className="w-5 h-5" /> },
+    { path: '/admin/documents', label: 'Documents', icon: <FileText className="w-5 h-5" /> },
+    { path: '/admin/news', label: 'News Updates', icon: <Newspaper className="w-5 h-5" /> },
+    { path: '/admin/notifications', label: 'Notifications', icon: <Bell className="w-5 h-5" /> },
+    { path: '/admin/what-we-say', label: 'Leadership Messages', icon: <Quote className="w-5 h-5" /> },
+    { path: '/admin/referees', label: 'National Referees', icon: <Shield className="w-5 h-5" /> },
+    { path: '/admin/black-belts', label: 'Black Belt Holders', icon: <Award className="w-5 h-5" /> },
+    { path: '/admin/national-players', label: 'National Players', icon: <Trophy className="w-5 h-5" /> },
+    { path: '/admin/roles', label: 'User Roles', icon: <Settings className="w-5 h-5" /> },
+    { path: '/admin/site-settings', label: 'Site Settings', icon: <Settings2 className="w-5 h-5" /> },
   ];
 
   return (
-    <div className="flex h-screen bg-[#050505] font-sans print:h-auto print:block print:bg-white print:overflow-visible selection:bg-red-500/30 selection:text-white">
+    <div className="flex h-screen bg-[#050505] font-sans text-gray-200 selection:bg-red-500/30">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#0a0a0a] border-r border-white/5 text-white flex flex-col justify-between print:hidden">
-        <div>
-          <div className="p-8">
-            <h1 className="flex items-center gap-3 drop-shadow-[0_2px_10px_rgba(255,0,0,0.2)]">
-              <Link to="/" className="bg-white p-1 rounded-xl border border-red-500/50 shadow-[0_0_15px_rgba(255,0,0,0.3)] shrink-0 group/logo overflow-hidden h-11 w-11 flex items-center justify-center">
-                <img src="/logo.png" alt="MDTA" className="w-full h-full object-contain group-hover/logo:scale-110 transition-transform" />
-              </Link>
-              <div className="flex flex-col leading-none justify-center">
-                <span className="text-[10px] sm:text-[11px] font-black tracking-widest uppercase text-white mb-1 leading-snug drop-shadow-md break-words max-w-[160px]">
-                  MAHARAJGANJ DISTRICT TAEKWONDO ASSOCIATION (Regd)
-                </span>
-                <span className="text-[10px] font-bold tracking-widest uppercase text-red-400 mt-1">
-                  Dashboard Admin
-                </span>
-              </div>
-            </h1>
+      <aside className="w-72 bg-[#111] border-r border-white/5 flex flex-col shadow-[10px_0_30px_rgba(0,0,0,0.5)] z-20 relative">
+        <div className="p-6 pb-2">
+          <div className="flex items-center gap-3">
+            <Link to="/" className="bg-white p-1 rounded-xl shadow-[0_0_15px_rgba(255,0,0,0.4)] border border-red-500/30 shrink-0 group/logo overflow-hidden h-11 w-11 flex items-center justify-center">
+              <img src="/logo.png" alt="MDTA" className="w-full h-full object-contain group-hover/logo:scale-110 transition-transform" />
+            </Link>
+            <div className="flex flex-col">
+               <h1 className="text-[10px] sm:text-[11px] font-black tracking-widest text-white leading-snug uppercase drop-shadow-md">
+                 MAHARAJGANJ DISTRICT TAEKWONDO ASSOCIATION (Regd)
+               </h1>
+               <h2 className="text-[10px] text-red-400 font-bold uppercase tracking-widest mt-0.5">Admin</h2>
+            </div>
           </div>
-          
-          <nav className="px-6 space-y-3 mt-4">
-            {menuItems.map((item) => {
-              const isActive = location.pathname === item.path || (item.path !== '/admin' && location.pathname.startsWith(item.path));
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex items-center gap-3 px-5 py-3.5 rounded-xl transition-all font-bold text-[12px] uppercase tracking-widest ${
-                    isActive 
-                      ? 'bg-gradient-to-r from-red-600 to-red-900 text-white shadow-[0_4px_15px_rgba(255,0,0,0.3)] border border-red-500/50' 
-                      : 'text-gray-500 hover:bg-white/5 hover:text-white border border-transparent'
-                  }`}
-                >
-                  {item.icon}
-                  {item.label}
-               </Link>
-              )
-            })}
-          </nav>
         </div>
+        
+        <nav className="flex-1 px-4 space-y-2 mt-8 overflow-y-auto custom-scrollbar">
+          {menuItems.map((item) => {
+            const isActive = location.pathname === item.path || (item.path !== '/admin' && item.path !== '/' && location.pathname.startsWith(item.path));
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center gap-4 px-5 py-4 rounded-xl transition-all font-bold tracking-wide text-[13px] uppercase ${
+                  isActive 
+                    ? 'bg-gradient-to-r from-[#ff0000]/20 to-transparent text-white border-l-[3px] border-[#ff0000] shadow-[inset_20px_0_30px_rgba(255,0,0,0.05)]' 
+                    : 'text-gray-400 hover:bg-white/5 hover:text-white border-l-[3px] border-transparent hover:border-white/10'
+                }`}
+              >
+                <div className={`${isActive ? 'text-[#ff0000] drop-shadow-[0_0_8px_rgba(255,0,0,0.8)]' : 'text-gray-500 group-hover:text-gray-300'} transition-all`}>
+                  {item.icon}
+                </div>
+                {item.label}
+             </Link>
+            )
+          })}
+        </nav>
 
-        <div className="p-6 border-t border-white/5 bg-[#111] space-y-3">
+        <div className="p-6 border-t border-white/5 space-y-3">
           <Link 
             to="/"
-            className="flex w-full items-center justify-center gap-3 px-5 py-3.5 text-gray-400 hover:bg-white/5 hover:border-white/10 hover:text-white border border-white/5 rounded-xl transition-all font-bold text-[12px] uppercase tracking-widest shadow-inner group"
+            className="flex items-center justify-center gap-3 px-4 py-3.5 w-full bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white rounded-xl transition-all font-bold text-[13px] uppercase tracking-wide border border-white/5 hover:border-white/20"
           >
-            <Home className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Website
+            <Globe className="w-4 h-4" />
+            Return to Website
           </Link>
           <button 
             onClick={handleLogout}
-            className="flex w-full items-center justify-center gap-3 px-5 py-3.5 text-gray-400 hover:bg-red-500/10 hover:border-red-500/50 hover:text-red-500 border border-white/5 rounded-xl transition-all font-bold text-[12px] uppercase tracking-widest shadow-inner group"
+            className="flex items-center justify-center gap-3 px-4 py-3.5 w-full bg-[#ff0000]/10 hover:bg-[#ff0000]/20 text-[#ff0000] hover:text-[#ff1a1a] rounded-xl transition-all font-bold text-[13px] uppercase tracking-wide border border-[#ff0000]/20 hover:border-[#ff0000]/50 shadow-[0_0_15px_rgba(255,0,0,0.1)] hover:shadow-[0_0_20px_rgba(255,0,0,0.2)]"
           >
-            <LogOut className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            <LogOut className="w-4 h-4" />
             Logout
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto p-8 lg:p-12 print:p-0 print:overflow-visible print:block bg-gradient-to-br from-[#050505] to-[#0a0a0a]">
+      <main className="flex-1 overflow-auto bg-[#0a0a0a] p-8 md:p-12 relative z-10 w-full">
+        {/* Decorative Background Blur */}
+        <div className="fixed top-[-50px] right-[-50px] w-[500px] h-[500px] bg-[#ff0000]/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="fixed bottom-[-100px] left-[250px] w-[400px] h-[400px] bg-red-900/10 rounded-full blur-[120px] pointer-events-none"></div>
+        
         <Outlet />
       </main>
     </div>

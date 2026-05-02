@@ -807,6 +807,21 @@ app.get("/api/players", async (req, res) => {
   }
 });
 
+app.get("/api/players/:id", async (req, res) => {
+  try {
+    const player = await Player.findById(req.params.id).populate('weight_category_id').lean();
+    if (!player) return res.status(404).json({ error: "Player not found" });
+    const mapped = {
+       ...player,
+       id: (player as any).registration_number || player._id,
+       category_name: player.weight_category_id ? (player.weight_category_id as any).name : 'Unknown'
+    };
+    res.json(mapped);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch player" });
+  }
+});
+
 app.post("/api/players", async (req, res) => {
   const { 
     name, father_name, gender, dob, address, weight,
@@ -905,7 +920,7 @@ app.post("/api/players/login", async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ error: "Email and password required" });
   try {
-    const player = await Player.findOne({ email: email.toLowerCase().trim() });
+    const player = await Player.findOne({ email: { $regex: new RegExp(`^${email.trim()}$`, "i") } });
     if (!player) return res.status(401).json({ error: "Invalid email or password." });
     if (player.get('password') !== password) return res.status(401).json({ error: "Invalid email or password." });
     
@@ -933,7 +948,7 @@ app.post("/api/players/send-otp", async (req, res) => {
   if (!email) return res.status(400).json({ error: "Email is required." });
 
   try {
-    const player = await Player.findOne({ email: email.toLowerCase().trim() });
+    const player = await Player.findOne({ email: { $regex: new RegExp(`^${email.trim()}$`, "i") } });
     if (!player) return res.status(404).json({ error: "No account found with this email." });
 
     // Generate 6-digit OTP
@@ -1009,7 +1024,7 @@ app.post("/api/players/reset-password", async (req, res) => {
   }
 
   try {
-    const player = await Player.findOne({ email: key });
+    const player = await Player.findOne({ email: { $regex: new RegExp(`^${key}$`, "i") } });
     if (!player) return res.status(404).json({ error: "No account found with this email." });
 
     player.set('password', newPassword);
@@ -1287,7 +1302,19 @@ app.post("/api/tiesheets/generate", async (req, res) => {
 
 app.get("/api/admin/online-activity", async (req, res) => {
   try {
-    const sessions = await UserSession.find().sort({ last_active: -1 }).limit(10);
+    const { search } = req.query;
+    let query: any = {};
+    if (search && typeof search === 'string' && search.trim() !== '') {
+      query = {
+        $or: [
+          { user: { $regex: search, $options: 'i' } },
+          { name: { $regex: search, $options: 'i' } },
+          { role: { $regex: search, $options: 'i' } },
+          { ip: { $regex: search, $options: 'i' } }
+        ]
+      };
+    }
+    const sessions = await UserSession.find(query).sort({ last_active: -1 }).limit(100);
     const now = new Date();
     const activity = sessions.map(s => {
       const diffMs = now.getTime() - new Date(s.last_active).getTime();
@@ -1465,7 +1492,7 @@ app.get("/api/coach-messages/sent/:coach_id", async (req, res) => {
 app.get("/api/coach-messages/received/:player_id", async (req, res) => {
   try {
     const { player_id } = req.params;
-    const player = await PlayerModel.findById(player_id);
+    const player = await Player.findById(player_id);
     if (!player) return res.json([]);
     
     // Only fetch if player has a coach assigned
@@ -1586,7 +1613,7 @@ async function startServer() {
 
   // Do not listen to port if running in a serverless environment like Vercel
   if (!process.env.VERCEL) {
-    app.listen(PORT, "0.0.0.0", () => {
+    app.listen(Number(PORT), "0.0.0.0", () => {
       console.log(`Server running on http://localhost:${PORT}`);
     });
   }

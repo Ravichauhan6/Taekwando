@@ -47,7 +47,7 @@ export const CoachLogin = () => {
             <Link to="/" className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center p-1.5 shadow-[0_0_30px_rgba(255,255,255,0.1)] border border-white/10 mb-4 group/logo overflow-hidden">
                <img src="/logo.png" alt="MDTA Logo" className="w-full h-full object-contain group-hover/logo:scale-110 transition-transform" />
             </Link>
-            <h2 className="text-2xl font-black text-white tracking-widest uppercase">Coach Portal</h2>
+            <h2 className="text-2xl font-black text-white tracking-widest uppercase">Coach Login</h2>
             <p className="text-gray-400 text-sm font-medium mt-1 tracking-wide">Manage your dojo and students</p>
           </div>
 

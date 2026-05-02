@@ -10,7 +10,7 @@ export const AdminLogin = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (username === 'portaladmin' && password === 'portal@123') {
-      localStorage.setItem('portal_token', 'true');
+      localStorage.setItem('admin_dashboard_token', 'true');
       navigate('/admin-dashboard');
     } else {
       setError('Invalid Admin credentials.');
@@ -43,7 +43,7 @@ export const AdminLogin = () => {
               className="w-full bg-[#0a0a0a] border border-white/5 hover:border-white/10 rounded-xl px-5 py-3.5 outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 text-white transition-all text-sm font-medium shadow-inner"
               value={username}
               onChange={e => setUsername(e.target.value)}
-              placeholder="portaladmin"
+              placeholder="admin"
               required
             />
           </div>

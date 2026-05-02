@@ -37,7 +37,7 @@ export const CoachLayout = () => {
              <span className="text-[10px] sm:text-[11px] font-black uppercase text-white leading-snug drop-shadow-md break-words">
                  MAHARAJGANJ DISTRICT TAEKWONDO ASSOCIATION (Regd)
              </span>
-             <span className="text-[10px] font-bold tracking-[0.2em] text-[#ff1a1a] uppercase mt-1 leading-none truncate w-full">Coach Portal</span>
+             <span className="text-[10px] font-bold tracking-[0.2em] text-[#ff1a1a] uppercase mt-1 leading-none truncate w-full">Coach Dashboard</span>
           </div>
         </div>
 

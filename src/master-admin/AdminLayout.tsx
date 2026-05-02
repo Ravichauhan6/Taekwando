@@ -6,12 +6,12 @@ export const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  if (!localStorage.getItem('portal_token')) {
+  if (!localStorage.getItem('admin_dashboard_token')) {
     return <Navigate to="/admin-login" replace />;
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('portal_token');
+    localStorage.removeItem('admin_dashboard_token');
     navigate('/admin-login');
   };
 
@@ -32,6 +32,8 @@ export const AdminLayout = () => {
     { path: '/admin-dashboard/black-belts', label: 'Black Belt Holders', icon: <Award className="w-5 h-5" /> },
     { path: '/admin-dashboard/national-players', label: 'National Players', icon: <Trophy className="w-5 h-5" /> },
     { path: '/admin-dashboard/roles', label: 'User Roles', icon: <Settings className="w-5 h-5" /> },
+    { path: '/admin-dashboard/homepage', label: 'Homepage Assets', icon: <ImageIcon className="w-5 h-5" /> },
+    { path: '/admin-dashboard/about-mdta', label: 'About MDTA Content', icon: <FileText className="w-5 h-5" /> },
     { path: '/admin-dashboard/site-settings', label: 'Site Settings', icon: <Settings2 className="w-5 h-5" /> },
   ];
 

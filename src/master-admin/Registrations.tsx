@@ -15,7 +15,6 @@ export const Registrations = () => {
       const res = await fetch('/api/players');
       const data = await res.json();
       
-      // Filter out players registered via Dashboard Admin (only full Applications have email)
       const portalRegistrations = data.filter((p: any) => p.email);
 
       const mapped = portalRegistrations.map((p: any) => ({
@@ -57,11 +56,9 @@ export const Registrations = () => {
     fetchRecords();
   }, []);
 
-  // Handle browser back button to close modals instead of leaving the page
   React.useEffect(() => {
     const handlePopState = (e: PopStateEvent) => {
       if (printReg || selectedReg) {
-        // Prevent navigating back
         window.history.pushState(null, '', window.location.href);
         setPrintReg(null);
         setSelectedReg(null);
@@ -84,12 +81,9 @@ export const Registrations = () => {
 
   const closeModals = () => {
     if (printReg || selectedReg) {
-      window.history.back(); // This will trigger popstate which closes the modal
+      window.history.back();
     }
   };
-
-// Reusable print component moved to external file PrintableView.tsx
-
 
   const handleDelete = async (id: string) => {
     if(window.confirm('Are you sure you want to delete this registration?')) {

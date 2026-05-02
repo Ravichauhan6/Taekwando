@@ -104,50 +104,50 @@ export const PrintableView = ({ reg, onClose, isStandalone }: { reg: any; onClos
               <div className="text-[12px] font-black uppercase tracking-wide mb-2 mt-2 text-[#000]">* THE MINISTRY OF YOUTH AFFAIRS &amp; SPORTS, GOVERNMENT OF INDIA *</div>
               <div className="w-full h-[2.5px] bg-black mb-1.5 mt-1"></div>
               <div className="bg-black text-white inline-block px-10 py-1.5 font-black text-[16px] uppercase tracking-widest rounded-md mt-1 mb-2 shadow-sm" style={{WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact'}}>Application Form of Registration &amp; Admission</div>
-           </div>
-           
-           <div className="text-xs font-medium mb-2 pl-1">Registration Number <span className="text-[14px] font-black ml-1 uppercase">{reg.id}</span></div>
-           <table className="w-full border-collapse border border-gray-400 text-[13px] font-medium" style={{tableLayout: 'fixed'}}>
-             <tbody>
-               <tr className="border-[1px] border-gray-400 h-10">
-                 <td className="p-2 border-[1px] border-gray-400 align-top w-[50%]" colSpan={2}><span className="text-gray-700 text-[12px] mr-1">Name of the Candidate :</span><span className="font-extrabold text-[14px] uppercase">{reg.name}</span></td>
-                 <td className="p-2 border-[1px] border-gray-400 align-top w-[50%]" colSpan={2}><span className="text-gray-700 text-[12px] mr-1">Father's Name :</span><span className="font-bold text-[13px] uppercase">{reg.fatherName && reg.fatherName !== 'Not Provided' ? reg.fatherName : '______________________'}</span></td>
-               </tr>
-               <tr className="border-[1px] border-gray-400 h-10">
-                  <td className="p-2 border-[1px] border-gray-400 align-top w-[25%]" colSpan={2}><span className="text-gray-700 text-[12px] mr-1">Father's Occupation :</span><span className="font-bold uppercase">{reg.fatherOccupation && reg.fatherOccupation !== 'Not Provided' ? reg.fatherOccupation : '______________________'}</span></td>
-                  <td className="p-2 border-[1px] border-gray-400 align-top w-[25%]" colSpan={1}><span className="text-gray-700 text-[12px] mr-1">Date of Birth :</span><span className="font-bold">{reg.dob && reg.dob !== 'Not Provided' ? reg.dob : '_________'}</span></td>
-                 {/* ===== PHOTO + SIGNATURE ===== */}
-                 <td className="p-0 border-[1px] border-gray-400 w-[155px] align-top bg-white" rowSpan={6} style={{WebkitPrintColorAdjust:'exact', printColorAdjust:'exact'}}>
-                   <div style={{margin:'4px', display:'flex', flexDirection:'column', height:'calc(100% - 8px)'}}>
-                     {/* Photo: passport style */}
-                     <div style={{flex:1, minHeight:'145px', border:'1px solid #d1d5db', overflow:'hidden', background:'#00aaff', WebkitPrintColorAdjust:'exact', printColorAdjust:'exact'}}>
-                       {reg.photoFile
-                         ? <img src={reg.photoFile} style={{width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top', display:'block'}}/>
-                         : <div style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{color:'white',fontSize:'10px',fontWeight:'bold'}}>No Photo</span></div>}
-                     </div>
-                     {/* Signature: full width stretch — no side gaps */}
-                     <div style={{height:'58px', border:'1px solid #9ca3af', borderTop:'none', background:'#ffffff', overflow:'hidden'}}>
-                       {reg.signatureFile
-                         ? <img src={reg.signatureFile} style={{width:'100%', height:'100%', objectFit:'fill', display:'block'}}/>
-                         : <span style={{color:'#9ca3af', fontSize:'9px', display:'flex', alignItems:'center', justifyContent:'center', height:'100%'}}>Signature</span>}
-                     </div>
-                   </div>
-                 </td>
-               </tr>
-               <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-top" colSpan={2}><span className="text-gray-700 text-[12px] mr-1">Gender :</span><span className="font-bold uppercase">{reg.gender && reg.gender !== 'Not Provided' ? reg.gender : '__________'}</span></td><td className="p-2 border-[1px] border-gray-400 align-top"><span className="text-gray-700 text-[12px] mr-1">Mobile Number :</span><span className="font-bold">{reg.mobile && reg.mobile !== 'Not Provided' ? reg.mobile : '__________'}</span></td></tr>
-               <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-top" colSpan={2}><span className="text-gray-700 text-[12px] mr-1">Height (cm) :</span><span className="font-bold">{reg.height && reg.height !== 'Not Provided' ? reg.height : '_______'}</span></td><td className="p-2 border-[1px] border-gray-400 align-top"><span className="text-gray-700 text-[12px] mr-1">Weight (kg) :</span><span className="font-bold">{reg.weight && reg.weight !== 'Not Provided' ? reg.weight : '_______'}</span></td></tr>
-               <tr className="border-[1px] border-gray-400"><td className="p-2 border-[1px] border-gray-400 align-top h-[50px]" colSpan={3}><div className="text-gray-700 text-[12px] mb-1">Training Center :</div><div className="font-extrabold text-[13px] uppercase tracking-wide">{reg.center}</div></td></tr>
-               <tr className="border-[1px] border-gray-400"><td className="p-2 border-[1px] border-gray-400 align-top h-[60px]" colSpan={3}><div className="text-gray-700 text-[12px] mb-1">Training Centre Address :</div><div className="font-bold uppercase">{reg.trainingCenterAddress && reg.trainingCenterAddress !== 'Not Provided' ? reg.trainingCenterAddress : '________________________________________'}</div></td></tr>
-               <tr className="border-[1px] border-gray-400"><td className="p-2 border-[1px] border-gray-400 align-top h-[50px]" colSpan={3}><div className="text-gray-700 text-[12px] mb-1">Trainer Name:</div><div className="font-bold uppercase tracking-wide">{reg.coachName && reg.coachName !== 'Not Provided' ? reg.coachName : '______________________'}</div></td></tr>
-               <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-middle font-bold text-[13px] w-[35%]">Candidate Blood Group</td><td className="p-2 border-[1px] border-gray-400 align-middle font-black text-sm" colSpan={3}>{reg.bloodGroup && reg.bloodGroup !== 'Not Provided' ? reg.bloodGroup : '_______'}</td></tr>
-               <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-middle text-[13px]">Aadhar Number</td><td className="p-2 border-[1px] border-gray-400 align-middle font-bold" colSpan={3}>{reg.aadhar && reg.aadhar !== 'Not Provided' ? reg.aadhar : '________________'}</td></tr>
-               <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-middle text-[13px]">Qualification</td><td className="p-2 border-[1px] border-gray-400 align-middle font-bold" colSpan={3}>{reg.qualification && reg.qualification !== 'Not Provided' ? reg.qualification : '_________________________'}</td></tr>
-               <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-middle text-[13px]">School/College Name</td><td className="p-2 border-[1px] border-gray-400 align-middle font-bold" colSpan={3}>{reg.schoolCollege && reg.schoolCollege !== 'Not Provided' ? reg.schoolCollege : '_________________________'}</td></tr>
-               <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-middle text-[13px]">Permanent Address</td><td className="p-2 border-[1px] border-gray-400 align-middle font-bold" colSpan={3}>{reg.permanentAddress && reg.permanentAddress !== 'Not Provided' ? reg.permanentAddress : '________________________________________'}</td></tr>
-               <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-middle text-[13px]">Local Address</td><td className="p-2 border-[1px] border-gray-400 align-middle font-bold" colSpan={3}>{reg.localAddress && reg.localAddress !== 'Not Provided' ? reg.localAddress : '________________________________________'}</td></tr>
-             </tbody>
-           </table>
-           <div className="absolute bottom-6 right-8 text-[11px] font-bold text-black mt-4 w-full text-right">1/2</div>
+            </div>
+            
+            <div className="text-xs font-medium mb-2 pl-1">Registration Number <span className="text-[14px] font-black ml-1 uppercase">{reg.id}</span></div>
+            <table className="w-full border-collapse border border-gray-400 text-[13px] font-medium" style={{tableLayout: 'fixed'}}>
+              <tbody>
+                <tr className="border-[1px] border-gray-400 h-10">
+                  <td className="p-2 border-[1px] border-gray-400 align-top w-[50%]" colSpan={2}><span className="text-gray-700 text-[12px] mr-1">Name of the Candidate :</span><span className="font-extrabold text-[14px] uppercase">{reg.name}</span></td>
+                  <td className="p-2 border-[1px] border-gray-400 align-top w-[50%]" colSpan={2}><span className="text-gray-700 text-[12px] mr-1">Father's Name :</span><span className="font-bold text-[13px] uppercase">{reg.fatherName && reg.fatherName !== 'Not Provided' ? reg.fatherName : '______________________'}</span></td>
+                </tr>
+                <tr className="border-[1px] border-gray-400 h-10">
+                   <td className="p-2 border-[1px] border-gray-400 align-top w-[25%]" colSpan={2}><span className="text-gray-700 text-[12px] mr-1">Father's Occupation :</span><span className="font-bold uppercase">{reg.fatherOccupation && reg.fatherOccupation !== 'Not Provided' ? reg.fatherOccupation : '______________________'}</span></td>
+                   <td className="p-2 border-[1px] border-gray-400 align-top w-[25%]" colSpan={1}><span className="text-gray-700 text-[12px] mr-1">Date of Birth :</span><span className="font-bold">{reg.dob && reg.dob !== 'Not Provided' ? reg.dob : '_________'}</span></td>
+                  {/* ===== PHOTO + SIGNATURE ===== */}
+                  <td className="p-0 border-[1px] border-gray-400 w-[155px] align-top bg-white" rowSpan={6} style={{WebkitPrintColorAdjust:'exact', printColorAdjust:'exact'}}>
+                    <div style={{margin:'4px', display:'flex', flexDirection:'column', height:'calc(100% - 8px)'}}>
+                      {/* Photo: passport style */}
+                      <div style={{flex:1, minHeight:'145px', border:'1px solid #d1d5db', overflow:'hidden', background:'#00aaff', WebkitPrintColorAdjust:'exact', printColorAdjust:'exact'}}>
+                        {reg.photoFile
+                          ? <img src={reg.photoFile} style={{width:'100%', height:'100%', objectFit:'cover', objectPosition:'center top', display:'block'}}/>
+                          : <div style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center'}}><span style={{color:'white',fontSize:'10px',fontWeight:'bold'}}>No Photo</span></div>}
+                      </div>
+                      {/* Signature: full width stretch — no side gaps */}
+                      <div style={{height:'58px', border:'1px solid #9ca3af', borderTop:'none', background:'#ffffff', overflow:'hidden'}}>
+                        {reg.signatureFile
+                          ? <img src={reg.signatureFile} style={{width:'100%', height:'100%', objectFit:'fill', display:'block'}}/>
+                          : <span style={{color:'#9ca3af', fontSize:'9px', display:'flex', alignItems:'center', justifyContent:'center', height:'100%'}}>Signature</span>}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-top" colSpan={2}><span className="text-gray-700 text-[12px] mr-1">Gender :</span><span className="font-bold uppercase">{reg.gender && reg.gender !== 'Not Provided' ? reg.gender : '__________'}</span></td><td className="p-2 border-[1px] border-gray-400 align-top"><span className="text-gray-700 text-[12px] mr-1">Mobile Number :</span><span className="font-bold">{reg.mobile && reg.mobile !== 'Not Provided' ? reg.mobile : '__________'}</span></td></tr>
+                <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-top" colSpan={2}><span className="text-gray-700 text-[12px] mr-1">Height (cm) :</span><span className="font-bold">{reg.height && reg.height !== 'Not Provided' ? reg.height : '_______'}</span></td><td className="p-2 border-[1px] border-gray-400 align-top"><span className="text-gray-700 text-[12px] mr-1">Weight (kg) :</span><span className="font-bold">{reg.weight && reg.weight !== 'Not Provided' ? reg.weight : '_______'}</span></td></tr>
+                <tr className="border-[1px] border-gray-400"><td className="p-2 border-[1px] border-gray-400 align-top h-[50px]" colSpan={3}><div className="text-gray-700 text-[12px] mb-1">Training Center :</div><div className="font-extrabold text-[13px] uppercase tracking-wide">{reg.center}</div></td></tr>
+                <tr className="border-[1px] border-gray-400"><td className="p-2 border-[1px] border-gray-400 align-top h-[60px]" colSpan={3}><div className="text-gray-700 text-[12px] mb-1">Training Centre Address :</div><div className="font-bold uppercase">{reg.trainingCenterAddress && reg.trainingCenterAddress !== 'Not Provided' ? reg.trainingCenterAddress : '________________________________________'}</div></td></tr>
+                <tr className="border-[1px] border-gray-400"><td className="p-2 border-[1px] border-gray-400 align-top h-[50px]" colSpan={3}><div className="text-gray-700 text-[12px] mb-1">Trainer Name:</div><div className="font-bold uppercase tracking-wide">{reg.coachName && reg.coachName !== 'Not Provided' ? reg.coachName : '______________________'}</div></td></tr>
+                <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-middle font-bold text-[13px] w-[35%]">Candidate Blood Group</td><td className="p-2 border-[1px] border-gray-400 align-middle font-black text-sm" colSpan={3}>{reg.bloodGroup && reg.bloodGroup !== 'Not Provided' ? reg.bloodGroup : '_______'}</td></tr>
+                <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-middle text-[13px]">Aadhar Number</td><td className="p-2 border-[1px] border-gray-400 align-middle font-bold" colSpan={3}>{reg.aadhar && reg.aadhar !== 'Not Provided' ? reg.aadhar : '________________'}</td></tr>
+                <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-middle text-[13px]">Qualification</td><td className="p-2 border-[1px] border-gray-400 align-middle font-bold" colSpan={3}>{reg.qualification && reg.qualification !== 'Not Provided' ? reg.qualification : '_________________________'}</td></tr>
+                <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-middle text-[13px]">School/College Name</td><td className="p-2 border-[1px] border-gray-400 align-middle font-bold" colSpan={3}>{reg.schoolCollege && reg.schoolCollege !== 'Not Provided' ? reg.schoolCollege : '_________________________'}</td></tr>
+                <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-middle text-[13px]">Permanent Address</td><td className="p-2 border-[1px] border-gray-400 align-middle font-bold" colSpan={3}>{reg.permanentAddress && reg.permanentAddress !== 'Not Provided' ? reg.permanentAddress : '________________________________________'}</td></tr>
+                <tr className="border-[1px] border-gray-400 h-10"><td className="p-2 border-[1px] border-gray-400 align-middle text-[13px]">Local Address</td><td className="p-2 border-[1px] border-gray-400 align-middle font-bold" colSpan={3}>{reg.localAddress && reg.localAddress !== 'Not Provided' ? reg.localAddress : '________________________________________'}</td></tr>
+              </tbody>
+            </table>
+            <div className="absolute bottom-6 right-8 text-[11px] font-bold text-black mt-4 w-full text-right">1/2</div>
         </div>
 
         {/* Page 2 */}

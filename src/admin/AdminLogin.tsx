@@ -11,7 +11,7 @@ export const AdminLogin = () => {
     e.preventDefault();
     if (username === 'portaladmin' && password === 'portal@123') {
       localStorage.setItem('portal_token', 'true');
-      navigate('/admin-dashboard');
+      navigate('/admin');
     } else {
       setError('Invalid Admin credentials.');
     }

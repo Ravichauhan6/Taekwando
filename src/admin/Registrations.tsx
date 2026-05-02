@@ -88,9 +88,6 @@ export const Registrations = () => {
     }
   };
 
-// Reusable print component moved to external file PrintableView.tsx
-
-
   const handleDelete = async (id: string) => {
     if(window.confirm('Are you sure you want to delete this registration?')) {
       try {
