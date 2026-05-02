@@ -81,11 +81,59 @@ export const Tiesheets = () => {
       <style>{`
         @media print {
           @page {
-            size: landscape;
-            margin: 10mm;
+            size: A4 portrait;
+            margin: 10mm !important;
+          }
+          html, body {
+            height: auto !important;
+            overflow: visible !important;
+            background: white !important;
           }
           .allow-print {
             zoom: 0.85;
+            background: white !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 100% !important;
+            display: block !important;
+            position: relative !important;
+          }
+          .match-box-container {
+            margin-bottom: 15px !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            position: relative;
+          }
+          .round-column {
+            justify-content: flex-start !important;
+            padding-top: 10px !important;
+            gap: 10px !important;
+            min-width: 230px !important;
+          }
+          .print-text-lg {
+            font-size: 18px !important;
+            line-height: 1.2 !important;
+            white-space: normal !important;
+            overflow: visible !important;
+            padding-right: 30px !important;
+          }
+          .print-text-sm {
+            font-size: 11px !important;
+            line-height: 1.2 !important;
+            white-space: normal !important;
+            padding-right: 30px !important;
+          }
+          .print-compact-py {
+            padding-top: 8px !important;
+            padding-bottom: 8px !important;
+          }
+          .print-box-width {
+            width: 220px !important;
+          }
+          .print-no-gap {
+            gap: 5px !important;
           }
         }
       `}</style>
@@ -145,9 +193,9 @@ export const Tiesheets = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-red-600/5 blur-[120px] pointer-events-none rounded-full print:hidden"></div>
 
         {/* Print Header */}
-        <div className="hidden print:flex flex-col mb-12 border-b-4 border-double border-black pb-6">
-          <div className="flex items-center justify-between w-full mb-4">
-             <img src="/logo.png" alt="MDTA Logo" className="w-28 h-28 object-contain" />
+        <div className="hidden print:flex flex-col mb-2 border-b-2 border-black pb-1">
+          <div className="flex items-center justify-between w-full mb-0">
+             <img src="/logo.png" alt="MDTA Logo" className="w-16 h-16 object-contain" />
              <div className="flex flex-col items-center flex-1 px-4 text-center">
                  <h1 className="text-[28px] font-black uppercase tracking-[0.1em] text-black leading-tight">
                    Maharajganj District Taekwondo Association
@@ -182,7 +230,7 @@ export const Tiesheets = () => {
              <p className="text-[11px] uppercase tracking-widest bg-black/50 px-4 py-2 rounded-lg">Select 'Generate New Tiesheets' to begin.</p>
            </div>
         ) : (
-          <div className="flex items-stretch min-w-max gap-16 relative z-10">
+          <div className="flex items-stretch min-w-max gap-16 print-no-gap relative z-10">
             {rounds.map((roundNum, index) => {
               const roundMatches = matches.filter(m => m.round_number === roundNum);
               
@@ -192,8 +240,8 @@ export const Tiesheets = () => {
               if (roundNum === 3) roundName = "Quarterfinals";
 
               return (
-                <div key={roundNum} className="flex flex-col justify-around flex-1 text-sm relative">
-                  <div className="text-center font-black text-white bg-white/5 border border-white/10 rounded-xl py-3 mb-12 print:mb-4 uppercase tracking-[0.2em] shadow-inner print:text-black print:border-none print:shadow-none print:bg-transparent">
+                <div key={roundNum} className="flex flex-col justify-around flex-1 text-sm relative round-column">
+                  <div className="text-center font-black text-white bg-white/5 border border-white/10 rounded-xl py-3 mb-12 print:mb-2 print:py-1 print:text-[10px] uppercase tracking-[0.2em] shadow-inner print:text-black print:border-none print:shadow-none print:bg-transparent">
                     {roundName}
                   </div>
                   
@@ -207,25 +255,25 @@ export const Tiesheets = () => {
                     const p2Text = m.player2_name || (p2PrevMatch ? `Winner Match #${p2PrevMatch.match_number}` : (isFirstRound ? 'BYE' : 'TBD'));
 
                     return (
-                    <div key={m.id} className="relative mb-12 print:mb-2 print:break-inside-avoid z-10">
+                    <div key={m.id} className="relative mb-12 print:mb-1 match-box-container z-10">
                         {/* Match Box */}
-                        <div className="bg-[#0a0a0a] border border-white/10 rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.5)] w-56 flex flex-col overflow-hidden relative z-20 print:border-2 print:border-black print:shadow-none print:bg-transparent hover:border-red-500/50 transition-colors group">
-                            <div className="border-b border-white/5 flex flex-col justify-center py-3 px-4 print:py-1.5 print:px-2 print:border-black h-1/2 group-hover:bg-white/[0.02]">
-                                <span className={`truncate font-bold text-[13px] uppercase tracking-wide leading-tight ${!m.player1_name ? 'text-gray-600 italic' : 'text-white print:text-black'}`}>
+                        <div className="bg-[#0a0a0a] border border-white/10 rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.5)] w-56 print-box-width flex flex-col overflow-hidden relative z-20 print:border-2 print:border-black print:shadow-none print:bg-transparent hover:border-red-500/50 transition-colors group">
+                            <div className="border-b border-white/5 flex flex-col justify-center py-3 px-4 print:py-1.5 print:px-2 print-compact-py print:border-black h-1/2 group-hover:bg-white/[0.02]">
+                                <span className={`print:!overflow-visible print:!whitespace-normal font-bold text-[13px] print-text-lg uppercase tracking-wide leading-tight ${!m.player1_name ? 'text-gray-600 italic' : 'text-white print:text-black'}`}>
                                     {p1Text}
                                 </span>
                                 {m.player1_name && (m.player1_address || m.player1_father) && (
-                                  <span className="text-[9px] text-gray-500 truncate leading-tight mt-0.5 print:text-gray-700 font-medium">
+                                  <span className="text-[9px] print-text-sm text-gray-500 print:!overflow-visible print:!whitespace-normal leading-tight mt-0.5 print:text-gray-700 font-medium">
                                     {m.player1_father ? `S/o ${m.player1_father} • ` : ''}{m.player1_address || ''}
                                   </span>
                                 )}
                             </div>
-                            <div className="flex flex-col justify-center py-3 px-4 print:py-1.5 print:px-2 h-1/2 group-hover:bg-white/[0.02]">
-                                <span className={`truncate font-bold text-[13px] uppercase tracking-wide leading-tight ${!m.player2_name ? 'text-gray-600 italic' : 'text-white print:text-black'}`}>
+                            <div className="flex flex-col justify-center py-3 px-4 print:py-1.5 print:px-2 print-compact-py h-1/2 group-hover:bg-white/[0.02]">
+                                <span className={`print:!overflow-visible print:!whitespace-normal font-bold text-[13px] print-text-lg uppercase tracking-wide leading-tight ${!m.player2_name ? 'text-gray-600 italic' : 'text-white print:text-black'}`}>
                                     {p2Text}
                                 </span>
                                 {m.player2_name && (m.player2_address || m.player2_father) && (
-                                  <span className="text-[9px] text-gray-500 truncate leading-tight mt-0.5 print:text-gray-700 font-medium">
+                                  <span className="text-[9px] print-text-sm text-gray-500 print:!overflow-visible print:!whitespace-normal leading-tight mt-0.5 print:text-gray-700 font-medium">
                                     {m.player2_father ? `S/o ${m.player2_father} • ` : ''}{m.player2_address || ''}
                                   </span>
                                 )}
@@ -255,9 +303,9 @@ export const Tiesheets = () => {
               <div className="text-center font-black text-yellow-500 bg-yellow-500/10 border border-yellow-500/20 rounded-xl py-3 mb-12 print:mb-4 uppercase tracking-[0.2em] shadow-[0_0_15px_rgba(234,179,8,0.1)] print:text-black print:border-none print:shadow-none print:bg-transparent">
                 Champion
               </div>
-              <div className="relative mb-12 print:mb-4 print:break-inside-avoid z-10 flex items-center">
+              <div className="relative mb-12 print:mb-4 match-box-container z-10 flex items-center">
                   <div className="absolute top-1/2 -left-8 w-8 h-px bg-white/20 print:bg-black -z-10"></div>
-                  <div className="bg-[#0a0a0a] border border-yellow-500/50 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.2)] w-56 p-6 text-center print:border-2 print:border-black print:shadow-none print:bg-transparent relative overflow-hidden">
+                  <div className="bg-[#0a0a0a] border border-yellow-500/50 rounded-xl shadow-[0_0_30px_rgba(234,179,8,0.2)] w-56 print-box-width p-6 print:p-2 text-center print:border-2 print:border-black print:shadow-none print:bg-transparent relative overflow-hidden">
                       <div className="absolute top-0 left-0 w-full h-full bg-yellow-500/5 pointer-events-none print:hidden"></div>
                       <Target className="w-12 h-12 mx-auto text-yellow-500 mb-4 drop-shadow-[0_0_10px_rgba(234,179,8,0.5)] print:text-black print:drop-shadow-none" />
                       <span className="font-black text-yellow-500 uppercase tracking-widest truncate block text-[15px] print:text-black">TBD</span>

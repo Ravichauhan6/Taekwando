@@ -857,16 +857,9 @@ app.post("/api/players", async (req, res) => {
     
     for (const cat of categories) {
       if (cat.min_weight === undefined || cat.max_weight === undefined) continue;
-      if (cat.min_weight === 0) {
-        if (weight >= cat.min_weight && weight <= cat.max_weight) {
-          matchedCategoryId = cat._id;
-          break;
-        }
-      } else {
-        if (weight > cat.min_weight && weight <= cat.max_weight) {
-          matchedCategoryId = cat._id;
-          break;
-        }
+      if (weight >= cat.min_weight && weight <= cat.max_weight) {
+        matchedCategoryId = cat._id;
+        break;
       }
     }
 
@@ -1069,16 +1062,9 @@ app.patch("/api/players/:id", async (req, res) => {
     
     for (const cat of categories) {
       if (cat.min_weight === undefined || cat.max_weight === undefined) continue;
-      if (cat.min_weight === 0) {
-        if (updatedWeight >= cat.min_weight && updatedWeight <= cat.max_weight) {
-          matchedCategoryId = cat._id;
-          break;
-        }
-      } else {
-        if (updatedWeight > cat.min_weight && updatedWeight <= cat.max_weight) {
-          matchedCategoryId = cat._id;
-          break;
-        }
+      if (updatedWeight >= cat.min_weight && updatedWeight <= cat.max_weight) {
+        matchedCategoryId = cat._id;
+        break;
       }
     }
 
