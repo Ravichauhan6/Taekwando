@@ -1260,6 +1260,25 @@ const BenefitsSection = () => {
 };
 
 const NewsAndContact = () => {
+  const [activeElement, setActiveElement] = useState<string | null>(null);
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (sectionRef.current && !sectionRef.current.contains(event.target as Node)) {
+        setActiveElement(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -1323,7 +1342,7 @@ const NewsAndContact = () => {
   }, []);
 
   return (
-    <section id="news" className="pt-6 pb-20 bg-[#050505] relative">
+    <section id="news" className="pt-6 pb-20 bg-[#050505] relative" ref={sectionRef}>
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-2">
         <div className="flex flex-col lg:flex-row gap-8 items-stretch">
@@ -1335,38 +1354,55 @@ const NewsAndContact = () => {
               <p className="text-gray-400 text-[13px] md:text-[15px] font-medium">Stay updated with the latest happenings at MDTA</p>
             </div>
             <div className="grid sm:grid-cols-3 gap-5">
-              {newsItems.map((item, i) => (
-                <motion.div
-                  key={i}
-                  whileHover={{ y: -5 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="bg-gradient-to-br from-[#383838] via-[#1a1a1a] to-[#0a0a0a] p-6 rounded-[20px] border border-white/10 transition-all group flex flex-col justify-between min-h-[260px] shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:border-[#ff0000] hover:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)] active:border-[#ff0000] active:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)]"
-                >
-                  <div>
-                    <span className="inline-block px-3 py-1 rounded-full text-[11px] font-bold tracking-wide mb-5 border bg-[#ff1a1a]/10 text-gray-100 border-[#ff1a1a]/40 transition-colors">
-                      {item.category}
-                    </span>
-                    <h3 className="text-[17px] md:text-[19px] font-bold text-white mb-3 leading-[1.3] group-hover:text-[#ff1a1a] group-active:text-[#ff1a1a] transition-colors drop-shadow-sm">{item.title}</h3>
-                    <p className="text-[13px] md:text-[14px] text-gray-300 mb-6 leading-[1.6] font-medium line-clamp-3">{item.content}</p>
-                  </div>
-                  <div className="mt-auto">
-                    <div className="h-[1px] w-full bg-white/10 mb-4"></div>
-                    <div className="flex items-center text-gray-400 text-[13px] font-medium">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-3"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                      {new Date(item.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              {newsItems.map((item, i) => {
+                const isActive = activeElement === `news-${i}`;
+                return (
+                  <motion.div
+                    key={i}
+                    onClick={() => setActiveElement(`news-${i}`)}
+                    animate={isActive ? { y: -5 } : { y: 0 }}
+                    whileHover={!isActive ? { y: -5 } : undefined}
+                    whileTap={{ scale: 0.98 }}
+                    className={`bg-gradient-to-br from-[#383838] via-[#1a1a1a] to-[#0a0a0a] p-6 rounded-[20px] border transition-all group flex flex-col justify-between min-h-[260px] ${
+                      isActive
+                        ? 'border-[#ff0000] shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)]'
+                        : 'border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.5)] hover:border-[#ff0000] hover:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)] active:border-[#ff0000] active:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)]'
+                    }`}
+                  >
+                    <div>
+                      <span className="inline-block px-3 py-1 rounded-full text-[11px] font-bold tracking-wide mb-5 border bg-[#ff1a1a]/10 text-gray-100 border-[#ff1a1a]/40 transition-colors">
+                        {item.category}
+                      </span>
+                      <h3 className={`text-[17px] md:text-[19px] font-bold text-white mb-3 leading-[1.3] group-hover:text-[#ff1a1a] transition-colors drop-shadow-sm ${
+                        isActive ? 'text-[#ff1a1a]' : ''
+                      }`}>{item.title}</h3>
+                      <p className="text-[13px] md:text-[14px] text-gray-300 mb-6 leading-[1.6] font-medium line-clamp-3">{item.content}</p>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                    <div className="mt-auto">
+                      <div className="h-[1px] w-full bg-white/10 mb-4"></div>
+                      <div className="flex items-center text-gray-400 text-[13px] font-medium">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-3"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        {new Date(item.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
           <motion.div 
             id="contact" 
-            whileHover={{ y: -5 }}
+            onClick={() => setActiveElement('contact')}
+            animate={activeElement === 'contact' ? { y: -5 } : { y: 0 }}
+            whileHover={activeElement !== 'contact' ? { y: -5 } : undefined}
             whileTap={{ scale: 0.99 }}
             className="lg:w-[42%] flex pt-12 lg:pt-0 pl-0 lg:pl-4"
           >
-            <div className="w-full bg-gradient-to-br from-[#333333] via-[#1a1a1a] to-[#0a0a0a] border border-white/10 p-8 rounded-[24px] shadow-[0_0_40px_rgba(0,0,0,0.8),inset_0_0_30px_rgba(255,26,26,0.02)] relative overflow-hidden flex flex-col justify-center transition-all hover:border-[#ff0000] hover:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)] active:border-[#ff0000] active:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)]">
+            <div className={`w-full bg-gradient-to-br from-[#333333] via-[#1a1a1a] to-[#0a0a0a] border p-8 rounded-[24px] relative overflow-hidden flex flex-col justify-center transition-all ${
+              activeElement === 'contact'
+                ? 'border-[#ff0000] shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)]'
+                : 'border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.8),inset_0_0_30px_rgba(255,26,26,0.02)] hover:border-[#ff0000] hover:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)] active:border-[#ff0000] active:shadow-[0_0_50px_rgba(255,0,0,0.8),inset_0_0_20px_rgba(255,0,0,0.5)]'
+            }`}>
               <h3 className="text-[22px] md:text-[26px] font-bold text-white mb-8 text-center drop-shadow-md">Contact Us</h3>
               <form onSubmit={handleSubmit} action="https://formsubmit.co/saabhisaabhishek@gmail.com" method="POST" className="space-y-4 relative z-10 w-full mx-auto">
                 <input type="hidden" name="_captcha" value="false" />
@@ -1603,6 +1639,25 @@ const toTitleCase = (str: string) => {
 };
 
 const WhatWeSay = () => {
+  const [activeCard, setActiveCard] = useState<number | null>(null);
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (sectionRef.current && !sectionRef.current.contains(event.target as Node)) {
+        setActiveCard(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
+
   const [data, setData] = useState({
     president_name: 'Mr. Shardendu Kumar Pandey',
     president_title: 'President (MDTA)',
@@ -1631,7 +1686,7 @@ const WhatWeSay = () => {
   }, []);
 
   return (
-    <section className="pt-10 pb-6 bg-[#050505] relative overflow-hidden">
+    <section className="pt-10 pb-6 bg-[#050505] relative overflow-hidden" ref={sectionRef}>
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-red-900/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -1661,10 +1716,19 @@ const WhatWeSay = () => {
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="group relative"
+            onClick={() => setActiveCard(0)}
+            animate={activeCard === 0 ? { y: -8 } : { y: 0 }}
+            whileHover={activeCard !== 0 ? { y: -8 } : undefined}
+            className="group relative cursor-pointer"
           >
-            <div className="absolute inset-0 bg-red-600/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-            <div className="relative bg-[#0d0d0d] border border-white/5 rounded-[40px] p-8 md:p-10 transition-all duration-500 hover:border-red-500/30 hover:translate-y-[-8px] shadow-2xl">
+            <div className={`absolute inset-0 bg-red-600/5 blur-3xl transition-opacity duration-700 ${
+              activeCard === 0 ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+            }`} />
+            <div className={`relative bg-[#0d0d0d] border rounded-[40px] p-8 md:p-10 transition-all duration-500 shadow-2xl ${
+              activeCard === 0
+                ? 'border-red-500/30'
+                : 'border-white/5 hover:border-red-500/30'
+            }`}>
               <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
                 <div className="relative flex-shrink-0">
                   <div className="w-32 h-32 md:w-40 md:h-40 rounded-[32px] overflow-hidden border-2 border-red-500/30 shadow-[0_0_30px_rgba(255,0,0,0.2)]">
@@ -1697,10 +1761,19 @@ const WhatWeSay = () => {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="group relative"
+            onClick={() => setActiveCard(1)}
+            animate={activeCard === 1 ? { y: -8 } : { y: 0 }}
+            whileHover={activeCard !== 1 ? { y: -8 } : undefined}
+            className="group relative cursor-pointer"
           >
-            <div className="absolute inset-0 bg-red-600/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-            <div className="relative bg-[#0d0d0d] border border-white/5 rounded-[40px] p-8 md:p-10 transition-all duration-500 hover:border-red-500/30 hover:translate-y-[-8px] shadow-2xl">
+            <div className={`absolute inset-0 bg-red-600/5 blur-3xl transition-opacity duration-700 ${
+              activeCard === 1 ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+            }`} />
+            <div className={`relative bg-[#0d0d0d] border rounded-[40px] p-8 md:p-10 transition-all duration-500 shadow-2xl ${
+              activeCard === 1
+                ? 'border-red-500/30'
+                : 'border-white/5 hover:border-red-500/30'
+            }`}>
               <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
                 <div className="relative flex-shrink-0">
                   <div className="w-32 h-32 md:w-40 md:h-40 rounded-[32px] overflow-hidden border-2 border-red-500/30 shadow-[0_0_30px_rgba(255,0,0,0.2)]">
