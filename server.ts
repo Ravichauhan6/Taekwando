@@ -704,6 +704,129 @@ const sendCoachApprovalEmail = async (email: string, name: string, password: str
   }
 };
 
+const sendPlayerRegistrationEmail = async (
+  email: string,
+  name: string,
+  registrationNumber: string,
+  trainingCenter: string,
+  weightCategoryName: string,
+  password?: string
+) => {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.warn("Nodemailer credentials missing. Skipping email dispatch.");
+    return;
+  }
+
+  const loginUrl = "http://localhost:3000/player/login";
+
+  const mailOptions = {
+    from: `"MDTA Support" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: `Registration & Payment Received - MDTA Player Portal (No: ${registrationNumber})`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #050505; color: #fff; padding: 30px; border-radius: 15px; border: 1px solid #333;">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h1 style="color: #ff0000; letter-spacing: 2px; text-transform: uppercase; margin: 0;">MDTA</h1>
+          <p style="color: #888; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;">Maharajganj District Taekwondo Association</p>
+        </div>
+        
+        <h2 style="font-size: 20px; color: #ff3333; text-align: center; margin-bottom: 20px;">Registration & Payment Received!</h2>
+        
+        <p style="color: #ccc; line-height: 1.6;">Hello <strong>${name}</strong>,</p>
+        <p style="color: #ccc; line-height: 1.6;">Thank you for registering with the Maharajganj District Taekwondo Association. Your payment of <strong>Rs. 1.00</strong> has been successfully processed and verified.</p>
+        
+        <div style="background: #111; border: 1px solid #ff000030; padding: 20px; border-radius: 10px; margin: 25px 0;">
+          <p style="margin: 0 0 15px 0; color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 5px;">Application Summary</p>
+          <p style="margin: 8px 0;"><strong>Registration Number:</strong> <span style="color: #ff4d4d; font-family: monospace; font-size: 14px;">${registrationNumber}</span></p>
+          <p style="margin: 8px 0;"><strong>Training Center:</strong> ${trainingCenter}</p>
+          <p style="margin: 8px 0;"><strong>Weight Division:</strong> ${weightCategoryName}</p>
+          <p style="margin: 8px 0;"><strong>Status:</strong> <span style="background: #eab30820; color: #eab308; padding: 2px 8px; border-radius: 4px; font-size: 11px; text-transform: uppercase; font-weight: bold; border: 1px solid #eab30830;">Pending Verification</span></p>
+        </div>
+
+        ${password ? `
+        <div style="background: #111; border: 1px solid #333; padding: 20px; border-radius: 10px; margin: 25px 0;">
+          <p style="margin: 0 0 10px 0; color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Your Account Credentials</p>
+          <p style="margin: 5px 0;"><strong>Email / Username:</strong> ${email}</p>
+          <p style="margin: 5px 0;"><strong>Password:</strong> <span style="background: #ffffff10; color: #fff; padding: 2px 6px; border-radius: 4px; font-family: monospace;">${password}</span></p>
+        </div>
+        ` : ''}
+
+        <p style="color: #aaa; line-height: 1.6; font-size: 13px;"><strong>Next Steps:</strong> Our administrative team will now review your Aadhar card, photo, and signatures. You will receive an automated email notification as soon as your profile is verified and approved by the MDTA admin.</p>
+        
+        <div style="text-align: center; margin-top: 30px;">
+          <a href="${loginUrl}" style="display: inline-block; background: #cc0000; color: white; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 13px;">Player Dashboard</a>
+        </div>
+        
+        <p style="text-align: center; color: #555; font-size: 11px; margin-top: 35px; border-top: 1px solid #222; padding-top: 15px;">Maharajganj District Taekwondo Association | © MDTA Maharajganj</p>
+      </div>
+    `
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Registration receipt email sent successfully to", email);
+  } catch (err) {
+    console.error("Failed to send player registration email:", err);
+  }
+};
+
+const sendPlayerApprovalEmail = async (
+  email: string,
+  name: string,
+  registrationNumber: string,
+  trainingCenter: string,
+  weightCategoryName: string
+) => {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.warn("Nodemailer credentials missing. Skipping email dispatch.");
+    return;
+  }
+
+  const loginUrl = "http://localhost:3000/player/login";
+
+  const mailOptions = {
+    from: `"MDTA Support" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: `Congratulations! Your MDTA Player Registration is Approved (No: ${registrationNumber})`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #050505; color: #fff; padding: 30px; border-radius: 15px; border: 1px solid #333;">
+        <div style="text-align: center; margin-bottom: 30px;">
+          <h1 style="color: #ff0000; letter-spacing: 2px; text-transform: uppercase; margin: 0;">MDTA</h1>
+          <p style="color: #888; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;">Maharajganj District Taekwondo Association</p>
+        </div>
+        
+        <h2 style="font-size: 22px; color: #22c55e; text-align: center; margin-bottom: 20px;">✓ Registration Verified & Approved!</h2>
+        
+        <p style="color: #ccc; line-height: 1.6;">Dear <strong>${name}</strong>,</p>
+        <p style="color: #ccc; line-height: 1.6;">Great news! The MDTA Administrative team has successfully verified your uploaded documents and <strong>approved</strong> your player registration.</p>
+        
+        <div style="background: #111; border: 1px solid #22c55e40; padding: 20px; border-radius: 10px; margin: 25px 0;">
+          <p style="margin: 0 0 15px 0; color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid #333; padding-bottom: 5px;">Player Profile Card</p>
+          <p style="margin: 8px 0;"><strong>Registration Number:</strong> <span style="color: #22c55e; font-family: monospace; font-size: 14px; font-weight: bold;">${registrationNumber}</span></p>
+          <p style="margin: 8px 0;"><strong>Training Center:</strong> ${trainingCenter}</p>
+          <p style="margin: 8px 0;"><strong>Weight Division:</strong> ${weightCategoryName}</p>
+          <p style="margin: 8px 0;"><strong>Registration Status:</strong> <span style="background: #22c55e20; color: #22c55e; padding: 2px 8px; border-radius: 4px; font-size: 11px; text-transform: uppercase; font-weight: bold; border: 1px solid #22c55e30;">VERIFIED & ACTIVE</span></p>
+        </div>
+
+        <p style="color: #aaa; line-height: 1.6; font-size: 13px;">You can now log in to the Player Dashboard to access and print your official registration form, view upcoming events and camp selections, and track your belt grading promotions.</p>
+        
+        <div style="text-align: center; margin-top: 30px;">
+          <a href="${loginUrl}" style="display: inline-block; background: #22c55e; color: white; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 13px;">Log In to Dashboard</a>
+        </div>
+        
+        <p style="text-align: center; color: #555; font-size: 11px; margin-top: 35px; border-top: 1px solid #222; padding-top: 15px;">Maharajganj District Taekwondo Association | © MDTA Maharajganj</p>
+      </div>
+    `
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Player verification approval email sent successfully to", email);
+  } catch (err) {
+    console.error("Failed to send player approval email:", err);
+  }
+};
+
 app.get("/api/coaches", async (req, res) => {
   try {
     const coaches = await Coach.find().sort({ date: 1 });
@@ -919,6 +1042,18 @@ app.post("/api/players", async (req, res) => {
 
     const insertedPlayer = await Player.findById(player._id).populate('weight_category_id').lean();
     
+    // Send registration and payment confirmation email asynchronously
+    if (insertedPlayer && insertedPlayer.email) {
+      sendPlayerRegistrationEmail(
+        insertedPlayer.email,
+        insertedPlayer.name as string,
+        insertedPlayer.registration_number as string,
+        insertedPlayer.training_center as string,
+        insertedPlayer.weight_category_id ? (insertedPlayer.weight_category_id as any).name : 'Unknown',
+        password
+      );
+    }
+    
     res.json({ success: true, player: {
       ...insertedPlayer,
       id: insertedPlayer?._id,
@@ -1131,6 +1266,21 @@ app.patch("/api/players/:id/status", async (req, res) => {
   try {
     const player = await Player.findByIdAndUpdate(id, { status }, { returnDocument: 'after' });
     if (!player) return res.status(404).json({ error: "Player not found" });
+    
+    // Send email asynchronously if status is updated to 'Verified'
+    if (status === 'Verified' && player.email) {
+      const populatedPlayer = await Player.findById(player._id).populate('weight_category_id').lean();
+      if (populatedPlayer) {
+        sendPlayerApprovalEmail(
+          populatedPlayer.email,
+          populatedPlayer.name as string,
+          populatedPlayer.registration_number as string,
+          populatedPlayer.training_center as string,
+          populatedPlayer.weight_category_id ? (populatedPlayer.weight_category_id as any).name : 'Unknown'
+        );
+      }
+    }
+    
     res.json({ success: true, player });
   } catch (err) {
     console.error("Update Status Error", err);
@@ -1504,10 +1654,10 @@ app.get("/api/coach-messages/received/:player_id", async (req, res) => {
     if (!player) return res.json([]);
     
     // Only fetch if player has a coach assigned
-    if (!player.coach_id) return res.json([]);
+    if (!(player as any).coach_id) return res.json([]);
 
     const messages = await CoachMessageModel.find({
-      coach_id: player.coach_id,
+      coach_id: (player as any).coach_id,
       $or: [
         { student_id: player_id },
         { audience: 'All My Students' }

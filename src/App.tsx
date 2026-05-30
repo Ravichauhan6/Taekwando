@@ -959,6 +959,25 @@ const WhyChooseUs = () => {
 };
 
 const TrainingPrograms = () => {
+  const [activeCard, setActiveCard] = useState<number | null>(null);
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (sectionRef.current && !sectionRef.current.contains(event.target as Node)) {
+        setActiveCard(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, []);
+
   const programs = [
     { title: 'TAEKWONDO', image: tcImg, desc: 'Traditional Korean martial art for all.' },
     { title: 'Self Defense', image: sfImg, desc: 'Practical combat for street awareness.' },
@@ -967,7 +986,7 @@ const TrainingPrograms = () => {
   ];
 
   return (
-    <section id="courses" className="pt-6 pb-6 bg-[#050505]">
+    <section id="courses" className="pt-6 pb-6 bg-[#050505]" ref={sectionRef}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-[24px] md:text-[28px] font-bold text-white mb-2 tracking-wide font-sans drop-shadow-[0_0_15px_rgba(255,26,26,0.4)]">
@@ -978,9 +997,15 @@ const TrainingPrograms = () => {
           {programs.map((p, i) => (
             <motion.div
               key={i}
-              whileHover={{ scale: 1.02, y: -5 }}
+              onClick={() => setActiveCard(i)}
+              animate={activeCard === i ? { scale: 1.02, y: -5 } : { scale: 1, y: 0 }}
+              whileHover={activeCard !== i ? { scale: 1.02, y: -5 } : undefined}
               whileTap={{ scale: 0.96 }}
-              className="group cursor-pointer bg-gradient-to-br from-[#4a4a4a] via-[#1a1a1a] to-[#050505] p-3 rounded-[24px] border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)] transition-all duration-300 hover:border-[#ff0000] hover:shadow-[0_0_40px_rgba(255,0,0,0.6)] active:border-[#ff0000] active:shadow-[0_0_40px_rgba(255,0,0,0.8)] flex flex-col"
+              className={`group cursor-pointer bg-gradient-to-br from-[#4a4a4a] via-[#1a1a1a] to-[#050505] p-3 rounded-[24px] border transition-all duration-300 flex flex-col ${
+                activeCard === i
+                  ? 'border-[#ff0000] shadow-[0_0_40px_rgba(255,0,0,0.8)]'
+                  : 'border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)] hover:border-[#ff0000] hover:shadow-[0_0_40px_rgba(255,0,0,0.6)] active:border-[#ff0000] active:shadow-[0_0_40px_rgba(255,0,0,0.8)]'
+              }`}
             >
               <div className="h-[220px] rounded-[18px] overflow-hidden relative bg-[#111]">
                 <img
@@ -992,7 +1017,11 @@ const TrainingPrograms = () => {
                 <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] z-10 pointer-events-none"></div>
               </div>
               <div className="px-3 pt-5 pb-3">
-                <h3 className="text-[19px] font-bold text-white mb-2 tracking-wide group-hover:text-[#ff1a1a] group-active:text-[#ff1a1a] transition-colors">{p.title}</h3>
+                <h3 className={`text-[19px] font-bold text-white mb-2 tracking-wide group-hover:text-[#ff1a1a] transition-colors ${
+                  activeCard === i ? 'text-[#ff1a1a]' : ''
+                }`}>
+                  {p.title}
+                </h3>
                 <p className="text-gray-300 text-[14px] leading-relaxed font-normal">{p.desc}</p>
               </div>
             </motion.div>
