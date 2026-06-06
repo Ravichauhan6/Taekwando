@@ -2,16 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Save, CheckCircle, Video } from 'lucide-react';
 
 export const PromoVideoAdmin = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState({
-    hero_video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1',
-    benefits_video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1',
-    self_development_video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+    hero_video_url: '',
+    benefits_video_url: '',
+    self_development_video_url: ''
   });
   
   const [isSaving, setIsSaving] = useState(false);
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     fetch('/api/content/promo_videos')
       .then(res => res.json())
       .then(resData => {
@@ -24,7 +26,8 @@ export const PromoVideoAdmin = () => {
           }
         }
       })
-      .catch(err => console.error(err));
+      .catch(err => console.error(err))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const getYouTubeEmbedUrl = (url: string) => {
@@ -88,6 +91,32 @@ export const PromoVideoAdmin = () => {
     }
     setIsSaving(false);
   };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-8 animate-pulse">
+        <div className="flex justify-between items-center bg-black/60 backdrop-blur-xl p-6 rounded-[24px] border border-white/5 shadow-2xl">
+          <div className="space-y-2">
+            <div className="h-8 bg-white/5 rounded-md w-48" />
+            <div className="h-4 bg-white/5 rounded-md w-36" />
+          </div>
+          <div className="w-36 h-12 bg-white/5 rounded-2xl" />
+        </div>
+        <div className="grid md:grid-cols-2 gap-8">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className={`bg-[#0a0a0a] rounded-[32px] border border-white/5 p-8 flex flex-col gap-6 shadow-2xl ${i === 3 ? 'md:col-span-2' : ''}`}>
+              <div className="space-y-2">
+                <div className="h-5 bg-white/5 rounded-md w-1/3" />
+                <div className="h-3 bg-white/5 rounded-md w-1/2" />
+              </div>
+              <div className="h-12 bg-white/5 rounded-xl w-full" />
+              <div className="w-full aspect-video rounded-xl bg-white/5 border border-white/10" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-6 duration-700">
