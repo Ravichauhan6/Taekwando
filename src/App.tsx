@@ -102,7 +102,7 @@ const AboutMDTAModal = ({ onClose }: { onClose: () => void }) => {
   const stats = [
     { value: '2011', label: 'Established', icon: '🏛️' },
     { value: '15+', label: 'Years Active', icon: '⚡' },
-    { value: '1000+', label: 'Students Trained', icon: '🥋' },
+    { value: '3200+', label: 'Students Trained', icon: '🥋' },
     { value: '75+', label: 'Championships', icon: '🏆' },
   ];
 
@@ -867,7 +867,7 @@ const Hero = () => {
             <div className="absolute top-0 left-[18%] w-[140px] h-[2px] bg-[#ff0000] shadow-[0_0_20px_4px_rgba(255,0,0,0.8)]"></div>
             <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-y-3 md:gap-y-0">
               {[
-                { label: 'Active Students', value: '1000+', icon: <Users className="w-[28px] h-[28px] text-[#ff0000]" strokeWidth={1.5} /> },
+                { label: 'Active Students', value: '3200+', icon: <Users className="w-[28px] h-[28px] text-[#ff0000]" strokeWidth={1.5} /> },
                 { label: 'Expert Trainers', value: '25+', icon: <Users className="w-[28px] h-[28px] text-[#ff0000]" strokeWidth={1.5} /> },
                 { label: 'Years Excellence', value: '15+', icon: <Award className="w-[28px] h-[28px] text-[#ff0000]" strokeWidth={1.5} /> },
                 { label: 'Championships', value: '75+', icon: <Trophy className="w-[28px] h-[28px] text-[#ff0000]" strokeWidth={1.5} /> },

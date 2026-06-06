@@ -8,7 +8,7 @@ export const AboutMDTA = () => {
   const stats = [
     { value: '2011', label: 'Established', icon: '🏛️' },
     { value: '15+', label: 'Years Active', icon: '⚡' },
-    { value: '1000+', label: 'Students Trained', icon: '🥋' },
+    { value: '3200+', label: 'Students Trained', icon: '🥋' },
     { value: '75+', label: 'Championships', icon: '🏆' },
   ];
 
