@@ -296,7 +296,7 @@ export const PlayerDashboard = () => {
                     <div className="mt-auto bg-gradient-to-b from-[#3a4161] to-[#252a40] px-6 py-4 flex justify-between items-end border-t border-gray-600">
                        <div className="flex flex-col">
                          <span className="text-gray-200 text-[13px] font-medium leading-tight">For More Information</span>
-                         <span className="text-white text-[14px] font-medium leading-tight mt-1">Visit - www.mdtamrj.com</span>
+                         <span className="text-white text-[14px] font-medium leading-tight mt-1">Visit - taekwando-cyan.vercel.app</span>
                        </div>
                        <div className="flex flex-col items-end">
                          <span className="text-[#f1c453] text-[13px] font-medium leading-tight">Emergency Number</span>

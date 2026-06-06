@@ -1127,7 +1127,7 @@ app.post("/api/players/send-otp", async (req, res) => {
             <p style="color: #6b7280; font-size: 11px; margin-top: 20px;">If you did not request this, please ignore this email.</p>
           </div>
           <div style="background: #111; padding: 16px; text-align: center; border-top: 1px solid #222;">
-            <p style="color: #4b5563; font-size: 11px; margin: 0;">© MDTA Maharajganj | www.mdtamrj.com</p>
+            <p style="color: #4b5563; font-size: 11px; margin: 0;">© MDTA Maharajganj | taekwando-cyan.vercel.app</p>
           </div>
         </div>
       `

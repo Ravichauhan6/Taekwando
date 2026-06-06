@@ -617,7 +617,12 @@ export const Registration = () => {
                 <div className="pt-6">
                   <label className="flex items-start space-x-3 text-sm text-gray-400 cursor-pointer group">
                     <input type="checkbox" checked={formData.agreeTerms} onChange={(e) => setFormData({...formData, agreeTerms: e.target.checked})} className="mt-1 w-4 h-4 accent-red-500 cursor-pointer" />
-                    <span className="group-hover:text-gray-300 transition-colors font-medium">By clicking Register, you agree to our Rules & Regulations, Declaration and Privacy Policy.</span>
+                    <span className="group-hover:text-gray-300 transition-colors font-medium">
+                      By clicking Register, you agree to our Rules & Regulations, Declaration and{' '}
+                      <Link to="/privacy-policy" target="_blank" rel="noreferrer" className="text-red-500 hover:text-red-400 hover:underline transition-colors font-bold">
+                        Privacy Policy
+                      </Link>.
+                    </span>
                   </label>
                 </div>
 

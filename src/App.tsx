@@ -92,6 +92,8 @@ import { UpcomingCamps } from './public-pages/UpcomingCamps';
 import { TrainingCentersAdmin } from './admin/TrainingCentersAdmin';
 import { UpcomingCampsAdmin } from './admin/UpcomingCampsAdmin';
 import { AboutMDTA } from './public-pages/AboutMDTA';
+import { PrivacyPolicy } from './public-pages/PrivacyPolicy';
+import { TermsOfService } from './public-pages/TermsOfService';
 
 // --- Components ---
 
@@ -1660,8 +1662,8 @@ const Footer = () => {
             </div>
           </div>
           <div className="flex space-x-6 text-xs text-gray-500">
-            <Link to="#" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to="#" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link>
             <Link to="/admin-login" className="hover:text-white transition-colors">Admin Login</Link>
           </div>
         </div>
@@ -2063,6 +2065,8 @@ export default function App() {
           <Route path="/gallery" element={<PublicLayout><Gallery /></PublicLayout>} />
           <Route path="/upcoming-training-camps" element={<PublicLayout><UpcomingCamps /></PublicLayout>} />
           <Route path="/register" element={<Registration />} />
+          <Route path="/privacy-policy" element={<PublicLayout><PrivacyPolicy /></PublicLayout>} />
+          <Route path="/terms-of-service" element={<PublicLayout><TermsOfService /></PublicLayout>} />
           <Route path="/events" element={<PublicLayout><EventsDisplay /></PublicLayout>} />
           <Route path="/events/upcoming" element={<PublicLayout><EventsDisplay /></PublicLayout>} />
           <Route path="/events/past" element={<PublicLayout><EventsDisplay /></PublicLayout>} />

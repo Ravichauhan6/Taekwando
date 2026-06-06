@@ -193,7 +193,7 @@ export const PrintableView = ({ reg, onClose, isStandalone }: { reg: any; onClos
                <div className="bg-[#9fa8da] py-2 border-t-[2px] border-black text-[14px] font-bold leading-relaxed" style={{WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact'}}>
                  <span className="underline decoration-[1.5px] underline-offset-2 text-[#444] text-[16px] block mb-1 font-serif italic tracking-wider" style={{textShadow: "0 0 1px #fff"}}>*Head Office Address*</span>
                  Shastri Nagar, Nagar Palika Parishad, Ward No. 19, District-Maharajganj. U.P. (273303)<br/>
-                 Mob. No. +919161115569 E-mail- tkdabhi@gmail.com www.mdtamrj.com
+                 Mob. No. +919161115569 E-mail- tkdabhi@gmail.com taekwando-cyan.vercel.app
                </div>
              </div>
            </div>
