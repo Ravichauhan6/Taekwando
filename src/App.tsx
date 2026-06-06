@@ -1616,10 +1616,48 @@ const Footer = () => {
             <p className="text-gray-500 text-xs tracking-wide">
               &copy; {new Date().getFullYear()} Maharajganj District Taekwondo Association. All rights reserved.
             </p>
-            <p className="text-gray-600 text-[10px] tracking-widest uppercase font-medium mt-1">
-              Designed &amp; Developed by{' '}
-              <span className="text-red-500/80 font-bold hover:text-red-400 transition-colors cursor-default">Abhi</span>
-            </p>
+            <div className="text-gray-600 text-[10px] tracking-widest uppercase font-medium mt-1.5 flex flex-wrap items-center justify-center md:justify-start gap-x-2 gap-y-1">
+              <span>Designed &amp; Developed by</span>
+              <a 
+                href="https://instagram.com/techrootsolutions" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="text-red-500/90 font-black hover:text-red-400 transition-all hover:scale-105 active:scale-95 duration-200"
+              >
+                techrootsolutions
+              </a>
+              <span className="text-gray-700/50">|</span>
+              <a 
+                href="https://techrootsolutions.in" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="text-gray-500 hover:text-red-400 transition-colors flex items-center gap-1 normal-case font-semibold"
+                title="Visit Website"
+              >
+                <Globe className="w-3 h-3 text-red-500/70" />
+                <span>techrootsolutions.in</span>
+              </a>
+              <span className="text-gray-700/50">|</span>
+              <a 
+                href="mailto:techrootsolutions.in@gmail.com" 
+                className="text-gray-500 hover:text-red-400 transition-colors flex items-center gap-1 normal-case font-semibold"
+                title="Email Us"
+              >
+                <Mail className="w-3 h-3 text-red-500/70" />
+                <span className="lowercase">techrootsolutions.in@gmail.com</span>
+              </a>
+              <span className="text-gray-700/50">|</span>
+              <a 
+                href="https://instagram.com/techrootsolutions" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="text-gray-500 hover:text-red-400 transition-colors flex items-center gap-1 font-semibold"
+                title="Follow Instagram"
+              >
+                <Instagram className="w-3 h-3 text-red-500/70" />
+                <span>@techrootsolutions</span>
+              </a>
+            </div>
           </div>
           <div className="flex space-x-6 text-xs text-gray-500">
             <Link to="#" className="hover:text-white transition-colors">Privacy Policy</Link>
