@@ -13,6 +13,12 @@ export const CoachLayout = () => {
     navigate('/coach/login');
   };
 
+  const handleReturnToWebsite = () => {
+    localStorage.removeItem('coachToken');
+    localStorage.removeItem('coachName');
+    navigate('/');
+  };
+
   const menuItems = [
     { name: 'STUDENT ROSTER', icon: <Users size={18} />, path: '/coach/dashboard' },
     { name: 'TOURNAMENTS', icon: <Trophy size={18} />, path: '/coach/tournaments' },
@@ -27,12 +33,12 @@ export const CoachLayout = () => {
         
         {/* Brand Area */}
         <div className="p-8 border-b border-[#1a1a1a] flex items-center gap-4 bg-gradient-to-b from-[#111] to-transparent">
-          <a href="/" className="relative shrink-0 block cursor-pointer group">
+          <button onClick={handleReturnToWebsite} className="relative shrink-0 block cursor-pointer group bg-transparent border-0 p-0 outline-none">
              <div className="absolute inset-0 bg-red-600 blur-xl opacity-20 rounded-full group-hover:opacity-40 transition-opacity"></div>
              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)] relative z-10 overflow-hidden">
                <img src="/logo.png" alt="MDTA Logo" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300" />
              </div>
-          </a>
+          </button>
           <div className="flex flex-col flex-1 min-w-0">
              <span className="text-[10px] sm:text-[11px] font-black uppercase text-white leading-snug drop-shadow-md break-words">
                  MAHARAJGANJ DISTRICT TAEKWONDO ASSOCIATION (Regd)
@@ -70,8 +76,8 @@ export const CoachLayout = () => {
         {/* Action Buttons */}
         <div className="p-6 border-t border-[#1a1a1a] bg-[#0a0a0a] space-y-3">
           <button 
-            onClick={() => navigate('/')}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-[#111] hover:bg-[#1a1a1a] text-gray-300 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-colors border border-white/5"
+            onClick={handleReturnToWebsite}
+            className="w-full flex items-center justify-center gap-2 py-3 bg-[#111] hover:bg-[#1a1a1a] text-gray-300 rounded-xl text-[11px] font-bold uppercase tracking-widest transition-colors border border-white/5 cursor-pointer"
           >
             RETURN TO WEBSITE
           </button>

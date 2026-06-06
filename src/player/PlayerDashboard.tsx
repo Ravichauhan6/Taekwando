@@ -655,12 +655,12 @@ export const PlayerDashboard = () => {
       <aside className={`fixed lg:static top-0 left-0 h-full w-[280px] bg-[#0a0a0a] border-r border-white/5 z-50 transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'} flex flex-col shadow-[20px_0_50px_rgba(0,0,0,0.5)]`}>
         {/* Sidebar Header */}
         <div className="h-20 flex items-center gap-3 px-6 border-b border-white/5 bg-[#0d0d0d]">
-          <a href="/" className="relative shrink-0 block cursor-pointer group">
+          <button onClick={handleLogout} className="relative shrink-0 block cursor-pointer group bg-transparent border-0 p-0 outline-none">
              <div className="absolute inset-0 bg-red-600 blur-xl opacity-20 rounded-full group-hover:opacity-40 transition-opacity"></div>
              <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1 border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)] relative z-10 overflow-hidden group-hover:scale-105 transition-transform">
                <img src="/logo.png" alt="MDTA Logo" className="w-full h-full object-contain" />
              </div>
-          </a>
+          </button>
           <div>
           <div className="flex flex-col">
              <h1 className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest leading-snug drop-shadow-md break-words max-w-[160px]">
@@ -735,12 +735,12 @@ export const PlayerDashboard = () => {
         
         {/* Sidebar Footer */}
         <div className="p-4 border-t border-white/5 space-y-3">
-           <a 
-            href="/"
-            className="w-full flex items-center justify-center gap-2 bg-[#111] hover:bg-white/5 text-gray-400 hover:text-white border border-white/5 hover:border-white/10 px-4 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-[0.2em] transition-all"
-           >
-             <Globe className="w-4 h-4" /> Return to Website
-           </a>
+            <button 
+             onClick={handleLogout}
+             className="w-full flex items-center justify-center gap-2 bg-[#111] hover:bg-white/5 text-gray-400 hover:text-white border border-white/5 hover:border-white/10 px-4 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-[0.2em] transition-all cursor-pointer"
+            >
+              <Globe className="w-4 h-4" /> Return to Website
+            </button>
            <button 
             onClick={handleLogout}
             className="w-full flex items-center justify-center gap-2 bg-[#111] hover:bg-red-500/10 text-red-500 hover:text-red-400 border border-white/5 hover:border-red-500/30 px-4 py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-[0.2em] transition-all"

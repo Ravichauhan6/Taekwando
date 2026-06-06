@@ -15,6 +15,11 @@ export const AdminLayout = () => {
     navigate('/admin/login');
   };
 
+  const handleReturnToWebsite = () => {
+    localStorage.removeItem('portal_token');
+    navigate('/');
+  };
+
   const menuItems = [
     { path: '/admin', label: 'Registrations Data', icon: <Users className="w-5 h-5" /> },
     { path: '/admin/promo-videos', label: 'Promo Videos', icon: <Video className="w-5 h-5" /> },
@@ -41,9 +46,9 @@ export const AdminLayout = () => {
       <aside className="w-72 bg-[#111] border-r border-white/5 flex flex-col shadow-[10px_0_30px_rgba(0,0,0,0.5)] z-20 relative">
         <div className="p-6 pb-2">
           <div className="flex items-center gap-3">
-            <Link to="/" className="bg-white p-1 rounded-xl shadow-[0_0_15px_rgba(255,0,0,0.4)] border border-red-500/30 shrink-0 group/logo overflow-hidden h-11 w-11 flex items-center justify-center">
+            <button onClick={handleReturnToWebsite} className="bg-white p-1 rounded-xl shadow-[0_0_15px_rgba(255,0,0,0.4)] border border-red-500/30 shrink-0 group/logo overflow-hidden h-11 w-11 flex items-center justify-center cursor-pointer">
               <img src="/logo.png" alt="MDTA" className="w-full h-full object-contain group-hover/logo:scale-110 transition-transform" />
-            </Link>
+            </button>
             <div className="flex flex-col">
                <h1 className="text-[10px] sm:text-[11px] font-black tracking-widest text-white leading-snug uppercase drop-shadow-md">
                  MAHARAJGANJ DISTRICT TAEKWONDO ASSOCIATION (Regd)
@@ -76,13 +81,13 @@ export const AdminLayout = () => {
         </nav>
 
         <div className="p-6 border-t border-white/5 space-y-3">
-          <Link 
-            to="/"
-            className="flex items-center justify-center gap-3 px-4 py-3.5 w-full bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white rounded-xl transition-all font-bold text-[13px] uppercase tracking-wide border border-white/5 hover:border-white/20"
+          <button 
+            onClick={handleReturnToWebsite}
+            className="flex items-center justify-center gap-3 px-4 py-3.5 w-full bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white rounded-xl transition-all font-bold text-[13px] uppercase tracking-wide border border-white/5 hover:border-white/20 cursor-pointer"
           >
             <Globe className="w-4 h-4" />
             Return to Website
-          </Link>
+          </button>
           <button 
             onClick={handleLogout}
             className="flex items-center justify-center gap-3 px-4 py-3.5 w-full bg-[#ff0000]/10 hover:bg-[#ff0000]/20 text-[#ff0000] hover:text-[#ff1a1a] rounded-xl transition-all font-bold text-[13px] uppercase tracking-wide border border-[#ff0000]/20 hover:border-[#ff0000]/50 shadow-[0_0_15px_rgba(255,0,0,0.1)] hover:shadow-[0_0_20px_rgba(255,0,0,0.2)]"
